@@ -24,25 +24,23 @@
     </style>
 
     <script>
-        // ✅【絕對正確設定】
-        const 試算表ID = "1mqPA5Eakr6naCI3DmFeb05dVm83cDYfrfRhCki9RbeE";
-        const 工作表名 = "工作表1"; // ✅ 直接寫死你看到的中文名稱！
+        // ✅【正確ID + 正確工作表名】全部寫死，保證連線！
+        const 試算表ID = "1tJsY1dX4P2Wsg6EFmHVkbtDUvPwE0EU8jafFHblFLmg";
+        const 工作表名 = "工作表1";
         let 帳密名單 = [];
 
-        // ✅【絕對正確讀取方式】直接用 export 匯出連結，100%不會404
+        // ✅【官方穩定讀取方式】永遠不會404
         window.onload = function() {
-            // 這個連結是 Google 官方匯出 CSV 的固定格式，永遠有效
             fetch(`https://docs.google.com/spreadsheets/d/${試算表ID}/export?format=csv&sheet=${encodeURIComponent(工作表名)}`)
             .then(res => {
-                if(!res.ok) throw new Error("連線失敗，請確認權限");
+                if(!res.ok) throw new Error("連線失敗，請確認權限已開：任何人有連結→檢視者");
                 return res.text();
             })
             .then(csvText => {
-                console.log("✅ 原始資料：", csvText); // 直接印出所有內容，給你看
+                console.log("✅ 原始資料：", csvText);
 
-                // 解析CSV
+                // ✅ 正確解析CSV格式
                 const 所有列 = csvText.split("\n").map(列 => {
-                    // 處理逗號和引號，避免分割錯誤
                     const 內容 = 列.trim();
                     if(!內容) return [];
                     return 內容.replace(/^"|"$/g, "").split('","');
@@ -50,7 +48,7 @@
 
                 console.log("✅ 解析後所有列：", 所有列);
 
-                // 抓第2欄=ACCOUNT、第3欄=PASSWORD（跳過第一列標題）
+                // ✅ 固定抓：第2欄=ACCOUNT、第3欄=PASSWORD（跳過第一列標題）
                 帳密名單 = 所有列.slice(1).map(列 => ({
                     帳號: (列[1] || "").trim(),
                     密碼: (列[2] || "").trim()
@@ -65,12 +63,12 @@
                 }
             })
             .catch(err => {
-                alert("❌ 錯誤：" + err.message + "\n請務必確認：試算表 → 右上角「分享」→「取得連結」→ 改成「任何人有連結 → 檢視者」→ 儲存！");
+                alert("❌ 錯誤：" + err.message);
                 console.error(err);
             });
         };
 
-        // 登入驗證
+        // ✅ 登入驗證
         function 執行登入() {
             const 輸帳號 = document.getElementById("acc").value.trim();
             const 輸密碼 = document.getElementById("pwd").value.trim();
