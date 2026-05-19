@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Property Tools - 實用工具集合</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🏠 Property Tools 工具箱</h1>
+        <p>整理了10+個常用工具，點擊即可使用👇</p>
+
+        <div class="tool-list">
+            <a href="tool1.html" class="tool-card">
+                <h3>工具1：文本處理</h3>
+                <p>去空格、大小寫轉換、字數統計</p>
+            </a>
+            <a href="tool2.html" class="tool-card">
+                <h3>工具2：時間日期</h3>
+                <p>時間戳轉換、日期計算、倒數計時</p>
+            </a>
+            <a href="tool3.html" class="tool-card">
+                <h3>工具3：編碼解碼</h3>
+                <p>URL / Base64 / Unicode 互轉</p>
+            </a>
+            <a href="tool4.html" class="tool-card">
+                <h3>工具4：加密解密</h3>
+                <p>MD5 / SHA1 生成、基礎加解密</p>
+            </a>
+            <a href="tool5.html" class="tool-card">
+                <h3>工具5：格式轉換</h3>
+                <p>JSON 格式化、XML/JSON 互轉</p>
+            </a>
+            <a href="tool6.html" class="tool-card">
+                <h3>工具6：生成器</h3>
+                <p>隨機密碼、QR Code、短連結生成</p>
+            </a>
+            <a href="tool7.html" class="tool-card">
+                <h3>工具7：計算工具</h3>
+                <p>單位換算、百分比、進制轉換</p>
+            </a>
+            <a href="tool8.html" class="tool-card">
+                <h3>工具8：圖片工具</h3>
+                <p>壓縮、格式轉換、尺寸調整</p>
+            </a>
+            <a href="tool9.html" class="tool-card">
+                <h3>工具9：正則測試</h3>
+                <p>線上匹配、結果驗證</p>
+            </a>
+            <a href="tool10.html" class="tool-card">
+                <h3>工具10：程式碼工具</h3>
+                <p>格式化、壓縮、轉義</p>
+            </a>
+            <a href="tool11.html" class="tool-card">
+                <h3>工具11：更多工具</h3>
+                <p>持續更新中…</p>
+            </a>
+        </div>
+    </div>
+</body>
+</html>
