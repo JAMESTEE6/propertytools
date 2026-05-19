@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="style.css">
     <style>
         body { margin: 0; font-family: Arial, sans-serif; }
-        /* 登入框樣式 */
+        /* 登入框樣式 - 確保正常顯示 */
         .login-box {
             position: fixed; top: 50%; left: 50%;
             transform: translate(-50%, -50%);
@@ -33,9 +33,9 @@
         const 工作表名 = "工作表1";
         let 帳密名單 = [];
 
-        // 讀取試算表帳密
+        // 頁面載入時執行
         window.onload = function() {
-            // ✅ 如果已經登入過，直接顯示內容
+            // 如果已經登入過，直接顯示內容
             if(localStorage.getItem("isLogin") === "true"){
                 document.querySelector(".mask").style.display = "none";
                 document.querySelector(".login-box").style.display = "none";
@@ -43,7 +43,7 @@
                 return;
             }
 
-            // 沒登入過 → 載入帳密清單
+            // 沒登入過 → 顯示登入框，載入帳密清單
             fetch(`https://docs.google.com/spreadsheets/d/${試算表ID}/export?format=csv&sheet=${encodeURIComponent(工作表名)}`)
             .then(res => res.text())
             .then(csvText => {
@@ -56,14 +56,14 @@
             .catch(err => alert("❌ 連線錯誤：" + err.message));
         };
 
-        // 登入驗證 → 成功就記住狀態
+        // 登入驗證
         function 執行登入() {
             const 輸帳號 = document.getElementById("acc").value.trim();
             const 輸密碼 = document.getElementById("pwd").value.trim();
             const 正確 = 帳密名單.some(d => d.帳號 === 輸帳號 && d.密碼 === 輸密碼);
             
             if (正確) {
-                localStorage.setItem("isLogin", "true"); // ✅ 記住登入狀態
+                localStorage.setItem("isLogin", "true"); // 記住登入狀態
                 document.querySelector(".mask").style.display = "none";
                 document.querySelector(".login-box").style.display = "none";
                 document.querySelector(".content").style.display = "block";
@@ -75,28 +75,28 @@
     </script>
 </head>
 <body>
-    <!-- 登入畫面：只在第一次進來顯示 -->
+    <!-- 登入畫面 - 正常顯示 -->
     <div class="mask"></div>
     <div class="login-box">
-        <h3>🔒 請先登入</h3>
-        <input type="text" id="acc" placeholder="輸入帳號" onkeydown="按鍵(event)">
-        <input type="password" id="pwd" placeholder="輸入密碼" onkeydown="按鍵(event)">
-        <button onclick="執行登入()">確認登入</button>
+        <h3>🔒 Please Login</h3>
+        <input type="text" id="acc" placeholder="Enter Account" onkeydown="按鍵(event)">
+        <input type="password" id="pwd" placeholder="Enter Password" onkeydown="按鍵(event)">
+        <button onclick="執行登入()">Login</button>
         <br>
-        <a href="https://docs.google.com/forms/d/1mqPA5Eakr6naCI3DmFeb05dVm83cDYfrfRhCki9RbeE/viewform?usp=sf_link" target="_blank" class="register-link">👉 還沒有帳號？點我註冊</a>
+        <a href="https://docs.google.com/forms/d/1mqPA5Eakr6naCI3DmFeb05dVm83cDYfrfRhCki9RbeE/viewform?usp=sf_link" target="_blank" class="register-link">👉 Register New Account</a>
     </div>
 
     <!-- 首頁工具列表 -->
     <div class="content">
         <div class="container">
-            <h1>🏠 Property Tools 工具箱</h1>
-            <p>整理了10+個常用工具，點擊即可使用 👇</p>
+            <h1>🏠 Property Tools Dashboard</h1>
+            <p>Collection of useful tools, click to use 👇</p>
             <div class="tool-list">
-                <a href="tool1.html" class="tool-card"><h3>Booking Form Generator</h3><p>Fill in details and print out</p></a>
-                <a href="tool2.html" class="tool-card"><h3>工具2：時間日期</h3><p>時間戳轉換、日期計算、倒數計時</p></a>
-                <a href="tool3.html" class="tool-card"><h3>工具3：編碼解碼</h3><p>URL / Base64 / Unicode 互轉</p></a>
-                <a href="tool4.html" class="tool-card"><h3>工具4：加密解密</h3><p>MD5 / SHA1 生成、基礎加密/解</p></a>
-                <a href="tool5.html" class="tool-card"><h3>tool5</h3></a>
+                <a href="tool1.html" class="tool-card"><h3>Booking Form Generator</h3><p>Generate & print form</p></a>
+                <a href="tool2.html" class="tool-card"><h3>Tool 2</h3><p>Description here</p></a>
+                <a href="tool3.html" class="tool-card"><h3>Tool 3</h3><p>Description here</p></a>
+                <a href="tool4.html" class="tool-card"><h3>Tool 4</h3><p>Description here</p></a>
+                <a href="tool5.html" class="tool-card"><h3>Tool 5</h3><p>Description here</p></a>
             </div>
         </div>
     </div>
