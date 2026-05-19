@@ -4,73 +4,16 @@
     <meta charset="UTF-8">
     <title>Tool Page</title>
     <style>
-        body { margin: 0; font-family: Arial, sans-serif; }
-        .login-box { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #ffffff; padding: 35px; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); z-index: 99999; width: 320px; text-align: center; }
-        .login-box h3 { margin: 0 0 20px; color: #333; font-size: 18px; }
-        .login-box input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 6px; font-size: 15px; box-sizing: border-box; }
-        .login-box button { width: 100%; padding: 12px; margin-top: 10px; background: #2563eb; color: white; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; }
-        .login-box button:hover { background: #1d4ed8; }
-        .register-link { display: inline-block; margin-top: 15px; font-size: 14px; color: #2563eb; text-decoration: none; }
-        .register-link:hover { text-decoration: underline; }
-        .mask { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 99998; }
-        .content { display: none; padding: 20px; }
-
-        /* 👇 保留你原本所有CSS，完全不動 👇 */
+        /* 👇 只保留你原本的CSS，全部登入相關都刪掉 👇 */
         * { box-sizing: border-box; font-family: Arial, Helvetica, sans-serif !important; font-size: 13px; margin: 0; padding: 0; }
         .container { max-width: 1200px; margin: 20px auto; padding: 0 20px; }
     </style>
-
-    <script>
-        const 試算表ID = "1tJsY1dX4P2Wsg6EFmHVkbtDUvPwE0EU8jafFHblFLmg";
-        const 工作表名 = "工作表1";
-        let 帳密名單 = [];
-
-        window.onload = function() {
-            fetch(`https://docs.google.com/spreadsheets/d/${試算表ID}/export?format=csv&sheet=${encodeURIComponent(工作表名)}`)
-            .then(res => res.text())
-            .then(csvText => {
-                const 所有列 = csvText.split("\n").filter(列 => 列.trim() !== "").map(列 => 列.split(","));
-                帳密名單 = 所有列.slice(1).map(列 => ({
-                    帳號: (列[1] || "").trim(),
-                    密碼: (列[2] || "").trim()
-                })).filter(i => i.帳號);
-                console.log("✅ 子頁面載入成功，帳號數：", 帳密名單.length);
-            })
-            .catch(err => alert("❌ 子頁面錯誤：" + err.message));
-        };
-
-        function 執行登入() {
-            const 輸帳號 = document.getElementById("acc").value.trim();
-            const 輸密碼 = document.getElementById("pwd").value.trim();
-            const 正確 = 帳密名單.some(d => d.帳號 === 輸帳號 && d.密碼 === 輸密碼);
-            if (正確) {
-                document.querySelector(".mask").style.display = "none";
-                document.querySelector(".login-box").style.display = "none";
-                document.querySelector(".content").style.display = "block";
-            } else {
-                alert("❌ 帳號或密碼錯誤！");
-            }
-        }
-        function 按鍵(e) { if (e.key === "Enter") 執行登入(); }
-    </script>
 </head>
 <body>
-    <div class="mask"></div>
-    <div class="login-box">
-        <h3>🔒 請先登入</h3>
-        <input type="text" id="acc" placeholder="輸入帳號" onkeydown="按鍵(event)">
-        <input type="password" id="pwd" placeholder="輸入密碼" onkeydown="按鍵(event)">
-        <button onclick="執行登入()">確認登入</button>
-        <br>
-        <a href="https://docs.google.com/forms/d/1mqPA5Eakr6naCI3DmFeb05dVm83cDYfrfRhCki9RbeE/viewform?usp=sf_link" target="_blank" class="register-link">👉 還沒有帳號？點我註冊</a>
-    </div>
-
-    <!-- 👇 保留你原本所有內容 👇 -->
-    <div class="content">
-        <div class="container">
-            <a href="index.html" class="back-btn">← 返回首頁</a>
-            <!-- 你原本的表格、按鈕、程式全部留在這裡 -->
-        </div>
+    <!-- 👇 直接放你原本的工具內容，不需要任何登入框 👇 -->
+    <div class="container">
+        <a href="index.html" class="back-btn">← 返回首頁</a>
+        <!-- 你原本的表格、按鈕、程式全部留在這裡，完全不動 -->
     </div>
 </body>
 </html>
