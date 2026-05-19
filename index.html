@@ -24,35 +24,43 @@
     </style>
 
     <script>
-        // ✅ 正確的試算表ID（從你表單自動產生的試算表）
+        // ✅ 正確的試算表ID
         const 試算表ID = "1mqPA5Eakr6naCI3DmFeb05dVm83cDYfrfRhCki9RbeE";
-        const 工作表名 = "Form Responses 1";
+        // ✅ 一次嘗試兩種最常見的名稱，哪個成功就用哪個
+        const 可能的工作表名 = ["Form Responses 1", "工作表1", "表單回應 1"];
         let 帳密名單 = [];
 
-        // ✅ 改用 CSV 讀取，100% 穩定、不會有任何錯誤
-        window.onload = function() {
-            fetch(`https://docs.google.com/spreadsheets/d/${試算表ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(工作表名)}`)
-            .then(res => res.text())
-            .then(csvText => {
-                // 解析CSV
+        // ✅ 自動嘗試所有可能名稱，直到成功
+        async function 載入資料(名稱列表, 索引=0) {
+            if(索引 >= 名稱列表.length) {
+                alert("❌ 所有名稱都試過了還是失敗，請手動打開試算表看工作表名！");
+                return;
+            }
+            const 目前名稱 = 名稱列表[索引];
+            try {
+                const res = await fetch(`https://docs.google.com/spreadsheets/d/${試算表ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(目前名稱)}`);
+                if(!res.ok) throw new Error("404");
+                const csvText = await res.text();
                 const 所有列 = csvText.split("\n").map(列 => 列.replace(/"/g, "").split(","));
-                // 跳過標題列，抓第2欄=ACCOUNT、第3欄=PASSWORD
                 帳密名單 = 所有列.slice(1).map(列 => ({
                     帳號: (列[1] || "").trim(),
                     密碼: (列[2] || "").trim()
-                })).filter(i => i.帳號); // 過濾空白
+                })).filter(i => i.帳號);
 
-                console.log("✅ 成功！載入帳號數：", 帳密名單.length);
+                console.log(`✅ 成功！使用工作表名稱：${目前名稱}`);
+                console.log("✅ 載入帳號數：", 帳密名單.length);
                 console.log("✅ 所有帳密：", 帳密名單);
                 console.log("✅ 測試 jacey/jacey123：", 帳密名單.some(i => i.帳號==="jacey"&&i.密碼==="jacey123") ? "✅ 存在" : "❌ 不存在");
 
-                if(帳密名單.length === 0) alert("⚠️ 有連到試算表，但沒資料，請先填一次表單送出！");
-            })
-            .catch(err => {
-                alert("❌ 連接失敗！請確認：1. 試算表權限→任何人有連結→檢視者 2. 工作表名是Form Responses 1");
-                console.error(err);
-            });
-        };
+                if(帳密名單.length === 0) alert("⚠️ 工作表連到了，但還沒資料，請填一次表單送出！");
+
+            } catch(e) {
+                console.log(`❌ 嘗試名稱「${目前名稱}」失敗，換下一個...`);
+                載入資料(名稱列表, 索引+1); // 失敗就自動換下一個名稱
+            }
+        }
+
+        window.onload = () => 載入資料(可能的工作表名);
 
         // 登入驗證
         function 執行登入() {
