@@ -1,20 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-    <!-- ✅ 子頁面專用登入驗證，跟首頁讀同一份名單 -->
+    <!-- ✅ 子頁面專用驗證 - 修正版 -->
     <script>
-        const 試算表網址 = "https://docs.google.com/spreadsheets/d/1tJsY1dX4P2Wsg6EFmHVkbtDUvPwE0EU8jafFHblFLmg/gviz/tq?tqx=out:csv&sheet=工作表1";
+        const 試算表ID = "1tJsY1dX4P2Wsg6EFmHVkbtDUvPwE0EU8jafFHblFLmg";
         let 允許名單 = [];
 
         async function 載入名單() {
             try {
-                const res = await fetch(試算表網址);
-                const text = await res.text();
-                const 列 = text.split("\n").slice(1);
-                允許名單 = 列.map(行 => {
-                    const [帳號, 密碼] = 行.split(",").map(v => v.replace(/"/g, ""));
-                    return { 帳號, 密碼 };
-                });
-                驗證登入();
+                const script = document.createElement('script');
+                script.src = `https://docs.google.com/spreadsheets/d/${試算表ID}/gviz/tq?tqx=out:json&sheet=工作表1`;
+                window.gdata = function(data) {
+                    允許名單 = data.table.rows.slice(1).map(row => ({
+                        帳號: row.c[0]?.v || "",
+                        密碼: row.c[1]?.v || ""
+                    }));
+                    驗證登入();
+                };
+                document.head.appendChild(script);
             } catch (e) {
                 alert("⚠️ 無法載入帳號名單！");
                 window.location.href = "about:blank";
@@ -25,7 +27,7 @@
             const 輸入帳號 = prompt("🔒 請輸入帳號：");
             const 輸入密碼 = prompt("🔒 請輸入密碼：");
             const 通過 = 允許名單.some(d => d.帳號 === 輸入帳號 && d.密碼 === 輸入密碼);
-            if (!通過) { alert("❌ 錯誤！"); window.location.href = "about:blank"; }
+            if (!通過) { alert("❌ 帳密錯誤！"); window.location.href = "about:blank"; }
         }
         載入名單();
     </script>
