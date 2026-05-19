@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Tool Page</title>
     <style>
-        /* 登入框樣式跟首頁完全一樣，複製過來就好 */
+        /* 登入框樣式跟首頁完全一樣 */
         body { margin: 0; font-family: Arial, sans-serif; }
         .login-box {
             position: fixed;
@@ -40,8 +40,9 @@
     </style>
 
     <script>
+        // ✅ 同樣修正：工作表名稱 + 欄位位置
         const 試算表ID = "1tJsY1dX4P2Wsg6EFmHVkbtDUvPwE0EU8jafFHblFLmg";
-        const 工作表名 = "工作表1";
+        const 工作表名 = "Form Responses 1";
         let 帳密名單 = [];
 
         window.onload = function() {
@@ -49,8 +50,8 @@
             s.src = `https://docs.google.com/spreadsheets/d/${試算表ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(工作表名)}`;
             window.gvizCallback = function(json) {
                 帳密名單 = json.table.rows.slice(1).map(r => ({
-                    帳號: (r.c[0]?.v || "").trim(),
-                    密碼: (r.c[1]?.v || "").trim()
+                    帳號: (r.c[1]?.v || "").trim(),
+                    密碼: (r.c[2]?.v || "").trim()
                 }));
             };
             document.head.appendChild(s);
