@@ -24,33 +24,37 @@
     </style>
 
     <script>
-        // ✅ 正確設定：對應你的表單回應試算表
-        // 從你的連結取出表單ID，對應的試算表就是你看到的「工作表 1」→ 自動產生的工作表名稱是「Form Responses 1」
-        const 試算表ID = "1mqPA5Eakr6naCI3DmFeb05dVm83cDYfrfRhCki9RbeE";
-        const 工作表名 = "Form Responses 1"; // Google 表單預設的回應工作表名稱
+        // ✅【重要】把下面的 ID 換成你剛剛複製的「試算表ID」！！！
+        const 試算表ID = "填入你剛剛複製的試算表ID"; 
+        const 工作表名 = "Form Responses 1"; // Google 表單預設名稱，不用改
         let 帳密名單 = [];
 
-        // ✅ 固定抓：第2欄=ACCOUNT、第3欄=PASSWORD（完全對應你的表單欄位順序）
+        // ✅ 最保險解析：固定抓第2欄=ACCOUNT、第3欄=PASSWORD
         window.處理試算表資料 = function(json) {
             try {
                 const 所有列 = json.table.rows;
-                // 跳過第一列（時間戳），從第二列開始：第2欄=帳號、第3欄=密碼
+                // 跳過標題列，從資料列開始抓
                 帳密名單 = 所有列.slice(1).map(列 => ({
-                    帳號: (列.c[1]?.v || "").trim(), // ACCOUNT
-                    密碼: (列.c[2]?.v || "").trim()  // PASSWORD
-                })).filter(i => i.帳號);
+                    帳號: (列.c[1]?.v || "").trim(), // 第2欄：ACCOUNT
+                    密碼: (列.c[2]?.v || "").trim()  // 第3欄：PASSWORD
+                })).filter(i => i.帳號); // 過濾空白
 
-                console.log("✅ 載入成功！所有帳密：", 帳密名單);
-                console.log("✅ 測試 jacey/jacey123：", 帳密名單.some(i => i.帳號 === "jacey" && i.密碼 === "jacey123") ? "✅ 存在" : "❌ 不存在");
+                console.log("✅ 成功連接資料！載入帳號數：", 帳密名單.length);
+                console.log("✅ 所有帳密：", 帳密名單);
+                console.log("✅ 測試 jacey/jacey123：", 帳密名單.some(i => i.帳號==="jacey"&&i.密碼==="jacey123") ? "✅ 存在" : "❌ 不存在");
+
+                // 👉 自動偵測：如果抓到0筆資料，自動提示你
+                if(帳密名單.length === 0) alert("⚠️ 有連到試算表，但沒抓到任何資料，請確認表單有填寫送出！");
 
             } catch (e) {
-                alert("❌ 讀取失敗！請確認：1. 試算表已開「任何人有連結 → 檢視者」 2. 工作表名稱是「Form Responses 1」");
+                alert("❌ 連接失敗！原因：" + e.message + "，請確認試算表權限已開「任何人有連結 → 檢視者」");
             }
         };
 
         // 載入資料
         window.onload = function() {
             const s = document.createElement('script');
+            // 強制指定格式，避免出錯
             s.src = `https://docs.google.com/spreadsheets/d/${試算表ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(工作表名)}&callback=處理試算表資料`;
             document.head.appendChild(s);
         };
