@@ -1,14 +1,46 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+    <style>css</style>
     <meta charset="UTF-8">
+    
+    <!-- 👇 登入驗證加在這裡，meta 後面、title 前面 👇 -->
+    <script>
+        // 自訂帳號密碼，可自由新增/修改
+        const 允許名單 = [
+          {帳號: "admin", 密碼: "123456"},
+          {帳號: "user01", 密碼: "abc123"},
+          {帳號: "team", 密碼: "prop2026"}
+        ];
+
+        // 跳出輸入框
+        const 輸入帳號 = prompt("🔒 請輸入帳號：");
+        const 輸入密碼 = prompt("🔒 請輸入密碼：");
+
+        // 比對驗證
+        let 通過 = false;
+        for (let 資料 of 允許名單) {
+          if (資料.帳號 === 輸入帳號 && 資料.密碼 === 輸入密碼) {
+            通過 = true;
+            break;
+          }
+        }
+
+        // 驗證失敗 → 清空整個頁面
+        if (!通過) {
+          alert("❌ 帳號或密碼錯誤，無法進入！");
+          document.documentElement.innerHTML = "";
+        }
+    </script>
+    <!-- 👆 驗證結束 👆 -->
+
     <title>Property Tools - 實用工具集合</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <h1>🏠 Property Tools 工具箱</h1>
-        <p>整理了10+個常用工具，點擊即可使用👇</p>
+        <p>整理了10+個常用工具，點擊即可使用 👇</p>
 
         <div class="tool-list">
             <a href="tool1.html" class="tool-card">
@@ -25,35 +57,10 @@
             </a>
             <a href="tool4.html" class="tool-card">
                 <h3>工具4：加密解密</h3>
-                <p>MD5 / SHA1 生成、基礎加解密</p>
+                <p>MD5 / SHA1 生成、基礎加密/解</p>
             </a>
             <a href="tool5.html" class="tool-card">
-                <h3>工具5：格式轉換</h3>
-                <p>JSON 格式化、XML/JSON 互轉</p>
-            </a>
-            <a href="tool6.html" class="tool-card">
-                <h3>工具6：生成器</h3>
-                <p>隨機密碼、QR Code、短連結生成</p>
-            </a>
-            <a href="tool7.html" class="tool-card">
-                <h3>工具7：計算工具</h3>
-                <p>單位換算、百分比、進制轉換</p>
-            </a>
-            <a href="tool8.html" class="tool-card">
-                <h3>工具8：圖片工具</h3>
-                <p>壓縮、格式轉換、尺寸調整</p>
-            </a>
-            <a href="tool9.html" class="tool-card">
-                <h3>工具9：正則測試</h3>
-                <p>線上匹配、結果驗證</p>
-            </a>
-            <a href="tool10.html" class="tool-card">
-                <h3>工具10：程式碼工具</h3>
-                <p>格式化、壓縮、轉義</p>
-            </a>
-            <a href="tool11.html" class="tool-card">
-                <h3>工具11：更多工具</h3>
-                <p>持續更新中…</p>
+                <h3>tool5</h3>
             </a>
         </div>
     </div>
