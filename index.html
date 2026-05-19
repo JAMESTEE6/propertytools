@@ -33,17 +33,12 @@
             .then(res => res.text())
             .then(csvText => {
                 console.log("✅ 原始資料：", csvText);
-
-                // ✅【修正】正確分割CSV，直接用逗號分欄（你的資料沒有引號，更簡單）
                 const 所有列 = csvText.split("\n").filter(列 => 列.trim() !== "").map(列 => 列.split(","));
                 console.log("✅ 解析後所有列：", 所有列);
-
-                // ✅ 第2欄=ACCOUNT、第3欄=PASSWORD，跳過第一列標題
                 帳密名單 = 所有列.slice(1).map(列 => ({
                     帳號: (列[1] || "").trim(),
                     密碼: (列[2] || "").trim()
                 })).filter(i => i.帳號);
-
                 console.log("✅ 載入成功！帳號數量：", 帳密名單.length);
                 console.log("✅ 所有帳密清單：", 帳密名單);
                 console.log("✅ 測試 jacey/jacey123：", 帳密名單.some(i => i.帳號==="jacey"&&i.密碼==="jacey123") ? "✅ 存在" : "❌ 不存在");
