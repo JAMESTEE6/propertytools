@@ -24,31 +24,21 @@
     </style>
 
     <script>
-        // ✅【正確ID + 正確工作表名】全部寫死，保證連線！
         const 試算表ID = "1tJsY1dX4P2Wsg6EFmHVkbtDUvPwE0EU8jafFHblFLmg";
         const 工作表名 = "工作表1";
         let 帳密名單 = [];
 
-        // ✅【官方穩定讀取方式】永遠不會404
         window.onload = function() {
             fetch(`https://docs.google.com/spreadsheets/d/${試算表ID}/export?format=csv&sheet=${encodeURIComponent(工作表名)}`)
-            .then(res => {
-                if(!res.ok) throw new Error("連線失敗，請確認權限已開：任何人有連結→檢視者");
-                return res.text();
-            })
+            .then(res => res.text())
             .then(csvText => {
                 console.log("✅ 原始資料：", csvText);
 
-                // ✅ 正確解析CSV格式
-                const 所有列 = csvText.split("\n").map(列 => {
-                    const 內容 = 列.trim();
-                    if(!內容) return [];
-                    return 內容.replace(/^"|"$/g, "").split('","');
-                });
-
+                // ✅【修正】正確分割CSV，直接用逗號分欄（你的資料沒有引號，更簡單）
+                const 所有列 = csvText.split("\n").filter(列 => 列.trim() !== "").map(列 => 列.split(","));
                 console.log("✅ 解析後所有列：", 所有列);
 
-                // ✅ 固定抓：第2欄=ACCOUNT、第3欄=PASSWORD（跳過第一列標題）
+                // ✅ 第2欄=ACCOUNT、第3欄=PASSWORD，跳過第一列標題
                 帳密名單 = 所有列.slice(1).map(列 => ({
                     帳號: (列[1] || "").trim(),
                     密碼: (列[2] || "").trim()
@@ -57,18 +47,10 @@
                 console.log("✅ 載入成功！帳號數量：", 帳密名單.length);
                 console.log("✅ 所有帳密清單：", 帳密名單);
                 console.log("✅ 測試 jacey/jacey123：", 帳密名單.some(i => i.帳號==="jacey"&&i.密碼==="jacey123") ? "✅ 存在" : "❌ 不存在");
-
-                if(帳密名單.length === 0) {
-                    alert("⚠️ 連線成功，但試算表裡還沒有任何資料！\n請打開表單填一次送出：\nhttps://docs.google.com/forms/d/1mqPA5Eakr6naCI3DmFeb05dVm83cDYfrfRhCki9RbeE/viewform");
-                }
             })
-            .catch(err => {
-                alert("❌ 錯誤：" + err.message);
-                console.error(err);
-            });
+            .catch(err => alert("❌ 錯誤：" + err.message));
         };
 
-        // ✅ 登入驗證
         function 執行登入() {
             const 輸帳號 = document.getElementById("acc").value.trim();
             const 輸密碼 = document.getElementById("pwd").value.trim();
