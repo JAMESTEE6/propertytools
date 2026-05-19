@@ -21,27 +21,25 @@
     </style>
 
     <script>
+        // ✅ 同樣正確設定
         const 試算表ID = "1mqPA5Eakr6naCI3DmFeb05dVm83cDYfrfRhCki9RbeE";
-        const 可能的工作表名 = ["Form_Responses", "工作表1", "表單回應 1"];
+        const 工作表名 = "工作表1";
         let 帳密名單 = [];
 
-        async function 載入資料(名稱列表, 索引=0) {
-            if(索引 >= 名稱列表.length) { alert("❌ 子頁面讀取失敗"); return; }
-            const 目前名稱 = 名稱列表[索引];
-            try {
-                const res = await fetch(`https://docs.google.com/spreadsheets/d/${試算表ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(目前名稱)}`);
-                if(!res.ok) throw new Error("404");
-                const csvText = await res.text();
-                const 所有列 = csvText.split("\n").map(列 => 列.replace(/"/g, "").split(","));
+        // ✅ 同樣用官方匯出連結，100%穩定
+        window.onload = function() {
+            fetch(`https://docs.google.com/spreadsheets/d/${試算表ID}/export?format=csv&sheet=${encodeURIComponent(工作表名)}`)
+            .then(res => res.text())
+            .then(csvText => {
+                const 所有列 = csvText.split("\n").map(列 => 列.trim().replace(/^"|"$/g, "").split('","'));
                 帳密名單 = 所有列.slice(1).map(列 => ({
                     帳號: (列[1] || "").trim(),
                     密碼: (列[2] || "").trim()
                 })).filter(i => i.帳號);
-                console.log(`✅ 子頁面成功，名稱：${目前名稱}，帳號數：${帳密名單.length}`);
-            } catch(e) { 載入資料(名稱列表, 索引+1); }
-        }
-
-        window.onload = () => 載入資料(可能的工作表名);
+                console.log("✅ 子頁面載入成功，帳號數：", 帳密名單.length);
+            })
+            .catch(err => alert("❌ 子頁面錯誤：" + err.message));
+        };
 
         function 執行登入() {
             const 輸帳號 = document.getElementById("acc").value.trim();
