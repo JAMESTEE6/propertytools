@@ -21,7 +21,6 @@
     </style>
 
     <script>
-        // ✅ 同樣正確設定
         const 試算表ID = "1tJsY1dX4P2Wsg6EFmHVkbtDUvPwE0EU8jafFHblFLmg";
         const 工作表名 = "工作表1";
         let 帳密名單 = [];
@@ -30,7 +29,7 @@
             fetch(`https://docs.google.com/spreadsheets/d/${試算表ID}/export?format=csv&sheet=${encodeURIComponent(工作表名)}`)
             .then(res => res.text())
             .then(csvText => {
-                const 所有列 = csvText.split("\n").map(列 => 列.trim().replace(/^"|"$/g, "").split('","'));
+                const 所有列 = csvText.split("\n").filter(列 => 列.trim() !== "").map(列 => 列.split(","));
                 帳密名單 = 所有列.slice(1).map(列 => ({
                     帳號: (列[1] || "").trim(),
                     密碼: (列[2] || "").trim()
