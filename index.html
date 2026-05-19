@@ -6,7 +6,6 @@
     <link rel="stylesheet" href="style.css">
     <style>
         body { margin: 0; font-family: Arial, sans-serif; }
-        /* 登入框 - 完整恢復，保證顯示 */
         .login-box {
             position: fixed; top: 50%; left: 50%;
             transform: translate(-50%, -50%);
@@ -15,21 +14,13 @@
             z-index: 99999; width: 320px; text-align: center;
         }
         .login-box h3 { margin: 0 0 20px; color: #333; font-size: 18px; }
-        .login-box input { 
-            width: 100%; padding: 12px; margin: 8px 0; 
-            border: 1px solid #ddd; border-radius: 6px; 
-            font-size: 15px; box-sizing: border-box;
-            display: block !important; /* 強制顯示 */
-        }
+        .login-box input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 6px; font-size: 15px; box-sizing: border-box; }
         .login-box button { width: 100%; padding: 12px; margin-top: 10px; background: #2563eb; color: white; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; }
         .login-box button:hover { background: #1d4ed8; }
         .register-link { display: inline-block; margin-top: 15px; font-size: 14px; color: #2563eb; text-decoration: none; }
         .register-link:hover { text-decoration: underline; }
         .mask { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 99998; }
         .content { display: none; padding: 20px; }
-        .tool-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; margin-top: 30px; }
-        .tool-card { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-decoration: none; color: #333; }
-        .tool-card:hover { transform: translateY(-3px); transition: 0.2s; }
     </style>
 
     <script>
@@ -38,35 +29,33 @@
         let 帳密名單 = [];
 
         window.onload = function() {
-            // 已登入 → 直接顯示
-            if(localStorage.getItem("isLogin") === "true"){
-                document.querySelector(".mask").style.display = "none";
-                document.querySelector(".login-box").style.display = "none";
-                document.querySelector(".content").style.display = "block";
-                return;
-            }
-
-            // 未登入 → 載入帳密清單，顯示登入框
             fetch(`https://docs.google.com/spreadsheets/d/${試算表ID}/export?format=csv&sheet=${encodeURIComponent(工作表名)}`)
             .then(res => res.text())
             .then(csvText => {
+                console.log("✅ 原始資料：", csvText);
+
+                // ✅【修正】正確分割CSV，直接用逗號分欄（你的資料沒有引號，更簡單）
                 const 所有列 = csvText.split("\n").filter(列 => 列.trim() !== "").map(列 => 列.split(","));
+                console.log("✅ 解析後所有列：", 所有列);
+
+                // ✅ 第2欄=ACCOUNT、第3欄=PASSWORD，跳過第一列標題
                 帳密名單 = 所有列.slice(1).map(列 => ({
                     帳號: (列[1] || "").trim(),
                     密碼: (列[2] || "").trim()
                 })).filter(i => i.帳號);
+
+                console.log("✅ 載入成功！帳號數量：", 帳密名單.length);
+                console.log("✅ 所有帳密清單：", 帳密名單);
+                console.log("✅ 測試 jacey/jacey123：", 帳密名單.some(i => i.帳號==="jacey"&&i.密碼==="jacey123") ? "✅ 存在" : "❌ 不存在");
             })
-            .catch(err => alert("❌ 連線錯誤：" + err.message));
+            .catch(err => alert("❌ 錯誤：" + err.message));
         };
 
-        // 登入功能正常運作
         function 執行登入() {
             const 輸帳號 = document.getElementById("acc").value.trim();
             const 輸密碼 = document.getElementById("pwd").value.trim();
             const 正確 = 帳密名單.some(d => d.帳號 === 輸帳號 && d.密碼 === 輸密碼);
-            
             if (正確) {
-                localStorage.setItem("isLogin", "true");
                 document.querySelector(".mask").style.display = "none";
                 document.querySelector(".login-box").style.display = "none";
                 document.querySelector(".content").style.display = "block";
@@ -78,27 +67,26 @@
     </script>
 </head>
 <body>
-    <!-- ✅ 登入框完整、帳號密碼輸入框都在，保證顯示 -->
     <div class="mask"></div>
     <div class="login-box">
-        <h3>🔒 Please Login</h3>
-        <input type="text" id="acc" placeholder="Enter Account" onkeydown="按鍵(event)">
-        <input type="password" id="pwd" placeholder="Enter Password" onkeydown="按鍵(event)">
-        <button onclick="執行登入()">Login</button>
+        <h3>🔒 請先登入</h3>
+        <input type="text" id="acc" placeholder="輸入帳號" onkeydown="按鍵(event)">
+        <input type="password" id="pwd" placeholder="輸入密碼" onkeydown="按鍵(event)">
+        <button onclick="執行登入()">確認登入</button>
         <br>
-        <a href="https://docs.google.com/forms/d/1mqPA5Eakr6naCI3DmFeb05dVm83cDYfrfRhCki9RbeE/viewform?usp=sf_link" target="_blank" class="register-link">👉 Register New Account</a>
+        <a href="https://docs.google.com/forms/d/1mqPA5Eakr6naCI3DmFeb05dVm83cDYfrfRhCki9RbeE/viewform?usp=sf_link" target="_blank" class="register-link">👉 還沒有帳號？點我註冊</a>
     </div>
 
     <div class="content">
         <div class="container">
-            <h1>🏠 Property Tools Dashboard</h1>
-            <p>Collection of useful tools, click to use 👇</p>
+            <h1>🏠 Property Tools 工具箱</h1>
+            <p>整理了10+個常用工具，點擊即可使用 👇</p>
             <div class="tool-list">
-                <a href="tool1.html" class="tool-card"><h3>Booking Form Generator</h3><p>Generate & print form</p></a>
-                <a href="tool2.html" class="tool-card"><h3>Tool 2</h3><p>Description here</p></a>
-                <a href="tool3.html" class="tool-card"><h3>Tool 3</h3><p>Description here</p></a>
-                <a href="tool4.html" class="tool-card"><h3>Tool 4</h3><p>Description here</p></a>
-                <a href="tool5.html" class="tool-card"><h3>Tool 5</h3><p>Description here</p></a>
+                <a href="tool1.html" class="tool-card"><h3>Booking Form Generator</h3><p>Fill in details and print out</p></a>
+                <a href="tool2.html" class="tool-card"><h3>工具2：時間日期</h3><p>時間戳轉換、日期計算、倒數計時</p></a>
+                <a href="tool3.html" class="tool-card"><h3>工具3：編碼解碼</h3><p>URL / Base64 / Unicode 互轉</p></a>
+                <a href="tool4.html" class="tool-card"><h3>工具4：加密解密</h3><p>MD5 / SHA1 生成、基礎加密/解</p></a>
+                <a href="tool5.html" class="tool-card"><h3>tool5</h3></a>
             </div>
         </div>
     </div>
