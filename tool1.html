@@ -7,7 +7,8 @@
     <style>
         * {
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
+            font-family: Arial, Helvetica, sans-serif !important;
+            font-size: 13px;
         }
         .container {
             max-width: 1200px;
@@ -45,20 +46,25 @@
             font-weight: bold;
         }
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
         label {
             display: block;
-            font-size: 13px;
-            color: #666;
-            margin-bottom: 5px;
+            font-size: 12px;
+            color: #000;
+            margin-bottom: 4px;
+            font-weight: bold;
         }
         input {
             width: 100%;
-            padding: 8px 10px;
+            padding: 6px 8px;
             border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 14px;
+            border-radius: 2px;
+            font-size: 13px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        input[type="date"] {
+            padding: 4px 6px;
         }
         .btn-group {
             display: flex;
@@ -67,12 +73,12 @@
         }
         button {
             flex: 1;
-            padding: 10px;
+            padding: 8px;
             border: none;
-            border-radius: 4px;
+            border-radius: 2px;
             font-weight: bold;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 13px;
         }
         .btn-clear {
             background-color: #444;
@@ -82,58 +88,86 @@
             background-color: #000;
             color: #fff;
         }
-        /* 預覽表單樣式 - 重點修改：標題置中 */
+
+        /* 🔥 完全依照圖片格式 - 強制置中 + 排版 🔥 */
         .form-preview {
             border: 1px solid #000;
-            padding: 20px;
-            min-height: 600px;
+            padding: 25px;
+            min-height: 800px;
             background: #fff;
+            color: #000;
         }
         .form-preview .header {
-            text-align: center; /* 改成置中 */
+            text-align: center !important;
             font-weight: bold;
             margin-bottom: 30px;
+            width: 100%;
         }
         .form-preview .header div {
+            font-size: 14px;
             line-height: 1.5;
+            text-align: center !important;
+            width: 100%;
         }
-        .form-preview .section {
-            margin-bottom: 15px;
+        .form-preview .section-title {
+            font-weight: bold;
+            font-size: 13px;
+            margin: 16px 0 4px 0;
         }
-        .form-preview .label-row {
+        .form-preview .row-item {
             display: flex;
             border-bottom: 1px solid #000;
-            margin: 4px 0;
+            margin: 2px 0;
+            min-height: 22px;
+            align-items: center;
         }
-        .form-preview .label {
-            min-width: 140px;
-            font-size: 13px;
-            padding: 2px 5px;
+        .form-preview .label-col {
+            width: 140px;
+            font-size: 12px;
+            padding: 2px 6px;
+            font-weight: normal;
         }
-        .form-preview .value {
+        .form-preview .value-col {
             flex: 1;
             border-left: 1px solid #000;
             padding: 2px 8px;
-            font-weight: 500;
+            font-weight: normal;
+            font-size: 12px;
         }
-        .terms {
+        .form-preview .terms {
             font-size: 11px;
-            line-height: 1.4;
+            line-height: 1.5;
             margin: 20px 0;
-            border-top: 1px solid #000;
             padding-top: 10px;
         }
-        .sign-row {
+        .form-preview .terms ol {
+            padding-left: 16px;
+            margin: 0;
+        }
+        .form-preview .terms li {
+            margin-bottom: 4px;
+        }
+        .form-preview .sign-area {
             display: flex;
             justify-content: space-between;
-            margin-top: 30px;
+            margin-top: 40px;
         }
-        .sign-col {
-            width: 45%;
+        .form-preview .sign-col {
+            width: 46%;
             border-top: 1px solid #000;
             padding-top: 8px;
             font-size: 12px;
         }
+        .form-preview .sign-col .title {
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .form-preview .sign-col .line {
+            border-bottom: 1px solid #000;
+            margin: 8px 0;
+            height: 18px;
+        }
+
         @media print {
             body * {
                 visibility: hidden;
@@ -167,7 +201,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label>PROPERTY DETAILS / Project Name</label>
+                    <label>PROPERTY DETAILS / Project</label>
                     <input type="text" id="projectName" oninput="updatePreview()">
                 </div>
 
@@ -177,53 +211,60 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Full Address</label>
+                    <label>Address</label>
                     <input type="text" id="address" oninput="updatePreview()">
                 </div>
 
                 <div class="form-group">
-                    <label>Property Type</label>
+                    <label>Type</label>
                     <input type="text" id="propertyType" oninput="updatePreview()">
                 </div>
 
                 <div class="form-group">
                     <label>FINANCIAL / Purchase Price (RM)</label>
-                    <input type="number" id="price" value="0.00" oninput="updatePreview()">
+                    <input type="number" id="price" value="0" oninput="updatePreview()">
                 </div>
 
                 <div class="form-group">
-                    <label>Booking Fee (%)</label>
+                    <label>Booking Fee (RM)</label>
                     <input type="number" id="bookingFee" value="0" oninput="updatePreview()">
                 </div>
 
-                <h4 style="margin:20px 0 10px 0; font-size:14px;">PURCHASER</h4>
                 <div class="form-group">
-                    <label>Full Name</label>
-                    <input type="text" id="purchaserName" oninput="updatePreview()">
+                    <label>PURCHASER 1 - Name</label>
+                    <input type="text" id="purchaser1Name" oninput="updatePreview()">
                 </div>
                 <div class="form-group">
-                    <label>IC / Passport No.</label>
-                    <input type="text" id="purchaserIc" oninput="updatePreview()">
+                    <label>PURCHASER 1 - IC / Passport</label>
+                    <input type="text" id="purchaser1Ic" oninput="updatePreview()">
                 </div>
 
-                <h4 style="margin:20px 0 10px 0; font-size:14px;">SELLER / VENDOR</h4>
                 <div class="form-group">
-                    <label>Full Name</label>
+                    <label>PURCHASER 2 - Name</label>
+                    <input type="text" id="purchaser2Name" oninput="updatePreview()">
+                </div>
+                <div class="form-group">
+                    <label>PURCHASER 2 - IC / Passport</label>
+                    <input type="text" id="purchaser2Ic" oninput="updatePreview()">
+                </div>
+
+                <div class="form-group">
+                    <label>SELLER / VENDOR - Name</label>
                     <input type="text" id="sellerName" oninput="updatePreview()">
                 </div>
                 <div class="form-group">
-                    <label>IC / Passport No.</label>
+                    <label>SELLER / VENDOR - IC / Passport</label>
                     <input type="text" id="sellerIc" oninput="updatePreview()">
                 </div>
 
-                <h4 style="margin:20px 0 10px 0; font-size:14px;">BOOKING INFO</h4>
                 <div class="form-group">
-                    <label>Agent / Negotiator Name</label>
+                    <label>AGENT / NEGOTIATOR - Name</label>
                     <input type="text" id="agentName" oninput="updatePreview()">
                 </div>
                 <div class="form-group">
                     <label>Date</label>
-                    <input type="text" id="date" placeholder="dd/mm/yyyy" oninput="updatePreview()">
+                    <!-- ✅ 日期選擇器 -->
+                    <input type="date" id="formDate" oninput="updatePreview()">
                 </div>
 
                 <div class="btn-group">
@@ -232,7 +273,7 @@
                 </div>
             </div>
 
-            <!-- 右邊：預覽區 -->
+            <!-- 右邊：預覽區 - 完全依照照片格式 -->
             <div class="card">
                 <div class="form-preview" id="previewArea">
                     <div class="header">
@@ -240,102 +281,108 @@
                         <div>PROPERTY BOOKING FORM</div>
                     </div>
 
-                    <div class="section">
-                        <div class="label-row">
-                            <div class="label">PROJECT</div>
-                            <div class="value" id="preProject"></div>
-                        </div>
-                        <div class="label-row">
-                            <div class="label">UNIT NO</div>
-                            <div class="value" id="preUnit"></div>
-                        </div>
-                        <div class="label-row">
-                            <div class="label">ADDRESS</div>
-                            <div class="value" id="preAddress"></div>
-                        </div>
-                        <div class="label-row">
-                            <div class="label">TYPE</div>
-                            <div class="value" id="preType"></div>
-                        </div>
+                    <!-- PROPERTY DETAILS -->
+                    <div class="section-title">PROPERTY DETAILS</div>
+                    <div class="row-item">
+                        <div class="label-col">Project</div>
+                        <div class="value-col" id="preProject"></div>
+                    </div>
+                    <div class="row-item">
+                        <div class="label-col">Unit No</div>
+                        <div class="value-col" id="preUnit"></div>
+                    </div>
+                    <div class="row-item">
+                        <div class="label-col">Address</div>
+                        <div class="value-col" id="preAddress"></div>
+                    </div>
+                    <div class="row-item">
+                        <div class="label-col">Type</div>
+                        <div class="value-col" id="preType"></div>
                     </div>
 
-                    <div class="section">
-                        <div class="label-row">
-                            <div class="label">FINANCIAL</div>
-                            <div class="value"></div>
-                        </div>
-                        <div class="label-row">
-                            <div class="label">Purchase Price</div>
-                            <div class="value" id="prePrice">RM 0.00</div>
-                        </div>
-                        <div class="label-row">
-                            <div class="label">Booking Fee (%)</div>
-                            <div class="value" id="preBooking">0 %</div>
-                        </div>
+                    <!-- FINANCIAL -->
+                    <div class="section-title">FINANCIAL</div>
+                    <div class="row-item">
+                        <div class="label-col">Purchase Price</div>
+                        <div class="value-col" id="prePrice">RM 0.00</div>
+                    </div>
+                    <div class="row-item">
+                        <div class="label-col">Booking Fee</div>
+                        <div class="value-col" id="preFee">RM 0.00</div>
                     </div>
 
-                    <div class="section">
-                        <div class="label-row">
-                            <div class="label">PURCHASER</div>
-                            <div class="value"></div>
-                        </div>
-                        <div class="label-row">
-                            <div class="label">Name</div>
-                            <div class="value" id="prePurName"></div>
-                        </div>
-                        <div class="label-row">
-                            <div class="label">IC / Passport No</div>
-                            <div class="value" id="prePurIc"></div>
-                        </div>
+                    <!-- PURCHASER 1 -->
+                    <div class="section-title">PURCHASER</div>
+                    <div class="row-item">
+                        <div class="label-col">Name</div>
+                        <div class="value-col" id="prePur1Name"></div>
+                    </div>
+                    <div class="row-item">
+                        <div class="label-col">IC / Passport</div>
+                        <div class="value-col" id="prePur1Ic"></div>
                     </div>
 
-                    <div class="section">
-                        <div class="label-row">
-                            <div class="label">SELLER / VENDOR</div>
-                            <div class="value"></div>
-                        </div>
-                        <div class="label-row">
-                            <div class="label">Name</div>
-                            <div class="value" id="preSelName"></div>
-                        </div>
-                        <div class="label-row">
-                            <div class="label">IC / Passport No</div>
-                            <div class="value" id="preSelIc"></div>
-                        </div>
+                    <!-- PURCHASER 2 -->
+                    <div class="section-title">PURCHASER</div>
+                    <div class="row-item">
+                        <div class="label-col">Name</div>
+                        <div class="value-col" id="prePur2Name"></div>
+                    </div>
+                    <div class="row-item">
+                        <div class="label-col">IC / Passport</div>
+                        <div class="value-col" id="prePur2Ic"></div>
                     </div>
 
-                    <div class="section">
-                        <div class="label-row">
-                            <div class="label">AGENT / NEGOTIATOR</div>
-                            <div class="value"></div>
-                        </div>
-                        <div class="label-row">
-                            <div class="label">Name</div>
-                            <div class="value" id="preAgent"></div>
-                        </div>
+                    <!-- SELLER -->
+                    <div class="section-title">SELLER / VENDOR</div>
+                    <div class="row-item">
+                        <div class="label-col">Name</div>
+                        <div class="value-col" id="preSelName"></div>
+                    </div>
+                    <div class="row-item">
+                        <div class="label-col">IC / Passport</div>
+                        <div class="value-col" id="preSelIc"></div>
                     </div>
 
+                    <!-- AGENT -->
+                    <div class="section-title">AGENT / NEGOTIATOR</div>
+                    <div class="row-item">
+                        <div class="label-col">Name</div>
+                        <div class="value-col" id="preAgent"></div>
+                    </div>
+                    <div class="row-item">
+                        <div class="label-col">Date</div>
+                        <div class="value-col" id="preDate"></div>
+                    </div>
+
+                    <!-- TERMS -->
                     <div class="terms">
-                        <b>TERMS & CONDITIONS</b><br>
-                        1. This Booking Form is non-refundable if the Purchaser fails to sign the Sale & Purchase Agreement within the stipulated period.<br>
-                        2. The Purchaser agrees to abide by the terms and conditions according to the payment schedule stated in the Sale & Purchase Agreement.<br>
-                        3. The Seller warrants that the property is free from all encumbrances and has the full right to sell the said property.<br>
-                        4. The Seller warrants to sign the Sale & Purchase Agreement within the stipulated period as is present considered.<br>
-                        5. This Booking Form shall be binding upon the parties hereto.
+                        <b>TERMS & CONDITIONS</b>
+                        <ol>
+                            <li>The Booking Fee paid is not refundable if the Purchaser fails to sign the Sale & Purchase Agreement within the stipulated period.</li>
+                            <li>The Purchaser agrees to pay the balance of the purchase price according to the payment schedule stated in the Sale & Purchase Agreement.</li>
+                            <li>All legal fees, stamp duties, and other related costs shall be borne by the Purchaser, unless otherwise agreed in writing.</li>
+                            <li>The Seller reserves the right to sell the property to another party if the Purchaser defaults in any of the terms herein.</li>
+                            <li>Any variation, modification or amendment to this Agreement shall be made in writing and signed by both parties.</li>
+                            <li>This Agreement constitutes the entire agreement and shall only be valid if made in writing and signed by both parties.</li>
+                            <li>The Purchaser acknowledges that he/she has inspected and accepted the property in its present condition.</li>
+                            <li>This Agreement shall be governed by and construed in accordance with the laws of Malaysia.</li>
+                        </ol>
                     </div>
 
-                    <div class="sign-row">
+                    <!-- SIGNATURE -->
+                    <div class="sign-area">
                         <div class="sign-col">
-                            <b>PURCHASER SIGNATURE</b><br><br>
-                            Name: _________________________<br>
-                            IC / Passport No.: _________________________<br>
-                            Date: _________________________
+                            <div class="title">PURCHASER SIGNATURE</div>
+                            <div class="line">Name:</div>
+                            <div class="line">IC / Passport No:</div>
+                            <div class="line">Date:</div>
                         </div>
                         <div class="sign-col">
-                            <b>SELLER SIGNATURE</b><br><br>
-                            Name: _________________________<br>
-                            IC / Passport No.: _________________________<br>
-                            Date: _________________________
+                            <div class="title">SELLER SIGNATURE</div>
+                            <div class="line">Name:</div>
+                            <div class="line">IC / Passport No:</div>
+                            <div class="line">Date:</div>
                         </div>
                     </div>
                 </div>
@@ -344,39 +391,26 @@
     </div>
 
     <script>
+        // ✅ 自動加千分位逗號
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
         function updatePreview() {
-            // 公司
+            // 公司名
             document.getElementById('preCompany').innerText = document.getElementById('companyName').value;
-            // 項目
+
+            // 基本資料
             document.getElementById('preProject').innerText = document.getElementById('projectName').value;
             document.getElementById('preUnit').innerText = document.getElementById('unitNo').value;
             document.getElementById('preAddress').innerText = document.getElementById('address').value;
             document.getElementById('preType').innerText = document.getElementById('propertyType').value;
-            // 財務
+
+            // ✅ 金額自動加逗號
             let price = parseFloat(document.getElementById('price').value) || 0;
-            document.getElementById('prePrice').innerText = `RM ${price.toFixed(2)}`;
+            document.getElementById('prePrice').innerText = `RM ${formatNumber(price.toFixed(2))}`;
             let fee = parseFloat(document.getElementById('bookingFee').value) || 0;
-            document.getElementById('preBooking').innerText = `${fee} %`;
-            // 買方
-            document.getElementById('prePurName').innerText = document.getElementById('purchaserName').value;
-            document.getElementById('prePurIc').innerText = document.getElementById('purchaserIc').value;
-            // 賣方
-            document.getElementById('preSelName').innerText = document.getElementById('sellerName').value;
-            document.getElementById('preSelIc').innerText = document.getElementById('sellerIc').value;
-            // 中介
-            document.getElementById('preAgent').innerText = document.getElementById('agentName').value;
-        }
+            document.getElementById('preFee').innerText = `RM ${formatNumber(fee.toFixed(2))}`;
 
-        function clearAll() {
-            document.querySelectorAll('input').forEach(el => el.value = '');
-            document.getElementById('companyName').value = 'SUNTORIA DEVELOPER SDN BHD';
-            document.getElementById('price').value = '0.00';
-            document.getElementById('bookingFee').value = '0';
-            updatePreview();
-        }
-
-        // 初始化
-        updatePreview();
-    </script>
-</body>
-</html>
+            // 買方1
+            document.getElementById('prePur1Name').innerText = document.getElementById('purchaser1Name').value;
