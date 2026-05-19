@@ -5,14 +5,16 @@
     <title>Property Booking Form Generator</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* ✅ 返回按鈕：改成和 tool2 完全相同的樣式 */
+        /* ✅ 修正：箭頭+文字 全部白色，跟 Tool2 完全一致 */
         .back-btn { 
             display: inline-flex; align-items: center; gap: 6px;
-            background: #374151; color: #fff; padding: 8px 16px; 
-            border-radius: 4px; text-decoration: none; font-weight: 500;
+            background: #374151; color: #ffffff !important; /* 強制白色 */
+            padding: 8px 16px; border-radius: 4px; 
+            text-decoration: none; font-weight: 500;
             margin-bottom: 20px; font-size: 14px;
         }
-        .back-btn:hover { background: #1f2937; }
+        .back-btn:hover { background: #1f2937; color: #ffffff !important; }
+        .back-btn svg { stroke: #ffffff !important; } /* 箭頭也強制白色 */
 
         /* ✅ 下面所有CSS完全保留你原本的，半個字都沒改！ */
         * { box-sizing: border-box; font-family: Arial, Helvetica, sans-serif !important; font-size: 13px; margin: 0; padding: 0; }
@@ -22,7 +24,9 @@
 </head>
 <body>
     <div class="container">
-        <!-- ✅ Back to Menu：樣式和 tool2 完全一致，只保留這一個，上方重複的已刪除 -->
+        <!-- ✅【重點】刪除了上方整個按鈕 + 標題，只保留下方這一個正確的 -->
+
+        <!-- ✅ 唯一正確按鈕：樣式、顏色、箭頭 跟 Tool2 完全相同 -->
         <a href="index.html" class="back-btn">
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path d="M19 12H5M12 19l-7-7 7-7"/>
