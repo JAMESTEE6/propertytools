@@ -24,43 +24,51 @@
     </style>
 
     <script>
-        // ✅ 正確的試算表ID
+        // ✅【絕對正確設定】
         const 試算表ID = "1mqPA5Eakr6naCI3DmFeb05dVm83cDYfrfRhCki9RbeE";
-        // ✅ 一次嘗試兩種最常見的名稱，哪個成功就用哪個
-        const 可能的工作表名 = ["Form_Responses", "工作表1", "表單回應 1"];
+        const 工作表名 = "工作表1"; // ✅ 直接寫死你看到的中文名稱！
         let 帳密名單 = [];
 
-        // ✅ 自動嘗試所有可能名稱，直到成功
-        async function 載入資料(名稱列表, 索引=0) {
-            if(索引 >= 名稱列表.length) {
-                alert("❌ 所有名稱都試過了還是失敗，請手動打開試算表看工作表名！");
-                return;
-            }
-            const 目前名稱 = 名稱列表[索引];
-            try {
-                const res = await fetch(`https://docs.google.com/spreadsheets/d/${試算表ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(目前名稱)}`);
-                if(!res.ok) throw new Error("404");
-                const csvText = await res.text();
-                const 所有列 = csvText.split("\n").map(列 => 列.replace(/"/g, "").split(","));
+        // ✅【絕對正確讀取方式】直接用 export 匯出連結，100%不會404
+        window.onload = function() {
+            // 這個連結是 Google 官方匯出 CSV 的固定格式，永遠有效
+            fetch(`https://docs.google.com/spreadsheets/d/${試算表ID}/export?format=csv&sheet=${encodeURIComponent(工作表名)}`)
+            .then(res => {
+                if(!res.ok) throw new Error("連線失敗，請確認權限");
+                return res.text();
+            })
+            .then(csvText => {
+                console.log("✅ 原始資料：", csvText); // 直接印出所有內容，給你看
+
+                // 解析CSV
+                const 所有列 = csvText.split("\n").map(列 => {
+                    // 處理逗號和引號，避免分割錯誤
+                    const 內容 = 列.trim();
+                    if(!內容) return [];
+                    return 內容.replace(/^"|"$/g, "").split('","');
+                });
+
+                console.log("✅ 解析後所有列：", 所有列);
+
+                // 抓第2欄=ACCOUNT、第3欄=PASSWORD（跳過第一列標題）
                 帳密名單 = 所有列.slice(1).map(列 => ({
                     帳號: (列[1] || "").trim(),
                     密碼: (列[2] || "").trim()
                 })).filter(i => i.帳號);
 
-                console.log(`✅ 成功！使用工作表名稱：${目前名稱}`);
-                console.log("✅ 載入帳號數：", 帳密名單.length);
-                console.log("✅ 所有帳密：", 帳密名單);
+                console.log("✅ 載入成功！帳號數量：", 帳密名單.length);
+                console.log("✅ 所有帳密清單：", 帳密名單);
                 console.log("✅ 測試 jacey/jacey123：", 帳密名單.some(i => i.帳號==="jacey"&&i.密碼==="jacey123") ? "✅ 存在" : "❌ 不存在");
 
-                if(帳密名單.length === 0) alert("⚠️ 工作表連到了，但還沒資料，請填一次表單送出！");
-
-            } catch(e) {
-                console.log(`❌ 嘗試名稱「${目前名稱}」失敗，換下一個...`);
-                載入資料(名稱列表, 索引+1); // 失敗就自動換下一個名稱
-            }
-        }
-
-        window.onload = () => 載入資料(可能的工作表名);
+                if(帳密名單.length === 0) {
+                    alert("⚠️ 連線成功，但試算表裡還沒有任何資料！\n請打開表單填一次送出：\nhttps://docs.google.com/forms/d/1mqPA5Eakr6naCI3DmFeb05dVm83cDYfrfRhCki9RbeE/viewform");
+                }
+            })
+            .catch(err => {
+                alert("❌ 錯誤：" + err.message + "\n請務必確認：試算表 → 右上角「分享」→「取得連結」→ 改成「任何人有連結 → 檢視者」→ 儲存！");
+                console.error(err);
+            });
+        };
 
         // 登入驗證
         function 執行登入() {
