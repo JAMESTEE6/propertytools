@@ -3,58 +3,56 @@
 <head>
     <meta charset="UTF-8">
     
-    <!-- ✅ 修正版：可正確讀取Google試算表 + 完全符合顯示要求 -->
+    <!-- ✅ 最終版：先驗證，正確才顯示頁面，完全不先顯示內容 -->
     <script>
-        // 🔴 已幫你改成正確可讀的連結格式
+        // 試算表設定
         const 試算表ID = "1tJsY1dX4P2Wsg6EFmHVkbtDUvPwE0EU8jafFHblFLmg";
-        const 試算表網址 = `https://docs.google.com/spreadsheets/d/${試算表ID}/gviz/tq?tqx=out:csv&sheet=工作表1&access_token=`;
-
         let 允許名單 = [];
+        let 頁面已準備 = false;
 
-        // 載入名單 + 錯誤處理
+        // 第一步：先載入名單
         async function 載入名單() {
             try {
-                // 使用JSONP方式解決跨域，保證100%能讀取
                 const script = document.createElement('script');
                 script.src = `https://docs.google.com/spreadsheets/d/${試算表ID}/gviz/tq?tqx=out:json&sheet=工作表1`;
                 window.gdata = function(data) {
-                    try {
-                        // 解析試算表資料
-                        const rows = data.table.rows;
-                        允許名單 = rows.slice(1).map(row => ({
-                            帳號: row.c[0]?.v || "",
-                            密碼: row.c[1]?.v || ""
-                        }));
-                        驗證登入();
-                    } catch (e) {
-                        顯示錯誤();
-                    }
+                    // 解析：只抓 帳號(第1欄)、密碼(第2欄)
+                    允許名單 = data.table.rows.slice(1).map(row => ({
+                        帳號: row.c[0]?.v?.trim() || "",
+                        密碼: row.c[1]?.v?.trim() || ""
+                    }));
+                    頁面已準備 = true;
+                    執行登入驗證(); // 載好才跳出輸入框
                 };
                 document.head.appendChild(script);
             } catch (e) {
-                顯示錯誤();
+                alert("⚠️ 系統維護中，請稍後再試！");
+                document.documentElement.innerHTML = "";
             }
         }
 
-        function 顯示錯誤() {
-            alert("⚠️ 無法載入帳號名單，請檢查試算表權限！");
-            window.location.href = "about:blank";
-        }
-
-        // 驗證流程：錯誤→直接空白，正確→顯示頁面
-        function 驗證登入() {
+        // 第二步：驗證
+        function 執行登入驗證() {
             const 輸入帳號 = prompt("🔒 請輸入帳號：");
             const 輸入密碼 = prompt("🔒 請輸入密碼：");
 
             // 比對
-            const 通過 = 允許名單.some(資料 => 資料.帳號 === 輸入帳號 && 資料.密碼 === 輸入密碼);
+            const 驗證通過 = 允許名單.some(資料 => 
+                資料.帳號 === 輸入帳號 && 資料.密碼 === 輸入密碼
+            );
 
-            if (!通過) {
+            if (!驗證通過) {
                 alert("❌ 帳號或密碼錯誤，無法進入！");
-                window.location.href = "about:blank";
+                document.documentElement.innerHTML = ""; // 直接清空，什麼都看不到
+                return;
             }
-            // 正確就自動顯示頁面，沒有半透明背景
+
+            // ✅ 正確：才顯示頁面內容
+            document.body.style.display = "block";
         }
+
+        // 預先隱藏整個頁面，等驗證通過才顯示
+        document.write('<style>body{display:none;}</style>');
 
         // 開始
         載入名單();
@@ -76,12 +74,11 @@
         .register-btn:hover { background: #3367D6; }
     </style>
 </head>
-<body>
+<body> <!-- 一開始是隱藏的！ -->
     <div class="container">
         <h1>🏠 Property Tools 工具箱</h1>
         <p>整理了10+個常用工具，點擊即可使用 👇</p>
 
-        <!-- ✅ 註冊按鈕（已連到你的表單） -->
         <a href="https://docs.google.com/forms/d/e/1FAIpQLSf0WmN7HweIn_wNtqhTM8Q_GjgqK_jqH58KvdPn8J845qvMug/viewform?usp=publish-editor" target="_blank" class="register-btn">👉 還沒帳號？點我註冊</a>
 
         <div class="tool-list">
