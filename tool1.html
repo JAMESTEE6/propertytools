@@ -406,7 +406,7 @@
             document.getElementById('preAddress').innerText = document.getElementById('address').value;
             document.getElementById('preType').innerText = document.getElementById('propertyType').value;
 
-            // ✅ 金額自動加逗號
+            // ✅ 金額自動加逗號 + 小數點兩位
             let price = parseFloat(document.getElementById('price').value) || 0;
             document.getElementById('prePrice').innerText = `RM ${formatNumber(price.toFixed(2))}`;
             let fee = parseFloat(document.getElementById('bookingFee').value) || 0;
@@ -414,3 +414,7 @@
 
             // 買方1
             document.getElementById('prePur1Name').innerText = document.getElementById('purchaser1Name').value;
+            document.getElementById('prePur1Ic').innerText = document.getElementById('purchaser1Ic').value;
+
+            // 買方2
+            document.getElementById('prePur2Name').innerText = document
