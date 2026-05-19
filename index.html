@@ -5,86 +5,104 @@
     <title>Property Tools - 實用工具集合</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* 登入框樣式 */
+        body { margin: 0; font-family: Arial, sans-serif; }
+        /* 登入框：置中、最上層 */
         .login-box {
             position: fixed;
-            top: 50%;
-            left: 50%;
+            top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            background: #fff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.2);
-            z-index: 9999;
+            background: #ffffff;
+            padding: 35px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            z-index: 99999;
+            width: 320px;
             text-align: center;
-            width: 300px;
         }
-        .login-box h3 { margin-bottom: 20px; color: #333; }
+        .login-box h3 {
+            margin: 0 0 20px;
+            color: #333;
+            font-size: 18px;
+        }
         .login-box input {
             width: 100%;
-            padding: 10px;
+            padding: 12px 10px;
             margin: 8px 0;
             border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
+            border-radius: 6px;
+            font-size: 15px;
+            box-sizing: border-box;
         }
         .login-box button {
             width: 100%;
-            padding: 10px;
-            background: #4285F4;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            font-size: 15px;
-            cursor: pointer;
+            padding: 12px;
             margin-top: 10px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
         }
-        .login-box button:hover { background: #3367D6; }
+        .login-box button:hover { background: #1d4ed8; }
         .register-link {
             display: inline-block;
             margin-top: 15px;
-            font-size: 13px;
-            color: #4285F4;
+            font-size: 14px;
+            color: #2563eb;
             text-decoration: none;
         }
         .register-link:hover { text-decoration: underline; }
-        /* 預先隱藏頁面內容，登入成功才顯示 */
-        .content { display: none; }
+        /* 背景半透明 */
+        .mask {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 99998;
+        }
+        /* 內容預設隱藏 */
+        .content { display: none; padding: 20px; }
     </style>
 
     <script>
-        // 試算表設定
+        // ========== 設定區 ==========
         const 試算表ID = "1tJsY1dX4P2Wsg6EFmHVkbtDUvPwE0EU8jafFHblFLmg";
-        let 允許名單 = [];
+        const 工作表名 = "工作表1"; // 有改名要改這裡
+        // ============================
 
-        // 載入帳號名單
-        async function 載入名單() {
-            try {
-                const script = document.createElement('script');
-                script.src = `https://docs.google.com/spreadsheets/d/${試算表ID}/gviz/tq?tqx=out:json&sheet=工作表1`;
-                window.gdata = function(data) {
-                    允許名單 = data.table.rows.slice(1).map(row => ({
-                        帳號: row.c[0]?.v?.trim() || "",
-                        密碼: row.c[1]?.v?.trim() || ""
+        let 帳密名單 = [];
+
+        // 載入試算表
+        window.onload = function() {
+            const s = document.createElement('script');
+            s.src = `https://docs.google.com/spreadsheets/d/${試算表ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(工作表名)}`;
+            window.gvizCallback = function(json) {
+                try {
+                    const 列 = json.table.rows;
+                    // 從第2列開始（跳過標題），自動去掉前後空白
+                    帳密名單 = 列.slice(1).map(r => ({
+                        帳號: (r.c[0]?.v || "").trim(),
+                        密碼: (r.c[1]?.v || "").trim()
                     }));
-                };
-                document.head.appendChild(script);
-            } catch (e) {
-                alert("⚠️ 無法連接伺服器，請稍後再試！");
-            }
-        }
+                    console.log("✅ 載入成功，目前有效帳號：", 帳密名單.map(i => i.帳號));
+                } catch (e) {
+                    alert("❌ 讀取帳號失敗：" + e.message);
+                }
+            };
+            document.head.appendChild(s);
+        };
 
-        // 驗證登入
-        function 驗證登入() {
-            const 輸入帳號 = document.getElementById("acc").value.trim();
-            const 輸入密碼 = document.getElementById("pwd").value.trim();
+        // 驗證
+        function 執行登入() {
+            const 輸帳號 = document.getElementById("acc").value.trim();
+            const 輸密碼 = document.getElementById("pwd").value.trim();
 
-            const 通過 = 允許名單.some(資料 => 
-                資料.帳號 === 輸入帳號 && 資料.密碼 === 輸入密碼
-            );
+            const 正確 = 帳密名單.some(資料 => 資料.帳號 === 輸帳號 && 資料.密碼 === 輸密碼);
 
-            if (通過) {
-                // 登入成功：隱藏登入框、顯示內容
+            if (正確) {
+                // 成功：隱藏登入框、顯示內容
+                document.querySelector(".mask").style.display = "none";
                 document.querySelector(".login-box").style.display = "none";
                 document.querySelector(".content").style.display = "block";
             } else {
@@ -92,28 +110,28 @@
             }
         }
 
-        // 按 Enter 也能提交
-        function 按鍵驗證(e) {
-            if (e.key === "Enter") 驗證登入();
+        // 按Enter登入
+        function 按鍵(e) {
+            if (e.key === "Enter") 執行登入();
         }
-
-        // 開始載入名單
-        載入名單();
     </script>
 </head>
 <body>
 
-    <!-- ✅ 登入框：一打開就顯示，有輸入框+註冊連結 -->
+    <!-- 半透明背景 -->
+    <div class="mask"></div>
+
+    <!-- 登入框 -->
     <div class="login-box">
         <h3>🔒 請先登入</h3>
-        <input type="text" id="acc" placeholder="輸入帳號" onkeydown="按鍵驗證(event)">
-        <input type="password" id="pwd" placeholder="輸入密碼" onkeydown="按鍵驗證(event)">
-        <button onclick="驗證登入()">確認登入</button>
+        <input type="text" id="acc" placeholder="輸入帳號" onkeydown="按鍵(event)">
+        <input type="password" id="pwd" placeholder="輸入密碼" onkeydown="按鍵(event)">
+        <button onclick="執行登入()">確認登入</button>
         <br>
         <a href="https://docs.google.com/forms/d/e/1FAIpQLSf0WmN7HweIn_wNtqhTM8Q_GjgqK_jqH58KvdPn8J845qvMug/viewform?usp=publish-editor" target="_blank" class="register-link">👉 還沒有帳號？點我註冊</a>
     </div>
 
-    <!-- ✅ 頁面內容：預設隱藏，登入成功才顯示 -->
+    <!-- 你的原本內容，全部包在這裡，完全不用改 -->
     <div class="content">
         <div class="container">
             <h1>🏠 Property Tools 工具箱</h1>
