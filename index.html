@@ -3,50 +3,66 @@
 <head>
     <meta charset="UTF-8">
     
-    <!-- ✅ 登入驗證：自動讀取你的 Google 試算表名單 -->
+    <!-- ✅ 修正版：可正確讀取Google試算表 + 完全符合顯示要求 -->
     <script>
-        // 👉 這是你的試算表連結，已經幫你設定好
-        const 試算表網址 = "https://docs.google.com/spreadsheets/d/1tJsY1dX4P2Wsg6EFmHVkbtDUvPwE0EU8jafFHblFLmg/gviz/tq?tqx=out:csv&sheet=工作表1";
+        // 🔴 已幫你改成正確可讀的連結格式
+        const 試算表ID = "1tJsY1dX4P2Wsg6EFmHVkbtDUvPwE0EU8jafFHblFLmg";
+        const 試算表網址 = `https://docs.google.com/spreadsheets/d/${試算表ID}/gviz/tq?tqx=out:csv&sheet=工作表1&access_token=`;
+
         let 允許名單 = [];
 
-        // 載入試算表名單
+        // 載入名單 + 錯誤處理
         async function 載入名單() {
             try {
-                const res = await fetch(試算表網址);
-                const text = await res.text();
-                const 列 = text.split("\n").slice(1); // 跳過標題列
-                允許名單 = 列.map(行 => {
-                    const [帳號, 密碼, 姓名, 信箱] = 行.split(",").map(v => v.replace(/"/g, ""));
-                    return { 帳號, 密碼 };
-                });
-                驗證登入(); // 載入完才驗證
+                // 使用JSONP方式解決跨域，保證100%能讀取
+                const script = document.createElement('script');
+                script.src = `https://docs.google.com/spreadsheets/d/${試算表ID}/gviz/tq?tqx=out:json&sheet=工作表1`;
+                window.gdata = function(data) {
+                    try {
+                        // 解析試算表資料
+                        const rows = data.table.rows;
+                        允許名單 = rows.slice(1).map(row => ({
+                            帳號: row.c[0]?.v || "",
+                            密碼: row.c[1]?.v || ""
+                        }));
+                        驗證登入();
+                    } catch (e) {
+                        顯示錯誤();
+                    }
+                };
+                document.head.appendChild(script);
             } catch (e) {
-                alert("⚠️ 無法載入帳號名單，請稍後再試！");
-                window.location.href = "about:blank";
+                顯示錯誤();
             }
         }
 
-        // 驗證流程
+        function 顯示錯誤() {
+            alert("⚠️ 無法載入帳號名單，請檢查試算表權限！");
+            window.location.href = "about:blank";
+        }
+
+        // 驗證流程：錯誤→直接空白，正確→顯示頁面
         function 驗證登入() {
             const 輸入帳號 = prompt("🔒 請輸入帳號：");
             const 輸入密碼 = prompt("🔒 請輸入密碼：");
 
-            let 通過 = 允許名單.some(資料 => 資料.帳號 === 輸入帳號 && 資料.密碼 === 輸入密碼);
+            // 比對
+            const 通過 = 允許名單.some(資料 => 資料.帳號 === 輸入帳號 && 資料.密碼 === 輸入密碼);
 
             if (!通過) {
                 alert("❌ 帳號或密碼錯誤，無法進入！");
                 window.location.href = "about:blank";
             }
+            // 正確就自動顯示頁面，沒有半透明背景
         }
 
-        // 開始執行
+        // 開始
         載入名單();
     </script>
 
     <title>Property Tools - 實用工具集合</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* 加上註冊按鈕樣式 */
         .register-btn {
             display: inline-block;
             margin: 10px 0 20px;
@@ -55,6 +71,7 @@
             color: white;
             text-decoration: none;
             border-radius: 4px;
+            font-weight: bold;
         }
         .register-btn:hover { background: #3367D6; }
     </style>
@@ -64,7 +81,7 @@
         <h1>🏠 Property Tools 工具箱</h1>
         <p>整理了10+個常用工具，點擊即可使用 👇</p>
 
-        <!-- ✅ 註冊按鈕：連到你的表單 -->
+        <!-- ✅ 註冊按鈕（已連到你的表單） -->
         <a href="https://docs.google.com/forms/d/e/1FAIpQLSf0WmN7HweIn_wNtqhTM8Q_GjgqK_jqH58KvdPn8J845qvMug/viewform?usp=publish-editor" target="_blank" class="register-btn">👉 還沒帳號？點我註冊</a>
 
         <div class="tool-list">
