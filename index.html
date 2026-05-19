@@ -46,17 +46,14 @@
         }
         .login-box button:hover { background: #1d4ed8; }
         .register-link {
-            display: inline-block;
-            margin-top: 15px;
-            font-size: 14px;
-            color: #2563eb;
+            display: inline-block; margin-top: 15px;
+            font-size: 14px; color: #2563eb;
             text-decoration: none;
         }
         .register-link:hover { text-decoration: underline; }
         /* 背景半透明 */
         .mask {
-            position: fixed;
-            top: 0; left: 0;
+            position: fixed; top: 0; left: 0;
             width: 100%; height: 100%;
             background: rgba(0,0,0,0.5);
             z-index: 99998;
@@ -66,10 +63,10 @@
     </style>
 
     <script>
-        // ========== 修正：工作表名稱改成你正確的名稱「Form Responses 1」 ==========
+        // ========== 已修正：工作表名稱改為正確的「Form_Responses」 ==========
         const 試算表ID = "1tJsY1dX4P2Wsg6EFmHVkbtDUvPwE0EU8jafFHblFLmg";
-        const 工作表名 = "Form Responses 1"; 
-        // ========================================================================
+        const 工作表名 = "Form_Responses"; 
+        // ==================================================================
 
         let 帳密名單 = [];
 
@@ -80,12 +77,12 @@
             window.gvizCallback = function(json) {
                 try {
                     const 列 = json.table.rows;
-                    // 從第2列開始（跳過標題），自動去掉前後空白
+                    // 對應欄位：B欄=ACCOUNT、C欄=PASSWORD，自動去除空白
                     帳密名單 = 列.slice(1).map(r => ({
-                        帳號: (r.c[1]?.v || "").trim(), // ✅ 修正：ACCOUNT在第2欄(B欄)
-                        密碼: (r.c[2]?.v || "").trim()  // ✅ 修正：PASSWORD在第3欄(C欄)
+                        帳號: (r.c[1]?.v || "").trim(),
+                        密碼: (r.c[2]?.v || "").trim()
                     }));
-                    console.log("✅ 載入成功，目前有效帳號：", 帳密名單.map(i => i.帳號));
+                    console.log("✅ 載入成功，有效帳號：", 帳密名單.map(i => i.帳號));
                 } catch (e) {
                     alert("❌ 讀取帳號失敗：" + e.message);
                 }
@@ -93,7 +90,7 @@
             document.head.appendChild(s);
         };
 
-        // 驗證
+        // 驗證登入
         function 執行登入() {
             const 輸帳號 = document.getElementById("acc").value.trim();
             const 輸密碼 = document.getElementById("pwd").value.trim();
@@ -101,7 +98,6 @@
             const 正確 = 帳密名單.some(資料 => 資料.帳號 === 輸帳號 && 資料.密碼 === 輸密碼);
 
             if (正確) {
-                // 成功：隱藏登入框、顯示內容
                 document.querySelector(".mask").style.display = "none";
                 document.querySelector(".login-box").style.display = "none";
                 document.querySelector(".content").style.display = "block";
@@ -110,7 +106,7 @@
             }
         }
 
-        // 按Enter登入
+        // 按Enter快速登入
         function 按鍵(e) {
             if (e.key === "Enter") 執行登入();
         }
