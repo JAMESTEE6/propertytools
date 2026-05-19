@@ -4,19 +4,14 @@
     <meta charset="UTF-8">
     <title>Tool Page</title>
     <style>
-        /* 登入框樣式跟首頁完全一樣 */
+        /* 登入框樣式跟首頁完全一致 */
         body { margin: 0; font-family: Arial, sans-serif; }
         .login-box {
-            position: fixed;
-            top: 50%; left: 50%;
+            position: fixed; top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            background: #ffffff;
-            padding: 35px;
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-            z-index: 99999;
-            width: 320px;
-            text-align: center;
+            background: #ffffff; padding: 35px;
+            border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            z-index: 99999; width: 320px; text-align: center;
         }
         .login-box h3 { margin: 0 0 20px; color: #333; font-size: 18px; }
         .login-box input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 6px; font-size: 15px; box-sizing: border-box; }
@@ -40,9 +35,9 @@
     </style>
 
     <script>
-        // ✅ 同樣修正：工作表名稱 + 欄位位置
+        // ✅ 已修正：工作表名稱 Form_Responses + 正確欄位
         const 試算表ID = "1tJsY1dX4P2Wsg6EFmHVkbtDUvPwE0EU8jafFHblFLmg";
-        const 工作表名 = "Form Responses 1";
+        const 工作表名 = "Form_Responses";
         let 帳密名單 = [];
 
         window.onload = function() {
