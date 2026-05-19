@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-    <!-- ✅ 子頁面專用驗證 - 修正版 -->
+<head>
+    <meta charset="UTF-8">
+    <!-- ✅ 加在這裡！！！ -->
     <script>
         const 試算表ID = "1tJsY1dX4P2Wsg6EFmHVkbtDUvPwE0EU8jafFHblFLmg";
         let 允許名單 = [];
@@ -11,27 +13,45 @@
                 script.src = `https://docs.google.com/spreadsheets/d/${試算表ID}/gviz/tq?tqx=out:json&sheet=工作表1`;
                 window.gdata = function(data) {
                     允許名單 = data.table.rows.slice(1).map(row => ({
-                        帳號: row.c[0]?.v || "",
-                        密碼: row.c[1]?.v || ""
+                        帳號: row.c[0]?.v?.trim() || "",
+                        密碼: row.c[1]?.v?.trim() || ""
                     }));
-                    驗證登入();
+                    驗證();
                 };
                 document.head.appendChild(script);
             } catch (e) {
-                alert("⚠️ 無法載入帳號名單！");
-                window.location.href = "about:blank";
+                alert("⚠️ 無法連接伺服器！");
+                document.documentElement.innerHTML = "";
             }
         }
 
-        function 驗證登入() {
-            const 輸入帳號 = prompt("🔒 請輸入帳號：");
-            const 輸入密碼 = prompt("🔒 請輸入密碼：");
-            const 通過 = 允許名單.some(d => d.帳號 === 輸入帳號 && d.密碼 === 輸入密碼);
-            if (!通過) { alert("❌ 帳密錯誤！"); window.location.href = "about:blank"; }
+        function 驗證() {
+            const 帳號 = prompt("🔒 請輸入帳號：");
+            const 密碼 = prompt("🔒 請輸入密碼：");
+            const 通過 = 允許名單.some(d => d.帳號 === 帳號 && d.密碼 === 密碼);
+            
+            if (!通過) {
+                alert("❌ 錯誤！");
+                document.documentElement.innerHTML = "";
+                return;
+            }
+            document.body.style.display = "block"; // 正確才顯示
         }
+
+        // 一開始隱藏頁面
+        document.write('<style>body{display:none;}</style>');
         載入名單();
     </script>
-<head>
+    <!-- ✅ 加到這裡結束 -->
+    <title>Property Booking Form Generator</title>
+    <style>
+    * {
+        box-sizing: border-box;
+        font-family: Arial, Helvetica, sans-serif !important;
+        font-size: 13px;
+        margin: 0;
+        padding: 0;
+    }
     <meta charset="UTF-8">
     <title>Property Booking Form Generator</title>
     <style>
