@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Property Tools</title>
+    <title>Property Tools - 實用工具集合</title>
+    <link rel="stylesheet" href="style.css">
     <style>
         body { margin: 0; font-family: Arial, sans-serif; }
-        /* ✅ 強制顯示，永遠不會消失 */
+        /* ✅ 登入框完整、強制顯示，永不消失 */
         .login-box {
             position: fixed; top: 50%; left: 50%;
             transform: translate(-50%, -50%);
@@ -20,75 +21,84 @@
             font-size: 15px; box-sizing: border-box;
             display: block !important;
             visibility: visible !important;
-            opacity: 1 !important;
         }
         .login-box button { width: 100%; padding: 12px; margin-top: 10px; background: #2563eb; color: white; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; }
+        .login-box button:hover { background: #1d4ed8; }
+        .register-link { display: inline-block; margin-top: 15px; font-size: 14px; color: #2563eb; text-decoration: none; }
+        .register-link:hover { text-decoration: underline; }
         .mask { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 99998; }
         .content { display: none; padding: 20px; }
         .tool-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; margin-top: 30px; }
         .tool-card { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-decoration: none; color: #333; }
+        .tool-card:hover { transform: translateY(-3px); transition: 0.2s; }
     </style>
+
     <script>
-        const sheetID = "1tJsY1dX4P2Wsg6EFmHVkbtDUvPwE0EU8jafFHblFLmg";
-        const sheetName = "工作表1";
-        let userList = [];
+        const 試算表ID = "1tJsY1dX4P2Wsg6EFmHVkbtDUvPwE0EU8jafFHblFLmg";
+        const 工作表名 = "工作表1";
+        let 帳密名單 = [];
 
         window.onload = function() {
-            // ✅ 【永久記住】關閉瀏覽器再開也不用重輸密碼
-            if (localStorage.getItem("isLogin") === "true") {
+            // ✅ 【重點】用 sessionStorage → 回到主頁還在、關閉瀏覽器就清除
+            if(sessionStorage.getItem("isLogin") === "true"){
                 document.querySelector(".mask").style.display = "none";
                 document.querySelector(".login-box").style.display = "none";
                 document.querySelector(".content").style.display = "block";
                 return;
             }
 
-            // ✅ 載入帳密，完全排除錯誤
-            fetch(`https://docs.google.com/spreadsheets/d/${sheetID}/export?format=csv&sheet=${encodeURIComponent(sheetName)}`)
-            .then(r => r.text())
-            .then(csv => {
-                let rows = csv.split("\n").filter(r => r.trim() !== "").map(r => r.split(","));
-                userList = rows.slice(1).map(r => ({
-                    acc: (r[1] || "").trim(),
-                    pwd: (r[2] || "").trim()
-                })).filter(i => i.acc);
+            fetch(`https://docs.google.com/spreadsheets/d/${試算表ID}/export?format=csv&sheet=${encodeURIComponent(工作表名)}`)
+            .then(res => res.text())
+            .then(csvText => {
+                const 所有列 = csvText.split("\n").filter(列 => 列.trim() !== "").map(列 => 列.split(","));
+                帳密名單 = 所有列.slice(1).map(列 => ({
+                    帳號: (列[1] || "").trim(),
+                    密碼: (列[2] || "").trim()
+                })).filter(i => i.帳號);
             })
-            .catch(e => console.log("Load error:", e)); // 只記錄，不擋功能
+            .catch(err => alert("❌ 連線錯誤：" + err.message));
         };
 
-        function login() {
-            let acc = document.getElementById("acc").value.trim();
-            let pwd = document.getElementById("pwd").value.trim();
-            let ok = userList.some(i => i.acc === acc && i.pwd === pwd);
-            if (ok) {
-                localStorage.setItem("isLogin", "true"); // ✅ 永久儲存
+        function 執行登入() {
+            const 輸帳號 = document.getElementById("acc").value.trim();
+            const 輸密碼 = document.getElementById("pwd").value.trim();
+            const 正確 = 帳密名單.some(d => d.帳號 === 輸帳號 && d.密碼 === 輸密碼);
+            
+            if (正確) {
+                sessionStorage.setItem("isLogin", "true"); // ✅ 只在本次瀏覽有效
                 document.querySelector(".mask").style.display = "none";
                 document.querySelector(".login-box").style.display = "none";
                 document.querySelector(".content").style.display = "block";
             } else {
-                alert("Wrong account or password");
+                alert("❌ 帳號或密碼錯誤！");
             }
         }
-        function enterKey(e) { if (e.key === "Enter") login(); }
+        function 按鍵(e) { if (e.key === "Enter") 執行登入(); }
     </script>
 </head>
 <body>
+    <!-- ✅ 登入頁面完整顯示，帳號密碼框都在 -->
     <div class="mask"></div>
-    <!-- ✅ 登入框完整，帳號密碼都在 -->
     <div class="login-box">
         <h3>🔒 Please Login</h3>
-        <input type="text" id="acc" placeholder="Enter Account" onkeydown="enterKey(event)">
-        <input type="password" id="pwd" placeholder="Enter Password" onkeydown="enterKey(event)">
-        <button onclick="login()">Login</button>
+        <input type="text" id="acc" placeholder="Enter Account" onkeydown="按鍵(event)">
+        <input type="password" id="pwd" placeholder="Enter Password" onkeydown="按鍵(event)">
+        <button onclick="執行登入()">Login</button>
+        <br>
+        <a href="https://docs.google.com/forms/d/1mqPA5Eakr6naCI3DmFeb05dVm83cDYfrfRhCki9RbeE/viewform?usp=sf_link" target="_blank" class="register-link">👉 Register New Account</a>
     </div>
 
     <div class="content">
-        <h1>🏠 Property Tools</h1>
-        <div class="tool-list">
-            <a href="tool1.html" class="tool-card"><h3>Booking Form Generator</h3></a>
-            <a href="tool2.html" class="tool-card"><h3>Tool 2</h3></a>
-            <a href="tool3.html" class="tool-card"><h3>Tool 3</h3></a>
-            <a href="tool4.html" class="tool-card"><h3>Tool 4</h3></a>
-            <a href="tool5.html" class="tool-card"><h3>Tool 5</h3></a>
+        <div class="container">
+            <h1>🏠 Property Tools Dashboard</h1>
+            <p>Collection of useful tools, click to use 👇</p>
+            <div class="tool-list">
+                <a href="tool1.html" class="tool-card"><h3>Booking Form Generator</h3><p>Generate & print form</p></a>
+                <a href="tool2.html" class="tool-card"><h3>Tool 2</h3><p>Description here</p></a>
+                <a href="tool3.html" class="tool-card"><h3>Tool 3</h3><p>Description here</p></a>
+                <a href="tool4.html" class="tool-card"><h3>Tool 4</h3><p>Description here</p></a>
+                <a href="tool5.html" class="tool-card"><h3>Tool 5</h3><p>Description here</p></a>
+            </div>
         </div>
     </div>
 </body>
