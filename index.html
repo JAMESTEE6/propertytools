@@ -3,42 +3,69 @@
 <head>
     <meta charset="UTF-8">
     
-    <!-- ✅ 新的登入驗證：完全隱藏，錯誤就直接空白 -->
+    <!-- ✅ 登入驗證：自動讀取你的 Google 試算表名單 -->
     <script>
-        // 設定帳號密碼，自己修改
-        const 允許名單 = [
-          {帳號: "admin", 密碼: "123456"},
-          {帳號: "user01", 密碼: "abc123"},
-          {帳號: "team", 密碼: "prop2026"}
-        ];
+        // 👉 這是你的試算表連結，已經幫你設定好
+        const 試算表網址 = "https://docs.google.com/spreadsheets/d/1tJsY1dX4P2Wsg6EFmHVkbtDUvPwE0EU8jafFHblFLmg/gviz/tq?tqx=out:csv&sheet=工作表1";
+        let 允許名單 = [];
 
-        // 跳出輸入框
-        const 輸入帳號 = prompt("🔒 請輸入帳號：");
-        const 輸入密碼 = prompt("🔒 請輸入密碼：");
-
-        // 驗證比對
-        let 通過 = false;
-        for (let 資料 of 允許名單) {
-          if (資料.帳號 === 輸入帳號 && 資料.密碼 === 輸入密碼) {
-            通過 = true;
-            break;
-          }
+        // 載入試算表名單
+        async function 載入名單() {
+            try {
+                const res = await fetch(試算表網址);
+                const text = await res.text();
+                const 列 = text.split("\n").slice(1); // 跳過標題列
+                允許名單 = 列.map(行 => {
+                    const [帳號, 密碼, 姓名, 信箱] = 行.split(",").map(v => v.replace(/"/g, ""));
+                    return { 帳號, 密碼 };
+                });
+                驗證登入(); // 載入完才驗證
+            } catch (e) {
+                alert("⚠️ 無法載入帳號名單，請稍後再試！");
+                window.location.href = "about:blank";
+            }
         }
 
-        // ❌ 錯誤：直接跳轉到空白頁，完全看不到原本內容
-        if (!通過) {
-          alert("❌ 帳號或密碼錯誤，無法進入！");
-          window.location.href = "about:blank"; // 直接跳到空白頁，最乾淨
+        // 驗證流程
+        function 驗證登入() {
+            const 輸入帳號 = prompt("🔒 請輸入帳號：");
+            const 輸入密碼 = prompt("🔒 請輸入密碼：");
+
+            let 通過 = 允許名單.some(資料 => 資料.帳號 === 輸入帳號 && 資料.密碼 === 輸入密碼);
+
+            if (!通過) {
+                alert("❌ 帳號或密碼錯誤，無法進入！");
+                window.location.href = "about:blank";
+            }
         }
+
+        // 開始執行
+        載入名單();
     </script>
 
     <title>Property Tools - 實用工具集合</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* 加上註冊按鈕樣式 */
+        .register-btn {
+            display: inline-block;
+            margin: 10px 0 20px;
+            padding: 8px 16px;
+            background: #4285F4;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .register-btn:hover { background: #3367D6; }
+    </style>
 </head>
 <body>
     <div class="container">
         <h1>🏠 Property Tools 工具箱</h1>
         <p>整理了10+個常用工具，點擊即可使用 👇</p>
+
+        <!-- ✅ 註冊按鈕：連到你的表單 -->
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSf0WmN7HweIn_wNtqhTM8Q_GjgqK_jqH58KvdPn8J845qvMug/viewform?usp=publish-editor" target="_blank" class="register-btn">👉 還沒帳號？點我註冊</a>
 
         <div class="tool-list">
             <a href="tool1.html" class="tool-card">
