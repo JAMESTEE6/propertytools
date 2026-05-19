@@ -1,5 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
+    <!-- ✅ 子頁面專用登入驗證，跟首頁讀同一份名單 -->
+    <script>
+        const 試算表網址 = "https://docs.google.com/spreadsheets/d/1tJsY1dX4P2Wsg6EFmHVkbtDUvPwE0EU8jafFHblFLmg/gviz/tq?tqx=out:csv&sheet=工作表1";
+        let 允許名單 = [];
+
+        async function 載入名單() {
+            try {
+                const res = await fetch(試算表網址);
+                const text = await res.text();
+                const 列 = text.split("\n").slice(1);
+                允許名單 = 列.map(行 => {
+                    const [帳號, 密碼] = 行.split(",").map(v => v.replace(/"/g, ""));
+                    return { 帳號, 密碼 };
+                });
+                驗證登入();
+            } catch (e) {
+                alert("⚠️ 無法載入帳號名單！");
+                window.location.href = "about:blank";
+            }
+        }
+
+        function 驗證登入() {
+            const 輸入帳號 = prompt("🔒 請輸入帳號：");
+            const 輸入密碼 = prompt("🔒 請輸入密碼：");
+            const 通過 = 允許名單.some(d => d.帳號 === 輸入帳號 && d.密碼 === 輸入密碼);
+            if (!通過) { alert("❌ 錯誤！"); window.location.href = "about:blank"; }
+        }
+        載入名單();
+    </script>
 <head>
     <meta charset="UTF-8">
     <title>Property Booking Form Generator</title>
