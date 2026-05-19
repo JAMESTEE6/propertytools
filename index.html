@@ -63,45 +63,40 @@
     </style>
 
     <script>
-        // ✅ 設定區：只有試算表ID，其他自動抓
+        // ✅ 設定區
         const 試算表ID = "1tJsY1dX4P2Wsg6EFmHVkbtDUvPwE0EU8jafFHblFLmg";
+        const 工作表名 = "Form_Responses"; // 你的工作表名稱
         let 帳密名單 = [];
 
-        // 載入 + 解析：用欄位名稱對應，絕對不會錯
+        // ✅ 改用 CSV 讀取，完全避開 google is not defined 錯誤
         window.onload = function() {
-            const s = document.createElement('script');
-            // 直接讀取第一個工作表，不用寫名稱
-            s.src = `https://docs.google.com/spreadsheets/d/${試算表ID}/gviz/tq?tqx=out:json`;
-            window.gvizCallback = function(json) {
-                try {
-                    const 所有列 = json.table.rows;
-                    const 標題列 = 所有列[0].c.map(c => c.v); // 抓第一列的標題
+            fetch(`https://docs.google.com/spreadsheets/d/${試算表ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(工作表名)}`)
+            .then(res => res.text())
+            .then(csv => {
+                // 解析 CSV
+                const 所有列 = csv.split("\n").map(列 => 列.replace(/"/g, "").split(","));
+                const 標題列 = 所有列[0];
 
-                    // 找到 ACCOUNT 和 PASSWORD 分別在第幾欄
-                    const 帳號欄位索引 = 標題列.findIndex(name => name.trim().toUpperCase() === "ACCOUNT");
-                    const 密碼欄位索引 = 標題列.findIndex(name => name.trim().toUpperCase() === "PASSWORD");
+                // 找到 ACCOUNT 和 PASSWORD 的位置
+                const 帳號欄位索引 = 標題列.findIndex(name => name.trim().toUpperCase() === "ACCOUNT");
+                const 密碼欄位索引 = 標題列.findIndex(name => name.trim().toUpperCase() === "PASSWORD");
 
-                    if (帳號欄位索引 === -1 || 密碼欄位索引 === -1) {
-                        alert("❌ 找不到 ACCOUNT 或 PASSWORD 欄位，請檢查試算表標題");
-                        return;
-                    }
-
-                    // 從第二列開始抓資料，自動去空白
-                    帳密名單 = 所有列.slice(1).map(列 => ({
-                        帳號: (列.c[帳號欄位索引]?.v || "").trim(),
-                        密碼: (列.c[密碼欄位索引]?.v || "").trim()
-                    }));
-
-                    console.log("✅ 載入成功！目前名單：", 帳密名單);
-                    // 自動測試是否有 jacey/jacey123
-                    const 有這組 = 帳密名單.some(i => i.帳號 === "jacey" && i.密碼 === "jacey123");
-                    console.log("✅ 測試 jacey/jacey123 是否存在：", 有這組 ? "✅ 存在" : "❌ 不存在");
-
-                } catch (e) {
-                    alert("❌ 讀取錯誤：" + e.message);
+                if (帳號欄位索引 === -1 || 密碼欄位索引 === -1) {
+                    alert("❌ 找不到 ACCOUNT 或 PASSWORD 欄位");
+                    return;
                 }
-            };
-            document.head.appendChild(s);
+
+                // 從第二列開始抓資料，自動去空白
+                帳密名單 = 所有列.slice(1).map(列 => ({
+                    帳號: (列[帳號欄位索引] || "").trim(),
+                    密碼: (列[密碼欄位索引] || "").trim()
+                })).filter(i => i.帳號); // 過濾空白列
+
+                console.log("✅ 成功載入帳號：", 帳密名單);
+            })
+            .catch(err => {
+                alert("❌ 讀取失敗：" + err.message + "，請檢查試算表權限是否開啟「有連結者可檢視」");
+            });
         };
 
         // 驗證登入
@@ -141,7 +136,7 @@
         <a href="https://docs.google.com/forms/d/e/1FAIpQLSf0WmN7HweIn_wNtqhTM8Q_GjgqK_jqH58KvdPn8J845qvMug/viewform?usp=publish-editor" target="_blank" class="register-link">👉 還沒有帳號？點我註冊</a>
     </div>
 
-    <!-- 你的原本內容，全部包在這裡，完全不用改 -->
+    <!-- 頁面內容（成功才顯示） -->
     <div class="content">
         <div class="container">
             <h1>🏠 Property Tools 工具箱</h1>
