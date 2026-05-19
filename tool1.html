@@ -276,7 +276,6 @@
                 </div>
                 <div class="form-group">
                     <label>Date</label>
-                    <!-- ✅ 日期選擇器 -->
                     <input type="date" id="formDate" oninput="updatePreview()">
                 </div>
 
@@ -286,7 +285,7 @@
                 </div>
             </div>
 
-            <!-- 右邊：預覽區 - 完全依照照片格式 -->
+            <!-- 右邊：預覽區 -->
             <div class="card">
                 <div class="form-preview" id="previewArea">
                     <div class="header">
@@ -409,6 +408,7 @@
             return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
 
+        // ✅ 完整更新預覽功能（這次絕對補齊了！）
         function updatePreview() {
             // 公司名
             document.getElementById('preCompany').innerText = document.getElementById('companyName').value;
@@ -419,7 +419,6 @@
             document.getElementById('preAddress').innerText = document.getElementById('address').value;
             document.getElementById('preType').innerText = document.getElementById('propertyType').value;
 
-            // ✅ 金額自動加逗號 + 小數點兩位
+            // 金額格式化
             let price = parseFloat(document.getElementById('price').value) || 0;
             document.getElementById('prePrice').innerText = `RM ${formatNumber(price.toFixed(2))}`;
-            let fee = parseFloat(document.getElementById('bookingFee').
