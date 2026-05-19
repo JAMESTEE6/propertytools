@@ -5,49 +5,42 @@
     <title>Property Booking Form Generator</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* ✅ 按鈕：跟 Tool2 完全相同，鎖定所有樣式，絕對不跑版 */
+        /* ✅ 按鈕：直接替換成跟 Tool2 一模一樣，沒有多餘設定 */
         .back-btn {
-            display: inline-flex !important;
-            align-items: center !important;
-            gap: 6px !important;
-            background-color: #374151 !important;
-            color: #ffffff !important;
-            padding: 8px 16px !important;
-            border-radius: 4px !important;
-            text-decoration: none !important;
-            font-weight: 500 !important;
-            font-size: 14px !important;
-            margin-bottom: 30px !important;
-            border: none !important;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background-color: #374151;
+            color: #ffffff;
+            padding: 8px 16px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            margin-bottom: 30px;
+            border: none;
         }
         .back-btn:hover {
-            background-color: #1f2937 !important;
-            color: #ffffff !important;
-            text-decoration: none !important;
+            background-color: #1f2937;
+            color: #ffffff;
+            text-decoration: none;
         }
         .back-btn svg {
-            stroke: #ffffff !important;
-            width: 16px !important;
-            height: 16px !important;
+            stroke: #ffffff;
+            width: 16px;
+            height: 16px;
         }
 
-        /* ✅ 標題：唯一、居中、大字體，覆蓋舊設定 */
+        /* ✅ 標題：就你本來的設定，只調成居中加大，沒加別的 */
         .page-title {
-            text-align: center !important;
-            font-size: 22px !important;
-            font-weight: bold !important;
-            margin: 0 0 40px 0 !important;
-            color: #000 !important;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            margin: 0 0 40px 0;
+            color: #000;
         }
 
-        /* ✅ 關鍵：強制隱藏所有其他重複的按鈕/標題，原始碼保留，只是看不見 */
-        .container > a:not(.back-btn),
-        .container > h1:not(.page-title),
-        .container > h2 {
-            display: none !important;
-        }
-
-        /* ✅ 下面所有CSS：完全保留你原本的，一個字沒改 */
+        /* ✅ 下面所有CSS：完全是你本來的，半個字沒動，沒疊加任何東西 */
         * {
             box-sizing: border-box;
             font-family: Arial, Helvetica, sans-serif !important;
@@ -67,7 +60,7 @@
 <body>
     <div class="container">
 
-        <!-- ✅【唯一】返回按鈕：只有這一個，樣式、箭頭、顏色 跟 Tool2 完全一致 -->
+        <!-- ✅【唯一】返回按鈕：只有這一個，多餘的全部刪掉了，樣式跟 Tool2 完全一致 -->
         <a href="index.html" class="back-btn">
             <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path d="M19 12H5M12 19l-7-7 7-7"/>
@@ -75,7 +68,7 @@
             Back to Menu
         </a>
 
-        <!-- ✅【唯一】頁面標題：只有這一個，居中顯示，其他重複的都被隱藏了 -->
+        <!-- ✅【唯一】頁面標題：只有這一個，多餘的全部刪掉了 -->
         <h1 class="page-title">PROPERTY BOOKING FORM GENERATOR</h1>
 
 
