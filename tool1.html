@@ -21,22 +21,21 @@
     </style>
 
     <script>
-        const 試算表ID = "1tJsY1dX4P2Wsg6EFmHVkbtDUvPwE0EU8jafFHblFLmg";
-        const 工作表名 = "Form_Responses";
+        // ✅ 子頁面同樣對應正確的表單ID和工作表名
+        const 試算表ID = "1mqPA5Eakr6naCI3DmFeb05dVm83cDYfrfRhCki9RbeE";
+        const 工作表名 = "Form Responses 1";
         let 帳密名單 = [];
 
+        // ✅ 同樣抓第2、3欄
         window.子頁面處理 = function(json) {
             try {
                 const 所有列 = json.table.rows;
-                const 標題列 = 所有列[0].c.map(c => c.v.trim().toUpperCase());
-                const 帳號欄 = 標題列.indexOf("ACCOUNT");
-                const 密碼欄 = 標題列.indexOf("PASSWORD");
                 帳密名單 = 所有列.slice(1).map(列 => ({
-                    帳號: (列.c[帳號欄]?.v || "").trim(),
-                    密碼: (列.c[密碼欄]?.v || "").trim()
+                    帳號: (列.c[1]?.v || "").trim(),
+                    密碼: (列.c[2]?.v || "").trim()
                 })).filter(i => i.帳號);
             } catch (e) {
-                alert("❌ 讀取失敗");
+                alert("❌ 讀取失敗，請確認權限");
             }
         };
 
@@ -62,6 +61,25 @@
     </script>
 </head>
 <body>
+    <div class="mask"></div>
+    <div class="login-box">
+        <h3>🔒 請先登入</h3>
+        <input type="text" id="acc" placeholder="輸入帳號" onkeydown="按鍵(event)">
+        <input type="password" id="pwd" placeholder="輸入密碼" onkeydown="按鍵(event)">
+        <button onclick="執行登入()">確認登入</button>
+        <br>
+        <a href="https://docs.google.com/forms/d/1mqPA5Eakr6naCI3DmFeb05dVm83cDYfrfRhCki9RbeE/viewform?usp=sf_link" target="_blank" class="register-link">👉 還沒有帳號？點我註冊</a>
+    </div>
+
+    <!-- 👇 保留你原本所有內容 👇 -->
+    <div class="content">
+        <div class="container">
+            <a href="index.html" class="back-btn">← 返回首頁</a>
+            <!-- 你原本的表格、按鈕、程式全部留在這裡 -->
+        </div>
+    </div>
+</body>
+</html>
     <div class="mask"></div>
     <div class="login-box">
         <h3>🔒 請先登入</h3>
