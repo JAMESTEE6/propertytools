@@ -22,11 +22,10 @@
 
     <script>
         // ✅ 同樣正確設定
-        const 試算表ID = "1mqPA5Eakr6naCI3DmFeb05dVm83cDYfrfRhCki9RbeE";
+        const 試算表ID = "1tJsY1dX4P2Wsg6EFmHVkbtDUvPwE0EU8jafFHblFLmg";
         const 工作表名 = "工作表1";
         let 帳密名單 = [];
 
-        // ✅ 同樣用官方匯出連結，100%穩定
         window.onload = function() {
             fetch(`https://docs.google.com/spreadsheets/d/${試算表ID}/export?format=csv&sheet=${encodeURIComponent(工作表名)}`)
             .then(res => res.text())
