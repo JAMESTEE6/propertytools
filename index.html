@@ -24,38 +24,31 @@
     </style>
 
     <script>
-        // ✅ 最穩定讀取方式，絕對不會誤判
-        const 試算表ID = "1tJsY1dX4P2Wsg6EFmHVkbtDUvPwE0EU8jafFHblFLmg";
-        const 工作表名 = "Form_Responses";
+        // ✅ 正確設定：對應你的表單回應試算表
+        // 從你的連結取出表單ID，對應的試算表就是你看到的「工作表 1」→ 自動產生的工作表名稱是「Form Responses 1」
+        const 試算表ID = "1mqPA5Eakr6naCI3DmFeb05dVm83cDYfrfRhCki9RbeE";
+        const 工作表名 = "Form Responses 1"; // Google 表單預設的回應工作表名稱
         let 帳密名單 = [];
 
-        // ✅ 改用最保險的 JSONP 寫法，GitHub Pages 100% 正常
+        // ✅ 固定抓：第2欄=ACCOUNT、第3欄=PASSWORD（完全對應你的表單欄位順序）
         window.處理試算表資料 = function(json) {
             try {
                 const 所有列 = json.table.rows;
-                const 標題列 = 所有列[0].c.map(c => c.v.trim().toUpperCase());
-                const 帳號欄 = 標題列.indexOf("ACCOUNT");
-                const 密碼欄 = 標題列.indexOf("PASSWORD");
-
-                if (帳號欄 === -1 || 密碼欄 === -1) {
-                    alert("❌ 試算表欄位名稱錯誤，請確認有 ACCOUNT / PASSWORD");
-                    return;
-                }
-
+                // 跳過第一列（時間戳），從第二列開始：第2欄=帳號、第3欄=密碼
                 帳密名單 = 所有列.slice(1).map(列 => ({
-                    帳號: (列.c[帳號欄]?.v || "").trim(),
-                    密碼: (列.c[密碼欄]?.v || "").trim()
+                    帳號: (列.c[1]?.v || "").trim(), // ACCOUNT
+                    密碼: (列.c[2]?.v || "").trim()  // PASSWORD
                 })).filter(i => i.帳號);
 
-                console.log("✅ 載入成功，可使用帳號數：", 帳密名單.length);
-                console.log("✅ jacey/jacey123：", 帳密名單.some(i => i.帳號==="jacey"&&i.密碼==="jacey123") ? "✅ 存在" : "❌ 不存在");
+                console.log("✅ 載入成功！所有帳密：", 帳密名單);
+                console.log("✅ 測試 jacey/jacey123：", 帳密名單.some(i => i.帳號 === "jacey" && i.密碼 === "jacey123") ? "✅ 存在" : "❌ 不存在");
 
             } catch (e) {
-                alert("❌ 讀取失敗，請開啟試算表權限：任何人有連結 → 檢視者");
+                alert("❌ 讀取失敗！請確認：1. 試算表已開「任何人有連結 → 檢視者」 2. 工作表名稱是「Form Responses 1」");
             }
         };
 
-        // ✅ 頁面載入完才執行，避免格式錯誤
+        // 載入資料
         window.onload = function() {
             const s = document.createElement('script');
             s.src = `https://docs.google.com/spreadsheets/d/${試算表ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(工作表名)}&callback=處理試算表資料`;
@@ -86,7 +79,7 @@
         <input type="password" id="pwd" placeholder="輸入密碼" onkeydown="按鍵(event)">
         <button onclick="執行登入()">確認登入</button>
         <br>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSf0WmN7HweIn_wNtqhTM8Q_GjgqK_jqH58KvdPn8J845qvMug/viewform?usp=publish-editor" target="_blank" class="register-link">👉 還沒有帳號？點我註冊</a>
+        <a href="https://docs.google.com/forms/d/1mqPA5Eakr6naCI3DmFeb05dVm83cDYfrfRhCki9RbeE/viewform?usp=sf_link" target="_blank" class="register-link">👉 還沒有帳號？點我註冊</a>
     </div>
 
     <div class="content">
