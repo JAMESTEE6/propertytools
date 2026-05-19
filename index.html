@@ -2,106 +2,146 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    
-    <!-- ✅ 最終版：先驗證，正確才顯示頁面，完全不先顯示內容 -->
+    <title>Property Tools - 實用工具集合</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* 登入框樣式 */
+        .login-box {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            z-index: 9999;
+            text-align: center;
+            width: 300px;
+        }
+        .login-box h3 { margin-bottom: 20px; color: #333; }
+        .login-box input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .login-box button {
+            width: 100%;
+            padding: 10px;
+            background: #4285F4;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 15px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .login-box button:hover { background: #3367D6; }
+        .register-link {
+            display: inline-block;
+            margin-top: 15px;
+            font-size: 13px;
+            color: #4285F4;
+            text-decoration: none;
+        }
+        .register-link:hover { text-decoration: underline; }
+        /* 預先隱藏頁面內容，登入成功才顯示 */
+        .content { display: none; }
+    </style>
+
     <script>
         // 試算表設定
         const 試算表ID = "1tJsY1dX4P2Wsg6EFmHVkbtDUvPwE0EU8jafFHblFLmg";
         let 允許名單 = [];
-        let 頁面已準備 = false;
 
-        // 第一步：先載入名單
+        // 載入帳號名單
         async function 載入名單() {
             try {
                 const script = document.createElement('script');
                 script.src = `https://docs.google.com/spreadsheets/d/${試算表ID}/gviz/tq?tqx=out:json&sheet=工作表1`;
                 window.gdata = function(data) {
-                    // 解析：只抓 帳號(第1欄)、密碼(第2欄)
                     允許名單 = data.table.rows.slice(1).map(row => ({
                         帳號: row.c[0]?.v?.trim() || "",
                         密碼: row.c[1]?.v?.trim() || ""
                     }));
-                    頁面已準備 = true;
-                    執行登入驗證(); // 載好才跳出輸入框
                 };
                 document.head.appendChild(script);
             } catch (e) {
-                alert("⚠️ 系統維護中，請稍後再試！");
-                document.documentElement.innerHTML = "";
+                alert("⚠️ 無法連接伺服器，請稍後再試！");
             }
         }
 
-        // 第二步：驗證
-        function 執行登入驗證() {
-            const 輸入帳號 = prompt("🔒 請輸入帳號：");
-            const 輸入密碼 = prompt("🔒 請輸入密碼：");
+        // 驗證登入
+        function 驗證登入() {
+            const 輸入帳號 = document.getElementById("acc").value.trim();
+            const 輸入密碼 = document.getElementById("pwd").value.trim();
 
-            // 比對
-            const 驗證通過 = 允許名單.some(資料 => 
+            const 通過 = 允許名單.some(資料 => 
                 資料.帳號 === 輸入帳號 && 資料.密碼 === 輸入密碼
             );
 
-            if (!驗證通過) {
-                alert("❌ 帳號或密碼錯誤，無法進入！");
-                document.documentElement.innerHTML = ""; // 直接清空，什麼都看不到
-                return;
+            if (通過) {
+                // 登入成功：隱藏登入框、顯示內容
+                document.querySelector(".login-box").style.display = "none";
+                document.querySelector(".content").style.display = "block";
+            } else {
+                alert("❌ 帳號或密碼錯誤，請重新輸入！");
             }
-
-            // ✅ 正確：才顯示頁面內容
-            document.body.style.display = "block";
         }
 
-        // 預先隱藏整個頁面，等驗證通過才顯示
-        document.write('<style>body{display:none;}</style>');
+        // 按 Enter 也能提交
+        function 按鍵驗證(e) {
+            if (e.key === "Enter") 驗證登入();
+        }
 
-        // 開始
+        // 開始載入名單
         載入名單();
     </script>
-
-    <title>Property Tools - 實用工具集合</title>
-    <link rel="stylesheet" href="style.css">
-    <style>
-        .register-btn {
-            display: inline-block;
-            margin: 10px 0 20px;
-            padding: 8px 16px;
-            background: #4285F4;
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-            font-weight: bold;
-        }
-        .register-btn:hover { background: #3367D6; }
-    </style>
 </head>
-<body> <!-- 一開始是隱藏的！ -->
-    <div class="container">
-        <h1>🏠 Property Tools 工具箱</h1>
-        <p>整理了10+個常用工具，點擊即可使用 👇</p>
+<body>
 
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSf0WmN7HweIn_wNtqhTM8Q_GjgqK_jqH58KvdPn8J845qvMug/viewform?usp=publish-editor" target="_blank" class="register-btn">👉 還沒帳號？點我註冊</a>
+    <!-- ✅ 登入框：一打開就顯示，有輸入框+註冊連結 -->
+    <div class="login-box">
+        <h3>🔒 請先登入</h3>
+        <input type="text" id="acc" placeholder="輸入帳號" onkeydown="按鍵驗證(event)">
+        <input type="password" id="pwd" placeholder="輸入密碼" onkeydown="按鍵驗證(event)">
+        <button onclick="驗證登入()">確認登入</button>
+        <br>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSf0WmN7HweIn_wNtqhTM8Q_GjgqK_jqH58KvdPn8J845qvMug/viewform?usp=publish-editor" target="_blank" class="register-link">👉 還沒有帳號？點我註冊</a>
+    </div>
 
-        <div class="tool-list">
-            <a href="tool1.html" class="tool-card">
-                <h3>Booking Form Generator</h3>
-                <p>Fill in details and print out</p>
-            </a>
-            <a href="tool2.html" class="tool-card">
-                <h3>工具2：時間日期</h3>
-                <p>時間戳轉換、日期計算、倒數計時</p>
-            </a>
-            <a href="tool3.html" class="tool-card">
-                <h3>工具3：編碼解碼</h3>
-                <p>URL / Base64 / Unicode 互轉</p>
-            </a>
-            <a href="tool4.html" class="tool-card">
-                <h3>工具4：加密解密</h3>
-                <p>MD5 / SHA1 生成、基礎加密/解</p>
-            </a>
-            <a href="tool5.html" class="tool-card">
-                <h3>tool5</h3>
-            </a>
+    <!-- ✅ 頁面內容：預設隱藏，登入成功才顯示 -->
+    <div class="content">
+        <div class="container">
+            <h1>🏠 Property Tools 工具箱</h1>
+            <p>整理了10+個常用工具，點擊即可使用 👇</p>
+
+            <div class="tool-list">
+                <a href="tool1.html" class="tool-card">
+                    <h3>Booking Form Generator</h3>
+                    <p>Fill in details and print out</p>
+                </a>
+                <a href="tool2.html" class="tool-card">
+                    <h3>工具2：時間日期</h3>
+                    <p>時間戳轉換、日期計算、倒數計時</p>
+                </a>
+                <a href="tool3.html" class="tool-card">
+                    <h3>工具3：編碼解碼</h3>
+                    <p>URL / Base64 / Unicode 互轉</p>
+                </a>
+                <a href="tool4.html" class="tool-card">
+                    <h3>工具4：加密解密</h3>
+                    <p>MD5 / SHA1 生成、基礎加密/解</p>
+                </a>
+                <a href="tool5.html" class="tool-card">
+                    <h3>tool5</h3>
+                </a>
+            </div>
         </div>
     </div>
+
 </body>
 </html>
