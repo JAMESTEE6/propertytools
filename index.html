@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <style>css</style>
     <meta charset="UTF-8">
     
-    <!-- 👇 登入驗證加在這裡，meta 後面、title 前面 👇 -->
+    <!-- ✅ 登入驗證：一定要放在最前面，meta 之後、其他任何標籤之前 -->
     <script>
-        // 自訂帳號密碼，可自由新增/修改
+        // 你可以自己增加/修改帳號密碼
         const 允許名單 = [
           {帳號: "admin", 密碼: "123456"},
           {帳號: "user01", 密碼: "abc123"},
@@ -32,7 +31,6 @@
           document.documentElement.innerHTML = "";
         }
     </script>
-    <!-- 👆 驗證結束 👆 -->
 
     <title>Property Tools - 實用工具集合</title>
     <link rel="stylesheet" href="style.css">
