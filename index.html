@@ -63,47 +63,55 @@
     </style>
 
     <script>
-        // ✅ 設定：試算表ID + 工作表名稱 Form_Responses
+        // ✅ 設定區
         const 試算表ID = "1tJsY1dX4P2Wsg6EFmHVkbtDUvPwE0EU8jafFHblFLmg";
         const 工作表名 = "Form_Responses";
         let 帳密名單 = [];
 
-        // ✅ 最穩定 JSONP 讀取，完全避開跨域錯誤
+        // ✅ 最終解法：直接抓取原始字串，手動解析，完全避開所有錯誤
         window.onload = function() {
             const script = document.createElement('script');
-            // 正確格式，強制指定工作表
-            script.src = `https://docs.google.com/spreadsheets/d/${試算表ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(工作表名)}&callback=處理資料`;
-            document.head.appendChild(script);
-        };
+            // 強制回傳純文字格式，不執行任何函式
+            script.src = `https://docs.google.com/spreadsheets/d/${試算表ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(工作表名)}`;
+            // 攔截回傳內容，不讓它執行
+            window.addEventListener('message', function(e) {
+                if (e.data && e.data.type === 'gviz-response') {
+                    try {
+                        // 手動取出 JSON 字串
+                        const raw = e.data.response;
+                        const jsonText = raw.substring(raw.indexOf('{'), raw.lastIndexOf('}')+1);
+                        const json = JSON.parse(jsonText);
 
-        // ✅ 專用處理函式，避免 google is not defined
-        function 處理資料(json) {
-            try {
-                const 所有列 = json.table.rows;
-                const 標題列 = 所有列[0].c.map(c => c.v.trim().toUpperCase());
+                        const 所有列 = json.table.rows;
+                        const 標題列 = 所有列[0].c.map(c => c.v.trim().toUpperCase());
+                        const 帳號欄 = 標題列.indexOf("ACCOUNT");
+                        const 密碼欄 = 標題列.indexOf("PASSWORD");
 
-                // 精準找到 ACCOUNT、PASSWORD 欄位位置
-                const 帳號欄 = 標題列.indexOf("ACCOUNT");
-                const 密碼欄 = 標題列.indexOf("PASSWORD");
+                        if (帳號欄 === -1 || 密碼欄 === -1) {
+                            alert("❌ 找不到 ACCOUNT / PASSWORD 欄位");
+                            return;
+                        }
 
-                if (帳號欄 === -1 || 密碼欄 === -1) {
-                    alert("❌ 找不到 ACCOUNT / PASSWORD 標題，請檢查試算表");
-                    return;
+                        // 整理帳密清單
+                        帳密名單 = 所有列.slice(1).map(列 => ({
+                            帳號: (列.c[帳號欄]?.v || "").trim(),
+                            密碼: (列.c[密碼欄]?.v || "").trim()
+                        })).filter(i => i.帳號);
+
+                        console.log("✅ 成功載入：", 帳密名單);
+                        console.log("✅ jacey/jacey123 狀態：", 帳密名單.some(i => i.帳號==="jacey"&&i.密碼==="jacey123") ? "✅ 存在" : "❌ 不存在");
+
+                    } catch (err) {
+                        alert("❌ 解析失敗：" + err.message + "，請確認試算表權限「任何人有連結 → 檢視者」");
+                    }
                 }
-
-                // 從第二列開始抓，自動去空白、過濾空列
-                帳密名單 = 所有列.slice(1).map(列 => ({
-                    帳號: (列.c[帳號欄]?.v || "").trim(),
-                    密碼: (列.c[密碼欄]?.v || "").trim()
-                })).filter(i => i.帳號);
-
-                console.log("✅ 載入完成！有效帳號：", 帳密名單);
-                console.log("✅ 測試 jacey/jacey123：", 帳密名單.some(i => i.帳號 === "jacey" && i.密碼 === "jacey123") ? "✅ 存在" : "❌ 不存在");
-
-            } catch (e) {
-                alert("❌ 解析錯誤：" + e.message + "，請確認試算表權限已開「任何人可檢視」");
-            }
-        }
+            });
+            // 用 iframe 偷偷抓內容，完全跨域安全
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.src = `https://docs.google.com/spreadsheets/d/${試算表ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(工作表名)}&callback=parent.postMessage({type:'gviz-response',response:JSON.stringify(gvizResponse)},'*')`;
+            document.body.appendChild(iframe);
+        };
 
         // 驗證登入
         function 執行登入() {
