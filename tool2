@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mortgage Amortization Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* ✅ 返回按鈕，只保留一個，位置正確 */
+        .back-btn { 
+            display: inline-flex; align-items: center; gap: 6px;
+            background: #374151; color: #fff; padding: 8px 16px; 
+            border-radius: 4px; text-decoration: none; font-weight: 500;
+            margin-bottom: 20px; font-size: 14px;
+        }
+        .back-btn:hover { background: #1f2937; }
+
+        /* ✅ 按鈕樣式，完全對應你要的顏色和排版 */
+        .btn-calculate { background: #16a34a; }
+        .btn-calculate:hover { background: #15803d; }
+        .btn-print { background: #111827; }
+        .btn-print:hover { background: #000000; }
+        .btn-reset { background: #dc2626; }
+        .btn-reset:hover { background: #b91c1c; }
+
+        /* ✅ 表格樣式優化，對齊更整齊 */
+        table { width: 100%; border-collapse: collapse; }
+        table th, table td { border: 1px solid #e5e7eb; padding: 10px; text-align: center; font-size: 13px; }
+        table th { background: #f3f4f6; font-weight: 600; }
+    </style>
+</head>
+<body class="bg-white font-sans max-w-7xl mx-auto p-5">
+    <div class="container">
+        <!-- ✅ 唯一的返回按鈕，上方重複的已刪除 -->
+        <a href="index.html" class="back-btn">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Back to Menu
+        </a>
+
+        <!-- ✅ 標題 -->
+        <h1 class="text-xl font-bold mb-6">MORTGAGE AMORTIZATION CALCULATOR</h1>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- ✅ 左側：貸款明細輸入區，全部可手動輸入 -->
+            <div class="border rounded-lg p-5 shadow-sm">
+                <h2 class="font-semibold mb-4 text-gray-700">ENTER LOAN DETAILS</h2>
+                
+                <div class="mb-4">
+                    <label class="block text-sm mb-1">Loan Amount (RM)</label>
+                    <input type="number" id="loanAmount" class="w-full border rounded px-3 py-2" placeholder="0.00" min="0" step="0.01">
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-sm mb-1">Interest Rate (% per annum)</label>
+                    <input type="number" id="interestRate" class="w-full border rounded px-3 py-2" placeholder="0.00" min="0" step="0.01">
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-sm mb-1">Loan Tenure (Years)</label>
+                    <input type="number" id="loanTenure" class="w-full border rounded px-3 py-2" placeholder="0" min="1" max="50">
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-sm mb-1">Loan Start Date</label>
+                    <input type="date" id="startDate" class="w-full border rounded px-3 py-2">
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-sm mb-1">Extra Monthly Payment (Optional)</label>
+                    <input type="number" id="extraPayment" class="w-full border rounded px-3 py-2" placeholder="Enter amount" min="0" step="0.01">
+                </div>
+
+                <!-- ✅ 三個功能按鈕，全部可正常使用 -->
+                <button id="calculateBtn" class="btn-calculate text-white w-full py-2 rounded mb-3 font-medium">☐ CALCULATE</button>
+                <button id="printBtn" class="btn-print text-white w-full py-2 rounded mb-3 font-medium">☐ PRINT SCHEDULE</button>
+                <button id="resetBtn" class="btn-reset text-white w-full py-2 rounded font-medium">☐ RESET</button>
+
+                <!-- ✅ 摘要區 -->
+                <div class="mt-6 pt-4 border-t">
+                    <h3 class="font-semibold mb-3 text-sm">SUMMARY</h3>
+                    <div class="flex justify-between items-center mb-2 text-sm">
+                        <span>Monthly Installment:</span>
+                        <span id="monthlyInstallment">RM 0.00</span>
+                    </div>
+                    <div class="flex justify-between items-center mb-2 text-sm">
+                        <span>Total Interest Payable:</span>
+                        <span id="totalInterest" class="text-red-600 font-medium">RM 0.00</span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm">
+                        <span>Total Amount Payable:</span>
+                        <span id="totalPayment">RM 0.00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ✅ 右側：攤還表區域，計算後自動生成 -->
+            <div class="border rounded-lg p-5 shadow-sm">
+                <h2 class="font-semibold mb-4 text-gray-700">AMORTIZATION SCHEDULE</h2>
+                <div id="scheduleArea" class="overflow-x-auto">
+                    <p class="text-gray-500 text-sm text-center py-10">Click Calculate to generate schedule</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ✅ 計算功能：房貸等額本息 + 額外還款邏輯
+        document.getElementById('calculateBtn').addEventListener('click', function() {
+            // 取得所有輸入值
+            const P = parseFloat(document.getElementById('loanAmount').value) || 0;
+            const r = (parseFloat(document.getElementById('interestRate').value) || 0) / 100 / 12; // 月利率
+            const n = (parseFloat(document.getElementById('loanTenure').value) || 0) * 12; // 總期數(月)
+            const startDate = new Date(document.getElementById('startDate').value || new Date());
+            const extra = parseFloat(document.getElementById('extraPayment').value) || 0;
+
+            if (P <= 0 || r <= 0 || n <= 0) {
+                alert('Please fill in Loan Amount, Interest Rate and Tenure correctly!');
+                return;
+            }
+
+            // 每月還款額公式：PMT = P*r*(1+r)^n / [(1+r)^n - 1]
+            const monthly = P * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
+            let balance = P;
+            let totalInterest = 0;
+            let schedule = [];
+            let currentDate = new Date(startDate);
+
+            // 逐月累算
+            for (let i = 1; i <= n && balance > 0; i++) {
+                const interestAmt = balance * r;
+                let principalAmt = monthly - interestAmt + extra;
+
+                // 最後一期清餘額
+                if (principalAmt > balance) principalAmt = balance;
+
+                const installment = interestAmt + principalAmt;
+                balance -= principalAmt;
+                totalInterest += interestAmt;
+
+                // 記錄每期資料
+                schedule.push({
+                    no: i,
+                    date: currentDate.toLocaleDateString('en-GB', {day:'2-digit', month:'2-digit', year:'numeric'}),
+                    installment: installment.toFixed(2),
+                    principal: principalAmt.toFixed(2),
+                    interest: interestAmt.toFixed(2),
+                    balance: balance.toFixed(2)
+                });
+
+                // 下個月
+                currentDate.setMonth(currentDate.getMonth() + 1);
+            }
+
+            const totalPayment = P + totalInterest;
+
+            // ✅ 更新摘要
+            document.getElementById('monthlyInstallment').textContent = `RM ${monthly.toFixed(2)}`;
+            document.getElementById('totalInterest').textContent = `RM ${totalInterest.toFixed(2)}`;
+            document.getElementById('totalPayment').textContent = `RM ${totalPayment.toFixed(2)}`;
+
+            // ✅ 生成攤還表格
+            let tableHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Date</th>
+                            <th>Installment (RM)</th>
+                            <th>Principal (RM)</th>
+                            <th>Interest (RM)</th>
+                            <th>Balance (RM)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            schedule.forEach(row => {
+                tableHTML += `
+                    <tr>
+                        <td>${row.no}</td>
+                        <td>${row.date}</td>
+                        <td>${row.installment}</td>
+                        <td>${row.principal}</td>
+                        <td>${row.interest}</td>
+                        <td>${row.balance}</td>
+                    </tr>
+                `;
+            });
+            tableHTML += `</tbody></table>`;
+            document.getElementById('scheduleArea').innerHTML = tableHTML;
+        });
+
+        // ✅ 列印功能：只列印計算結果
+        document.getElementById('printBtn').addEventListener('click', function() {
+            const content = document.querySelector('#scheduleArea').innerHTML;
+            if (!content.includes('<table>')) {
+                alert('Please calculate first before printing!');
+                return;
+            }
+            const win = window.open('', '', 'width=900,height=700');
+            win.document.write(`
+                <html>
+                <head>
+                    <title>Amortization Schedule</title>
+                    <style>
+                        table {width:100%;border-collapse:collapse;}
+                        th,td {border:1px solid #ccc;padding:8px;text-align:center;}
+                        th {background:#eee;}
+                    </style>
+                </head>
+                <body>
+                    <h2 style="text-align:center;margin-bottom:20px;">MORTGAGE AMORTIZATION SCHEDULE</h2>
+                    ${content}
+                </body>
+                </html>
+            `);
+            win.document.close();
+            win.print();
+        });
+
+        // ✅ 重設功能：清空所有輸入和結果
+        document.getElementById('resetBtn').addEventListener('click', function() {
+            document.getElementById('loanAmount').value = '';
+            document.getElementById('interestRate').value = '';
+            document.getElementById('loanTenure').value = '';
+            document.getElementById('startDate').value = '';
+            document.getElementById('extraPayment').value = '';
+            document.getElementById('monthlyInstallment').textContent = 'RM 0.00';
+            document.getElementById('totalInterest').textContent = 'RM 0.00';
+            document.getElementById('totalPayment').textContent = 'RM 0.00';
+            document.getElementById('scheduleArea').innerHTML = '<p class="text-gray-500 text-sm text-center py-10">Click Calculate to generate schedule</p>';
+        });
+    </script>
+</body>
+</html>
