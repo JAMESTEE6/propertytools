@@ -63,28 +63,42 @@
     </style>
 
     <script>
-        // ========== 已修正：工作表名稱改為正確的「Form_Responses」 ==========
+        // ✅ 設定區：只有試算表ID，其他自動抓
         const 試算表ID = "1tJsY1dX4P2Wsg6EFmHVkbtDUvPwE0EU8jafFHblFLmg";
-        const 工作表名 = "Form_Responses"; 
-        // ==================================================================
-
         let 帳密名單 = [];
 
-        // 載入試算表
+        // 載入 + 解析：用欄位名稱對應，絕對不會錯
         window.onload = function() {
             const s = document.createElement('script');
-            s.src = `https://docs.google.com/spreadsheets/d/${試算表ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(工作表名)}`;
+            // 直接讀取第一個工作表，不用寫名稱
+            s.src = `https://docs.google.com/spreadsheets/d/${試算表ID}/gviz/tq?tqx=out:json`;
             window.gvizCallback = function(json) {
                 try {
-                    const 列 = json.table.rows;
-                    // 對應欄位：B欄=ACCOUNT、C欄=PASSWORD，自動去除空白
-                    帳密名單 = 列.slice(1).map(r => ({
-                        帳號: (r.c[1]?.v || "").trim(),
-                        密碼: (r.c[2]?.v || "").trim()
+                    const 所有列 = json.table.rows;
+                    const 標題列 = 所有列[0].c.map(c => c.v); // 抓第一列的標題
+
+                    // 找到 ACCOUNT 和 PASSWORD 分別在第幾欄
+                    const 帳號欄位索引 = 標題列.findIndex(name => name.trim().toUpperCase() === "ACCOUNT");
+                    const 密碼欄位索引 = 標題列.findIndex(name => name.trim().toUpperCase() === "PASSWORD");
+
+                    if (帳號欄位索引 === -1 || 密碼欄位索引 === -1) {
+                        alert("❌ 找不到 ACCOUNT 或 PASSWORD 欄位，請檢查試算表標題");
+                        return;
+                    }
+
+                    // 從第二列開始抓資料，自動去空白
+                    帳密名單 = 所有列.slice(1).map(列 => ({
+                        帳號: (列.c[帳號欄位索引]?.v || "").trim(),
+                        密碼: (列.c[密碼欄位索引]?.v || "").trim()
                     }));
-                    console.log("✅ 載入成功，有效帳號：", 帳密名單.map(i => i.帳號));
+
+                    console.log("✅ 載入成功！目前名單：", 帳密名單);
+                    // 自動測試是否有 jacey/jacey123
+                    const 有這組 = 帳密名單.some(i => i.帳號 === "jacey" && i.密碼 === "jacey123");
+                    console.log("✅ 測試 jacey/jacey123 是否存在：", 有這組 ? "✅ 存在" : "❌ 不存在");
+
                 } catch (e) {
-                    alert("❌ 讀取帳號失敗：" + e.message);
+                    alert("❌ 讀取錯誤：" + e.message);
                 }
             };
             document.head.appendChild(s);
