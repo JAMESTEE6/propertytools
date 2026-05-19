@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>Tool Page</title>
     <style>
-        /* 登入框樣式跟首頁完全一致 */
         body { margin: 0; font-family: Arial, sans-serif; }
         .login-box {
             position: fixed; top: 50%; left: 50%;
@@ -35,18 +34,21 @@
     </style>
 
     <script>
-        // ✅ 已修正：工作表名稱 Form_Responses + 正確欄位
+        // ✅ 子頁面同樣邏輯：自動抓 ACCOUNT / PASSWORD
         const 試算表ID = "1tJsY1dX4P2Wsg6EFmHVkbtDUvPwE0EU8jafFHblFLmg";
-        const 工作表名 = "Form_Responses";
         let 帳密名單 = [];
 
         window.onload = function() {
             const s = document.createElement('script');
-            s.src = `https://docs.google.com/spreadsheets/d/${試算表ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(工作表名)}`;
+            s.src = `https://docs.google.com/spreadsheets/d/${試算表ID}/gviz/tq?tqx=out:json`;
             window.gvizCallback = function(json) {
-                帳密名單 = json.table.rows.slice(1).map(r => ({
-                    帳號: (r.c[1]?.v || "").trim(),
-                    密碼: (r.c[2]?.v || "").trim()
+                const 所有列 = json.table.rows;
+                const 標題列 = 所有列[0].c.map(c => c.v);
+                const 帳號欄 = 標題列.findIndex(n => n.trim().toUpperCase() === "ACCOUNT");
+                const 密碼欄 = 標題列.findIndex(n => n.trim().toUpperCase() === "PASSWORD");
+                帳密名單 = 所有列.slice(1).map(列 => ({
+                    帳號: (列.c[帳號欄]?.v || "").trim(),
+                    密碼: (列.c[密碼欄]?.v || "").trim()
                 }));
             };
             document.head.appendChild(s);
