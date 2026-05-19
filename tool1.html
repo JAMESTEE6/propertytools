@@ -21,7 +21,7 @@
         .mask { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 99998; }
         .content { display: none; padding: 20px; }
 
-        /* 👇 保留你原本所有CSS，完全不動 👇 */
+        /* 👇 你本來所有的 CSS 都留在這裡，完全不刪除 👇 */
         * {
             box-sizing: border-box;
             font-family: Arial, Helvetica, sans-serif !important;
@@ -29,31 +29,36 @@
             margin: 0;
             padding: 0;
         }
-        .container { max-width: 1200px; margin: 20px auto; padding: 0 20px; }
-        /* ... 其他樣式都留在這裡 ... */
+        .container { max-width:  1200px; margin: 20px auto; padding: 0 20px; }
+        /* ... 其他你本來的樣式 ... */
     </style>
 
     <script>
-        // ✅ 子頁面同樣改用 CSV 讀取
+        // ✅ 子頁面同樣設定：Form_Responses + 正確讀取
         const 試算表ID = "1tJsY1dX4P2Wsg6EFmHVkbtDUvPwE0EU8jafFHblFLmg";
         const 工作表名 = "Form_Responses";
         let 帳密名單 = [];
 
         window.onload = function() {
-            fetch(`https://docs.google.com/spreadsheets/d/${試算表ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(工作表名)}`)
-            .then(res => res.text())
-            .then(csv => {
-                const 所有列 = csv.split("\n").map(列 => 列.replace(/"/g, "").split(","));
-                const 標題列 = 所有列[0];
-                const 帳號欄 = 標題列.findIndex(n => n.trim().toUpperCase() === "ACCOUNT");
-                const 密碼欄 = 標題列.findIndex(n => n.trim().toUpperCase() === "PASSWORD");
-                帳密名單 = 所有列.slice(1).map(列 => ({
-                    帳號: (列[帳號欄] || "").trim(),
-                    密碼: (列[密碼欄] || "").trim()
-                })).filter(i => i.帳號);
-            })
-            .catch(err => alert("❌ 讀取失敗：" + err.message));
+            const script = document.createElement('script');
+            script.src = `https://docs.google.com/spreadsheets/d/${試算表ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(工作表名)}&callback=子頁面處理`;
+            document.head.appendChild(script);
         };
+
+        function 子頁面處理(json) {
+            try {
+                const 所有列 = json.table.rows;
+                const 標題列 = 所有列[0].c.map(c => c.v.trim().toUpperCase());
+                const 帳號欄 = 標題列.indexOf("ACCOUNT");
+                const 密碼欄 = 標題列.indexOf("PASSWORD");
+                帳密名單 = 所有列.slice(1).map(列 => ({
+                    帳號: (列.c[帳號欄]?.v || "").trim(),
+                    密碼: (列.c[密碼欄]?.v || "").trim()
+                })).filter(i => i.帳號);
+            } catch (e) {
+                alert("❌ 讀取失敗，請檢查權限");
+            }
+        }
 
         function 執行登入() {
             const 輸帳號 = document.getElementById("acc").value.trim();
@@ -82,13 +87,14 @@
         <a href="https://docs.google.com/forms/d/e/1FAIpQLSf0WmN7HweIn_wNtqhTM8Q_GjgqK_jqH58KvdPn8J845qvMug/viewform?usp=publish-editor" target="_blank" class="register-link">👉 還沒有帳號？點我註冊</a>
     </div>
 
-    <!-- 👇 你原本 tool1.html 的所有內容都包在這裡 👇 -->
+    <!-- 👇 你本來 tool1.html 的所有內容都包在這裡 👇 -->
     <div class="content">
         <div class="container">
             <a href="index.html" class="back-btn">← 返回首頁</a>
-            <!-- ... 你原本所有內容都留在這裡 ... -->
+            <!-- ... 你本來所有的表格、按鈕、程式碼都留在這裡 ... -->
         </div>
     </div>
+
 </body>
 </html>
     <meta charset="UTF-8">
