@@ -15,16 +15,17 @@
 
         body {
             background-color: #f8fafc;
-            color: #1e293b;
+            color: #0f172a;
             line-height: 1.65;
         }
 
-        /* ========== 🔹 頂部標題區 - 加深顏色 ========== */
+        /* ========== 🔹 頂部區 - 鮮艷突出顏色 ========== */
         .top-header {
-            background-color: #dcf0e2; /* 調深一點的柔和綠色，層次更明顯 */
-            padding: 28px 24px 40px;
-            margin-bottom: 24px;
-            border-radius: 0 0 12px 12px;
+            background-color: #e6f7ff; /* 清新亮藍色，夠鮮明又舒服 */
+            padding: 32px 24px 44px;
+            margin-bottom: 28px;
+            border-radius: 0 0 14px 14px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
         }
 
         .container {
@@ -32,64 +33,66 @@
             margin: 0 auto;
         }
 
-        /* ========== 按鈕 ========== */
+        /* ========== 返回按鈕 ========== */
         .back-btn {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background-color: #334155;
+            background-color: #253858;
             color: #ffffff;
-            padding: 9px 20px;
-            border-radius: 6px;
+            padding: 10px 22px;
+            border-radius: 8px;
             text-decoration: none;
             font-size: 14px;
-            font-weight: 500;
-            margin-bottom: 32px;
+            font-weight: 600;
+            margin-bottom: 36px;
             border: none;
+            transition: background 0.2s;
         }
 
         .back-btn:hover {
-            background-color: #1e293b;
+            background-color: #1e2b48;
             color: #ffffff;
             text-decoration: none;
         }
 
-        /* ========== 標題 ========== */
+        /* ========== 標題 - 字體加深加粗 ========== */
         h1 {
             text-align: center;
-            font-size: 30px;
-            font-weight: 700;
-            color: #0f172a;
-            margin-bottom: 6px;
-            letter-spacing: 0.5px;
+            font-size: 32px;
+            font-weight: 800;
+            color: #0b2b5c;
+            margin-bottom: 8px;
+            letter-spacing: 0.6px;
         }
 
         .subtitle {
             text-align: center;
-            font-size: 15px;
-            color: #3c5c48;
+            font-size: 16px;
+            font-weight: 500;
+            color: #2c4b82;
         }
 
         /* ========== 網格布局 ========== */
         .bank-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 26px;
+            gap: 28px;
             padding: 0 24px;
         }
 
         /* ========== 銀行卡片 ========== */
         .bank-card {
             background: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.09);
             overflow: hidden;
             border: 1px solid #e2e8f0;
         }
 
         /* 🔹 銀行頂部主題色 */
         .bank-header {
-            padding: 16px 22px;
+            padding: 18px 22px;
             text-align: center;
         }
 
@@ -98,23 +101,23 @@
         .rhb-header     { background-color: #f39c12; color: #ffffff; }
 
         .bank-name {
-            font-size: 20px;
+            font-size: 21px;
             font-weight: 700;
-            letter-spacing: 0.3px;
+            letter-spacing: 0.4px;
         }
 
-        /* ========== 內容區排版 ========== */
+        /* ========== 內容區 - 字體加深 ========== */
         .policy-list {
-            padding: 22px;
+            padding: 24px;
         }
 
         .policy-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 0;
+            padding: 13px 0;
             border-bottom: 1px solid #f1f5f9;
-            font-size: 14.8px;
+            font-size: 15px;
         }
 
         .policy-row:last-child {
@@ -122,26 +125,27 @@
         }
 
         .policy-title {
-            color: #334155;
-            font-weight: 500;
+            color: #1e293b;
+            font-weight: 600;
             text-align: left;
             max-width: 65%;
         }
 
         .policy-value {
-            color: #b48608;
-            font-weight: 600;
+            color: #926c00;
+            font-weight: 700;
             text-align: right;
             max-width: 35%;
         }
 
         .update-time {
-            margin-top: 20px;
-            padding-top: 14px;
-            font-size: 12.5px;
-            color: #94a3b8;
+            margin-top: 22px;
+            padding-top: 15px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #64748b;
             text-align: right;
-            border-top: 1px dashed #f1f5f9;
+            border-top: 1px dashed #e2e8f0;
         }
 
         /* ========== 列印設定 ========== */
@@ -160,6 +164,7 @@
             .top-header {
                 background: #fff !important;
                 padding: 10px 0;
+                box-shadow: none;
             }
 
             .back-btn { display: none !important; }
@@ -182,7 +187,7 @@
     </style>
 </head>
 <body>
-    <!-- 🔹 頂部帶顏色的標題區 -->
+    <!-- 🔹 頂部鮮艷標題區 -->
     <div class="top-header">
         <div class="container">
             <a href="index.html" class="back-btn">
@@ -197,7 +202,7 @@
         </div>
     </div>
 
-    <!-- 🔹 銀行列表區 -->
+    <!-- 🔹 銀行政策列表 -->
     <div class="bank-grid">
 
         <!-- ✅ CIMB -->
@@ -329,7 +334,7 @@
     </div>
 
     <script>
-        // 自動更新時間
+        // 自動實時更新時間
         function getCurrentDateTime() {
             const now = new Date();
             const date = now.toISOString().slice(0, 10);
