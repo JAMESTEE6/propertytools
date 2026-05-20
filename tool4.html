@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bank Policy Database</title>
     <style>
-        /* ========== 全局基礎設定 ========== */
+        /* ========== 全局設定 ========== */
         * {
             margin: 0;
             padding: 0;
@@ -14,61 +14,57 @@
         }
 
         body {
-            background-color: #f8fafc;
-            padding: 20px 0;
-            line-height: 1.5;
+            background-color: #f8fbfe;
+            padding-bottom: 40px;
         }
 
-        /* ========== 頂部標題區 ========== */
-        .page-header {
+        /* ========== 頂部標題欄 (螢光藍) ========== */
+        .top-bar {
             background-color: #00f0ff;
-            padding: 25px 15px;
-            margin-bottom: 25px;
+            padding: 18px 20px;
             text-align: center;
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+            margin-bottom: 30px;
         }
 
-        .page-header h1 {
-            font-size: 28px;
-            font-weight: 800;
-            color: #083344;
-            margin-bottom: 5px;
+        .top-bar h1 {
+            font-size: 17px;
+            font-weight: 700;
+            color: #0a2a4a;
+            margin-bottom: 3px;
         }
 
-        .page-header p {
-            font-size: 15px;
-            color: #0e5b72;
+        .top-bar p {
+            font-size: 12px;
+            color: #154b70;
         }
 
-        /* ========== 核心排版：3列網格、上下滑動、不重疊 ========== */
-        .banks-container {
-            max-width: 1260px;
+        /* ========== 主容器 3列布局 ========== */
+        .banks-wrapper {
+            max-width: 1280px;
             margin: 0 auto;
             padding: 0 15px;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+            gap: 22px;
         }
 
-        /* ========== 銀行卡片樣式 ========== */
+        /* ========== 銀行卡片 ========== */
         .bank-card {
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+            background: #ffffff;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
             border: 1px solid #e2e8f0;
             overflow: hidden;
         }
 
-        /* 銀行頂部標題欄顏色 */
+        /* ========== 銀行專屬標題欄顏色 已全部加好 ========== */
         .bank-header {
-            padding: 12px;
+            padding: 10px;
             text-align: center;
+            font-size: 16px;
+            font-weight: 700;
             color: #ffffff;
-            font-size: 19px;
-            font-weight: bold;
         }
-
-        /* 預設顏色，你可以自行替換 */
         .color-cimb     { background-color: #005baa; }
         .color-pbb      { background-color: #e21b23; }
         .color-rhb      { background-color: #f39c12; }
@@ -88,52 +84,51 @@
         .color-alrajhi  { background-color: #006039; }
         .color-uob      { background-color: #003d88; }
         .color-ocbc     { background-color: #ed1c24; }
-        .color-maybank  { background-color: #005baa; }
-        .color-mbsb     { background-color: #e21b23; }
+        .color-maybank  { background-color: #ed1b24; }
 
-        /* ========== 內容行樣式：全部同行不換行 ========== */
-        .bank-content {
-            padding: 15px;
+        /* ========== 內容區 ========== */
+        .policy-body {
+            padding: 14px 16px;
         }
 
         .policy-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 8px 0;
+            padding: 5px 0;
+            font-size: 12.5px;
             border-bottom: 1px solid #f1f5f9;
-            font-size: 14px;
             white-space: nowrap;
         }
 
-        .policy-name {
-            font-weight: 600;
-            color: #1e293b;
+        .policy-label {
+            color: #2c3e50;
+            font-weight: 500;
         }
 
         .policy-value {
-            font-weight: 600;
             color: #926600;
+            font-weight: 600;
             text-align: right;
         }
 
-        .update-info {
-            margin-top: 12px;
-            padding-top: 10px;
+        .update-footer {
+            margin-top: 10px;
+            padding-top: 8px;
             border-top: 1px dashed #e2e8f0;
-            font-size: 12px;
-            color: #64748b;
+            font-size: 11px;
+            color: #718096;
             text-align: right;
         }
 
-        /* ========== 手機自動適應 ========== */
-        @media screen and (max-width: 991px) {
-            .banks-container {
+        /* ========== 響應式調整 ========== */
+        @media(max-width: 992px) {
+            .banks-wrapper {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
-        @media screen and (max-width: 575px) {
-            .banks-container {
+        @media(max-width: 600px) {
+            .banks-wrapper {
                 grid-template-columns: 1fr;
             }
         }
@@ -141,63 +136,65 @@
 </head>
 <body>
 
-    <!-- 頁面頂部標題 -->
-    <div class="page-header">
+    <!-- 頂部標題 -->
+    <div class="top-bar">
         <h1>Bank Policy Database</h1>
         <p>Latest Financing Guidelines & Requirements</p>
     </div>
 
-    <!-- 銀行內容區域：下面你自己新增就好 -->
-    <div class="banks-container">
+    <!-- 銀行內容區 -->
+    <div class="banks-wrapper">
 
-        <!-- 範例模板，你複製這個結構填內容就可以 -->
+        <!-- ✅ 標準模板 直接複製即可 -->
         <div class="bank-card">
             <div class="bank-header color-cimb">CIMB</div>
-            <div class="bank-content">
+            <div class="policy-body">
                 <div class="policy-row">
-                    <span class="policy-name">PTPTN LATE PAYMENT</span>
+                    <span class="policy-label">PTPTN LATE PAYMENT</span>
                     <span class="policy-value">Need Restructure</span>
                 </div>
                 <div class="policy-row">
-                    <span class="policy-name">CLEAN CCRIS</span>
+                    <span class="policy-label">CLEAN CCRIS</span>
                     <span class="policy-value">Can proceed, Depends Scoring</span>
                 </div>
                 <div class="policy-row">
-                    <span class="policy-name">FIRST HOME 100% LOAN</span>
+                    <span class="policy-label">FIRST HOME 100% LOAN</span>
                     <span class="policy-value">Yes, Up to RM 1,000,000</span>
                 </div>
                 <div class="policy-row">
-                    <span class="policy-name">CTOS ISSUE</span>
+                    <span class="policy-label">CTOS ISSUE</span>
                     <span class="policy-value">No Problem, Can Proceed</span>
                 </div>
                 <div class="policy-row">
-                    <span class="policy-name">REFERRAL FEE</span>
+                    <span class="policy-label">REFERRAL FEE</span>
                     <span class="policy-value">No Commission</span>
                 </div>
                 <div class="policy-row">
-                    <span class="policy-name">LA FINANCING</span>
+                    <span class="policy-label">LA FINANCING</span>
                     <span class="policy-value">Allowed</span>
                 </div>
                 <div class="policy-row">
-                    <span class="policy-name">ZERO MOVING COST</span>
-                    <span class="policy-value">NO</span>
+                    <span class="policy-label">ZERO MOVING COST</span>
+                    <span class="policy-value">Not Available</span>
                 </div>
                 <div class="policy-row">
-                    <span class="policy-name">RENOVATION LOAN</span>
+                    <span class="policy-label">RENOVATION LOAN</span>
+                    <span class="policy-value">Not Provided</span>
+                </div>
+                <div class="policy-row">
+                    <span class="policy-label">MINIMUM INCOME</span>
                     <span class="policy-value">-</span>
                 </div>
-                 <div class="policy-row">
-                    <span class="policy-name">MINIMUM INCOME</span>
-                    <span class="policy-value">-</span>
-                </div>
-                <div class="update-info">Last Updated: 2026-05-20 22:33 by Admin</div>
+                <div class="update-footer">Last Updated: 2026-05-20 23:33 by Admin</div>
             </div>
         </div>
 
-        <!-- 你接下來的銀行都放在這裡，格式跟上面一模一樣 -->
+        <!-- 👇 其他銀行全部照這個格式新增就好，替換對應的 color-xxx 類別名即可 -->
 
     </div>
 
+</body>
+</html>
 </body>
 </html>
     <!-- Top Header -->
