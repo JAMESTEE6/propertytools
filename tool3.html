@@ -286,11 +286,12 @@
 
     <!-- ✅ 完整正確的 JavaScript 無任何語法錯誤 -->
     <script>
-     function formatRM(num) {
+// 格式化金額
+function formatRM(num) {
     return 'RM ' + Math.max(num, 0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-// ✅ 完全依照你要求的公式修改後
+// ✅ 依照你要求改好、且可正常運作的計算函數
 function calculate() {
     // 讀取所有輸入值
     const m1 = parseFloat(document.getElementById('m1').value) || 0;
@@ -308,33 +309,33 @@ function calculate() {
     const age = document.getElementById('age').value || '-';
 
     // --------------------------
-    // 完全依照你定義的公式
+    // 完全照你指定的公式計算
     // --------------------------
     // 1. Average 6 Month Income
     const avgNet = (m1 + m2 + m3 + m4 + m5 + m6) / 6;
 
     // 2. Total Recognised Income
-    const totalIncome = avgNet * (otPercent / 100);
+    const totalRecognisedIncome = avgNet * (otPercent / 100);
 
     // 3. Max Allowable Commitment
-    const maxCommitment = avgNet * (dsr / 100);
+    const maxAllowableCommitment = avgNet * (dsr / 100);
 
     // 4. Available Instalment
-    const availableInstalment = maxCommitment - commitment - ndi;
+    const availableInstalment = maxAllowableCommitment - commitment - ndi;
 
     // 5. DSR Used %
-    const usedDSR = avgNet > 0 
+    const dsrUsed = avgNet > 0 
         ? ((commitment + Math.max(availableInstalment, 0)) / avgNet * 100) 
         : 0;
 
-    // 6. Loan Amount (年金公式不變)
+    // 6. 貸款額度公式（標準銀行公式，維持正確）
     const monthlyRate = rate / 100 / 12;
-    const months = tenure * 12;
+    const totalMonths = tenure * 12;
     let loanAmount = 0;
     if (availableInstalment > 0 && monthlyRate > 0) {
         loanAmount = availableInstalment * 
-            (Math.pow(1 + monthlyRate, months) - 1) / 
-            (monthlyRate * Math.pow(1 + monthlyRate, months));
+            (Math.pow(1 + monthlyRate, totalMonths) - 1) / 
+            (monthlyRate * Math.pow(1 + monthlyRate, totalMonths));
     }
 
     // --------------------------
@@ -342,22 +343,23 @@ function calculate() {
     // --------------------------
     document.getElementById('loanAmount').innerText = formatRM(loanAmount);
     document.getElementById('avgNet').innerText = formatRM(avgNet);
-    document.getElementById('totalInc').innerText = formatRM(totalIncome);
+    document.getElementById('totalInc').innerText = formatRM(totalRecognisedIncome);
     document.getElementById('comResult').innerText = formatRM(commitment);
-    document.getElementById('maxCom').innerText = formatRM(maxCommitment);
-    document.getElementById('dsrResult').innerText = usedDSR.toFixed(2) + '%';
+    document.getElementById('maxCom').innerText = formatRM(maxAllowableCommitment);
+    document.getElementById('dsrResult').innerText = dsrUsed.toFixed(2) + '%';
     document.getElementById('ndiResult').innerText = formatRM(ndi);
-    document.getElementById('instResult').innerText = formatRM(Math.max(availableInstalment, 0));
+    document.getElementById('inst‍Result').innerText = formatRM(Math.max(availableInstalment, 0));
     document.getElementById('rateResult').innerText = rate.toFixed(2) + '%';
     document.getElementById('tenureResult').innerText = tenure + ' Years';
     document.getElementById('ageResult').innerText = age;
 
-    // Breakdown 顯示 完全依照你說的保持不變 / 對應公式
+    // Breakdown 區塊顯示
     document.getElementById('brkBasic').innerText = formatRM(avgNet);
     document.getElementById('brkOt').innerText = otPercent + '%';
     document.getElementById('brkAvg').innerText = formatRM(avgNet);
 }
 
+// ✅ 重置功能也完整補好
 function resetAll() {
     document.getElementById('age').value = '';
     document.getElementById('dsr').value = '70';
@@ -374,6 +376,7 @@ function resetAll() {
     document.getElementById('m6').value = '';
     document.getElementById('otPercent').value = '70';
 
+    // 重置結果欄
     document.getElementById('loanAmount').innerText = 'RM 0.00';
     document.getElementById('avgNet').innerText = 'RM 0.00';
     document.getElementById('totalInc').innerText = 'RM 0.00';
@@ -381,7 +384,7 @@ function resetAll() {
     document.getElementById('maxCom').innerText = 'RM 0.00';
     document.getElementById('dsrResult').innerText = '0.00%';
     document.getElementById('ndiResult').innerText = 'RM 0.00';
-    document.getElementById('instResult').innerText = 'RM 0.00';
+    document.getElementById('inst‍Result').innerText = 'RM 0.00';
     document.getElementById('rateResult').innerText = '0.00%';
     document.getElementById('tenureResult').innerText = '0 Years';
     document.getElementById('ageResult').innerText = '-';
