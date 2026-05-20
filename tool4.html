@@ -5,161 +5,161 @@
     <title>Bank Policy Database</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* 🔹 統一沿用你整套系統的樣式 */
+        /* ========== 基礎設定 ========== */
         * {
             box-sizing: border-box;
-            font-family: Arial, Helvetica, sans-serif !important;
+            font-family: 'Segoe UI', Roboto, Arial, sans-serif !important;
             margin: 0;
             padding: 0;
         }
         body {
-            background: #121a2b;
-            color: #ffffff;
-            padding: 20px;
+            background-color: #f8fafc;
+            color: #1e293b;
+            padding: 24px;
+            line-height: 1.6;
         }
         .container {
-            max-width: 1250px;
+            max-width: 1300px;
             margin: 0 auto;
         }
+
+        /* ========== 返回按鈕 ========== */
         .back-btn {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            background-color: #374151;
+            background-color: #334155;
             color: #ffffff;
-            padding: 8px 16px;
-            border-radius: 4px;
+            padding: 8px 18px;
+            border-radius: 6px;
             text-decoration: none;
             font-weight: 500;
             font-size: 14px;
-            margin-bottom: 24px;
+            margin-bottom: 28px;
             border: none;
+            transition: background 0.2s;
         }
         .back-btn:hover {
-            background-color: #1f2937;
+            background-color: #1e293b;
             color: #ffffff;
+            text-decoration: none;
         }
+
+        /* ========== 標題區 ========== */
         h1 {
             text-align: center;
-            font-size: 30px;
-            font-weight: bold;
-            color: #fcd34d;
+            font-size: 28px;
+            font-weight: 700;
+            color: #0f172a;
             margin-bottom: 8px;
         }
         .subtitle {
             text-align: center;
             font-size: 15px;
-            color: #cbd5e1;
-            margin-bottom: 32px;
+            color: #64748b;
+            margin-bottom: 36px;
         }
 
-        /* 銀行卡片網格布局 */
+        /* ========== 銀行卡片網格 ========== */
         .bank-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 25px;
+            gap: 24px;
         }
         .bank-card {
-            background: #1e293b;
-            border-radius: 8px;
-            border: 1px solid #334155;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border: 1px solid #e2e8f0;
             overflow: hidden;
+            transition: all 0.2s;
         }
+        .bank-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        /* ========== 卡片頂部 - 真實Logo ========== */
         .bank-header {
-            background: #0f172a;
-            padding: 16px;
+            background: #ffffff;
+            padding: 18px 20px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            border-bottom: 1px solid #334155;
+            gap: 14px;
+            border-bottom: 1px solid #e2e8f0;
         }
-        .bank-badge {
-            width: 36px;
-            height: 36px;
-            border-radius: 6px;
-            background: #3b82f6;
-            color: white;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
+        .bank-logo {
+            height: 42px;
+            width: auto;
+            object-fit: contain;
         }
-        .bank-name {
-            font-size: 18px;
-            font-weight: bold;
-            color: #ffffff;
+        .bank-info h2 {
+            font-size: 19px;
+            font-weight: 600;
+            color: #0f172a;
+            margin: 0;
         }
-        .policy-label {
+        .bank-info p {
             font-size: 12px;
-            color: #94a3b8;
-            margin-top: 2px;
+            color: #64748b;
+            margin: 1px 0 0 0;
         }
+
+        /* ========== 政策內容排版 ========== */
         .policy-list {
-            padding: 16px;
+            padding: 20px;
         }
         .policy-row {
             display: flex;
             justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #273549;
-            font-size: 14px;
+            align-items: center;
+            padding: 11px 0;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 14.5px;
+            gap: 12px;
         }
         .policy-row:last-child {
             border-bottom: none;
         }
         .policy-title {
-            color: #e2e8f0;
+            color: #334155;
             font-weight: 500;
+            text-align: left;
+            max-width: 65%;
         }
         .policy-value {
-            color: #fcd34d;
+            color: #b48608;
+            font-weight: 500;
             text-align: right;
-            max-width: 60%;
+            max-width: 35%;
         }
-        .updated-info {
-            margin-top: 12px;
-            font-size: 12px;
+        .update-time {
+            margin-top: 16px;
+            padding-top: 12px;
+            font-size: 12.5px;
             color: #94a3b8;
             text-align: right;
+            border-top: 1px dashed #f1f5f9;
         }
 
-        /* 🖨️ 列印設定：正式單頁A4 */
+        /* ========== 列印專用設定 ========== */
         @media print {
             @page {
                 size: A4 landscape;
-                margin: 10mm;
+                margin: 12mm;
             }
             body {
                 background: #fff !important;
-                color: #000 !important;
+                font-size: 12pt;
+                padding: 0;
             }
-            .back-btn {
-                display: none !important;
-            }
-            h1, .subtitle {
-                color: #000 !important;
-            }
+            .back-btn { display: none !important; }
             .bank-card {
-                background: transparent !important;
+                box-shadow: none !important;
                 border: 1px solid #ddd !important;
-            }
-            .bank-header {
-                background: #f3f4f6 !important;
-                border-bottom: 1px solid #ddd !important;
-            }
-            .bank-name {
-                color: #000 !important;
-            }
-            .policy-title {
-                color: #333 !important;
+                page-break-inside: avoid !important;
             }
             .policy-value {
                 color: #000 !important;
-                font-weight: 500;
-            }
-            .policy-row {
-                border-bottom: 1px solid #eee !important;
             }
         }
     </style>
@@ -174,149 +174,168 @@
         </a>
 
         <h1>BANK POLICY DATABASE</h1>
-        <p class="subtitle">Latest Updated Financing Guidelines for Major Banks</p>
+        <p class="subtitle">Latest Financing Guidelines & Requirements</p>
 
         <div class="bank-grid">
 
-            <!-- ✅ CIMB -->
+            <!-- ✅ CIMB BANK -->
             <div class="bank-card">
                 <div class="bank-header">
-                    <div class="bank-badge" style="background-color: #005b9f;">C</div>
-                    <div>
-                        <div class="bank-name">CIMB</div>
-                        <div class="policy-label">Bank Policy</div>
+                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/7/75/CIMB_Group_logo.svg/220px-CIMB_Group_logo.svg.png" alt="CIMB Logo" class="bank-logo">
+                    <div class="bank-info">
+                        <h2>CIMB</h2>
+                        <p>Bank Policy</p>
                     </div>
                 </div>
                 <div class="policy-list">
                     <div class="policy-row">
-                        <div class="policy-title">PTPTN LATE PAYMENT</div>
-                        <div class="policy-value">Need Restructure</div>
+                        <span class="policy-title">PTPTN LATE PAYMENT</span>
+                        <span class="policy-value">Need Restructure</span>
                     </div>
                     <div class="policy-row">
-                        <div class="policy-title">CLEAN CCRIS</div>
-                        <div class="policy-value">Can proceed, Depends Scoring</div>
+                        <span class="policy-title">CLEAN CCRIS</span>
+                        <span class="policy-value">Can proceed, Depends Scoring</span>
                     </div>
                     <div class="policy-row">
-                        <div class="policy-title">FIRST HOME 100% LOAN PACKAGE</div>
-                        <div class="policy-value">Yes, Up to 1 Million</div>
+                        <span class="policy-title">FIRST HOME 100% LOAN PACKAGE</span>
+                        <span class="policy-value">Yes, Up to 1 Million</span>
                     </div>
                     <div class="policy-row">
-                        <div class="policy-title">CTOS ISSUE</div>
-                        <div class="policy-value">Can Proceed, No Issue</div>
+                        <span class="policy-title">CTOS ISSUE</span>
+                        <span class="policy-value">Can Proceed, No Issue</span>
                     </div>
                     <div class="policy-row">
-                        <div class="policy-title">REFERRAL FEES</div>
-                        <div class="policy-value">No Referral</div>
+                        <span class="policy-title">REFERRAL FEES</span>
+                        <span class="policy-value">No Referral</span>
                     </div>
                     <div class="policy-row">
-                        <div class="policy-title">LA FINANCE</div>
-                        <div class="policy-value">Can Finance</div>
+                        <span class="policy-title">LA FINANCE</span>
+                        <span class="policy-value">Can Finance</span>
                     </div>
                     <div class="policy-row">
-                        <div class="policy-title">ZERO MOVING COST</div>
-                        <div class="policy-value">NO</div>
+                        <span class="policy-title">ZERO MOVING COST</span>
+                        <span class="policy-value">NO</span>
                     </div>
                     <div class="policy-row">
-                        <div class="policy-title">RENOVATION LOAN</div>
-                        <div class="policy-value">-</div>
+                        <span class="policy-title">RENOVATION LOAN</span>
+                        <span class="policy-value">-</span>
                     </div>
-                    <div class="updated-info">LAST UPDATED: 2026-05-20 by Admin</div>
+                    <div class="update-time" id="updateCimb"></div>
                 </div>
             </div>
 
             <!-- ✅ PUBLIC BANK -->
             <div class="bank-card">
                 <div class="bank-header">
-                    <div class="bank-badge" style="background-color: #ed1c24;">PBB</div>
-                    <div>
-                        <div class="bank-name">Public Bank</div>
-                        <div class="policy-label">Bank Policy</div>
+                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/8d/Public_Bank_logo.svg/220px-Public_Bank_logo.svg.png" alt="Public Bank Logo" class="bank-logo">
+                    <div class="bank-info">
+                        <h2>Public Bank</h2>
+                        <p>Bank Policy</p>
                     </div>
                 </div>
                 <div class="policy-list">
                     <div class="policy-row">
-                        <div class="policy-title">PTPTN LATE PAYMENT</div>
-                        <div class="policy-value">Need Restructure</div>
+                        <span class="policy-title">PTPTN LATE PAYMENT</span>
+                        <span class="policy-value">Need Restructure</span>
                     </div>
                     <div class="policy-row">
-                        <div class="policy-title">CLEAN CCRIS</div>
-                        <div class="policy-value">Can proceed, Depends Scoring</div>
+                        <span class="policy-title">CLEAN CCRIS</span>
+                        <span class="policy-value">Can proceed, Depends Scoring</span>
                     </div>
                     <div class="policy-row">
-                        <div class="policy-title">FIRST HOME 100% LOAN PACKAGE</div>
-                        <div class="policy-value">Yes, Up to 500k</div>
+                        <span class="policy-title">FIRST HOME 100% LOAN PACKAGE</span>
+                        <span class="policy-value">Yes, Up to 500k</span>
                     </div>
                     <div class="policy-row">
-                        <div class="policy-title">CTOS ISSUE</div>
-                        <div class="policy-value">Need to do Settlement First</div>
+                        <span class="policy-title">CTOS ISSUE</span>
+                        <span class="policy-value">Need to do Settlement First</span>
                     </div>
                     <div class="policy-row">
-                        <div class="policy-title">REFERRAL FEES</div>
-                        <div class="policy-value">No Referral</div>
+                        <span class="policy-title">REFERRAL FEES</span>
+                        <span class="policy-value">No Referral</span>
                     </div>
                     <div class="policy-row">
-                        <div class="policy-title">LA FINANCE</div>
-                        <div class="policy-value">Can Finance</div>
+                        <span class="policy-title">LA FINANCE</span>
+                        <span class="policy-value">Can Finance</span>
                     </div>
                     <div class="policy-row">
-                        <div class="policy-title">ZERO MOVING COST</div>
-                        <div class="policy-value">NO</div>
+                        <span class="policy-title">ZERO MOVING COST</span>
+                        <span class="policy-value">NO</span>
                     </div>
                     <div class="policy-row">
-                        <div class="policy-title">RENOVATION LOAN</div>
-                        <div class="policy-value">Yes</div>
+                        <span class="policy-title">RENOVATION LOAN</span>
+                        <span class="policy-value">Yes</span>
                     </div>
-                    <div class="updated-info">LAST UPDATED: 2026-05-20 by Admin</div>
+                    <div class="update-time" id="updatePbb"></div>
                 </div>
             </div>
 
             <!-- ✅ RHB BANK -->
             <div class="bank-card">
                 <div class="bank-header">
-                    <div class="bank-badge" style="background-color: #f59e0b;">RHB</div>
-                    <div>
-                        <div class="bank-name">RHB Bank</div>
-                        <div class="policy-label">Bank Policy</div>
+                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/9/99/RHB_Bank_logo.svg/220px-RHB_Bank_logo.svg.png" alt="RHB Bank Logo" class="bank-logo">
+                    <div class="bank-info">
+                        <h2>RHB Bank</h2>
+                        <p>Bank Policy</p>
                     </div>
                 </div>
                 <div class="policy-list">
                     <div class="policy-row">
-                        <div class="policy-title">PTPTN LATE PAYMENT</div>
-                        <div class="policy-value">No Need Restructure</div>
+                        <span class="policy-title">PTPTN LATE PAYMENT</span>
+                        <span class="policy-value">No Need Restructure</span>
                     </div>
                     <div class="policy-row">
-                        <div class="policy-title">CLEAN CCRIS</div>
-                        <div class="policy-value">Can Proceed - With Tnc 5% Saving based on SPA Price</div>
+                        <span class="policy-title">CLEAN CCRIS</span>
+                        <span class="policy-value">Can Proceed - With Tnc 5% Saving based on SPA Price</span>
                     </div>
                     <div class="policy-row">
-                        <div class="policy-title">FIRST HOME 100% LOAN PACKAGE</div>
-                        <div class="policy-value">Yes, Up to 1 Million</div>
+                        <span class="policy-title">FIRST HOME 100% LOAN PACKAGE</span>
+                        <span class="policy-value">Yes, Up to 1 Million</span>
                     </div>
                     <div class="policy-row">
-                        <div class="policy-title">CTOS ISSUE</div>
-                        <div class="policy-value">Need to do Settlement First</div>
+                        <span class="policy-title">CTOS ISSUE</span>
+                        <span class="policy-value">Need to do Settlement First</span>
                     </div>
                     <div class="policy-row">
-                        <div class="policy-title">REFERRAL FEES</div>
-                        <div class="policy-value">0.2 if u pass back lms Staff</div>
+                        <span class="policy-title">REFERRAL FEES</span>
+                        <span class="policy-value">0.2 if u pass back lms Staff</span>
                     </div>
                     <div class="policy-row">
-                        <div class="policy-title">LA FINANCE</div>
-                        <div class="policy-value">Can Finance</div>
+                        <span class="policy-title">LA FINANCE</span>
+                        <span class="policy-value">Can Finance</span>
                     </div>
                     <div class="policy-row">
-                        <div class="policy-title">ZERO MOVING COST</div>
-                        <div class="policy-value">NO</div>
+                        <span class="policy-title">ZERO MOVING COST</span>
+                        <span class="policy-value">NO</span>
                     </div>
                     <div class="policy-row">
-                        <div class="policy-title">RENOVATION LOAN</div>
-                        <div class="policy-value">Yes</div>
+                        <span class="policy-title">RENOVATION LOAN</span>
+                        <span class="policy-value">Yes</span>
                     </div>
-                    <div class="updated-info">LAST UPDATED: 2026-05-20 by Admin</div>
+                    <div class="update-time" id="updateRhb"></div>
                 </div>
             </div>
 
         </div>
     </div>
+
+    <script>
+        // ✅ 自動即時更新 LAST UPDATED 時間
+        function getCurrentDateTime() {
+            const now = new Date();
+            const date = now.toISOString().slice(0, 10);
+            const time = now.toTimeString().slice(0, 5);
+            return `Last Updated: ${date} ${time} by Admin`;
+        }
+
+        function setUpdateTime() {
+            const text = getCurrentDateTime();
+            document.getElementById('updateCimb').textContent = text;
+            document.getElementById('updatePbb').textContent = text;
+            document.getElementById('updateRhb').textContent = text;
+        }
+
+        window.onload = setUpdateTime;
+    </script>
 </body>
 </html>
