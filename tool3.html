@@ -5,7 +5,7 @@
     <title>Eligibility Check Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* ✅ 統一回上按鈕 */
+        /* ========== 統一回上按鈕 ========== */
         .back-btn {
             display: inline-flex;
             align-items: center;
@@ -28,7 +28,7 @@
             height: 16px;
         }
 
-        /* ✅ 整體配色：深底 + 金色重點 */
+        /* ========== 整體樣式 ========== */
         * {
             box-sizing: border-box;
             font-family: Arial, Helvetica, sans-serif;
@@ -41,7 +41,7 @@
             padding: 20px;
         }
         .container {
-            max-width: 520px;
+            max-width: 1200px;
             margin: 0 auto;
         }
         h1 {
@@ -58,11 +58,19 @@
             margin-bottom: 32px;
         }
 
-        /* ✅ 區塊樣式 */
+        /* ========== 左右佈局 ========== */
+        .grid-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            align-items: start;
+        }
+
+        /* ========== 區塊樣式 ========== */
         .section {
             background: #1e293b;
             border-radius: 12px;
-            padding: 20px;
+            padding: 24px;
             margin-bottom: 20px;
             border: 1px solid #334155;
         }
@@ -70,7 +78,7 @@
             color: #fbbf24;
             font-size: 20px;
             font-weight: bold;
-            margin-bottom: 16px;
+            margin-bottom: 18px;
         }
         .form-row {
             margin-bottom: 16px;
@@ -83,19 +91,30 @@
         }
         input, select {
             width: 100%;
-            padding: 12px;
+            padding: 12px 14px;
             background: #0f172a;
             border: 1px solid #475569;
             border-radius: 8px;
             color: #fff;
             font-size: 15px;
         }
+        input::placeholder {
+            color: #64748b;
+            opacity: 0.7;
+        }
         input:focus, select:focus {
             outline: none;
             border-color: #fbbf24;
         }
 
-        /* ✅ 按鈕 */
+        /* ========== 6個月輸入 ========== */
+        .month-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        /* ========== 按鈕 ========== */
         .btn-calculate {
             width: 100%;
             background: linear-gradient(90deg, #fbbf24, #d97706);
@@ -123,38 +142,34 @@
             color: #94a3b8;
             text-align: center;
             margin-top: 12px;
+            line-height: 1.5;
         }
 
-        /* ✅ 結果區 */
-        .result-card {
-            background: #1e293b;
-            border-radius: 12px;
-            padding: 20px;
-            border: 1px solid #334155;
-        }
+        /* ========== 結果區 ========== */
         .result-main {
             text-align: center;
             background: #27272a;
             border: 1px solid #fbbf24;
             border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
+            padding: 24px;
+            margin-bottom: 24px;
         }
         .result-main .label {
-            font-size: 15px;
+            font-size: 16px;
             color: #cbd5e1;
         }
         .result-main .value {
-            font-size: 32px;
+            font-size: 36px;
             font-weight: bold;
             color: #fcd34d;
-            margin-top: 8px;
+            margin-top: 10px;
         }
         .result-row {
             display: flex;
             justify-content: space-between;
-            padding: 10px 0;
+            padding: 12px 0;
             border-bottom: 1px solid #273549;
+            font-size: 15px;
         }
         .result-row .right {
             font-weight: 500;
@@ -162,7 +177,8 @@
         }
         .breakdown h3 {
             color: #fbbf24;
-            margin: 20px 0 10px;
+            margin: 24px 0 12px;
+            font-size: 18px;
         }
     </style>
 </head>
@@ -178,166 +194,196 @@
 
         <!-- 📌 標題 -->
         <h1>Eligibility Check Pro</h1>
-        <p class="subtitle">Single Loan · Salary Calculation · DSR + NDI</p>
+        <p class="subtitle">Single Loan · 6-Month Average · DSR + NDI Calculation</p>
 
-        <!-- ⚙️ 貸款設定 -->
-        <div class="section">
-            <h2>Single Loan Application Setup</h2>
-            <div class="form-row">
-                <label>Application Type</label>
-                <input type="text" value="Single Loan" readonly>
-            </div>
-            <div class="form-row">
-                <label>Customer Age</label>
-                <input type="number" id="age" placeholder="e.g. 30" min="18" max="70">
-            </div>
-        </div>
-
-        <div class="section">
-            <h2>Loan Rule</h2>
-            <div class="form-row">
-                <label>DSR Limit (%)</label>
-                <input type="number" id="dsr" value="70" placeholder="e.g. 70">
-            </div>
-            <div class="form-row">
-                <label>Required NDI / MDI (RM)</label>
-                <input type="number" id="ndi" value="1100" placeholder="e.g. 1100">
-            </div>
-            <div class="form-row">
-                <label>Total Existing Commitment (RM)</label>
-                <input type="number" id="commitment" value="0" placeholder="e.g. 1200">
-            </div>
-            <div class="form-row">
-                <label>Interest Rate (%)</label>
-                <input type="number" step="0.01" id="rate" value="4.20" placeholder="e.g. 4.20">
-            </div>
-            <div class="form-row">
-                <label>Tenure (Years)</label>
-                <input type="number" id="tenure" value="35" min="1" max="35">
-            </div>
-        </div>
-
-        <div class="section">
-            <h2>Applicant Details</h2>
-            <div class="form-row">
-                <label>Income Type</label>
-                <select id="incomeType">
-                    <option value="salary">Salary</option>
-                    <option value="ssm">SSM / Business</option>
-                </select>
-            </div>
-            <div class="form-row">
-                <label>Basic Salary / Month (RM)</label>
-                <input type="number" id="basic" placeholder="e.g. 2850">
-            </div>
-            <div class="form-row">
-                <label>OT / Variable Allowance (RM)</label>
-                <input type="number" id="ot" value="0" placeholder="e.g. 800">
-            </div>
-            <div class="form-row">
-                <label>OT / Variable Recognition (%)</label>
-                <input type="number" id="otPercent" value="70" placeholder="e.g. 70">
-            </div>
-
-            <button class="btn-calculate" onclick="calculate()">Calculate Eligibility</button>
-            <button class="btn-reset" onclick="resetAll()">Reset</button>
-            <p class="formula">Formula: Recognised Income × DSR% - Commitment - NDI = Available Instalment</p>
-        </div>
-
-        <!-- 📊 結果顯示 -->
-        <div class="result-card" id="resultArea" style="display: none;">
-            <div class="result-main">
-                <div class="label">Accessible Loan Amount</div>
-                <div class="value" id="loanAmount">RM 0.00</div>
-            </div>
-
-            <div class="result-row">
-                <span>Application Type</span>
-                <span class="right">Single Loan</span>
-            </div>
-            <div class="result-row">
-                <span>Recognised Income</span>
-                <span class="right" id="incResult">RM 0.00</span>
-            </div>
-            <div class="result-row">
-                <span>Total Existing Commitment</span>
-                <span class="right" id="comResult">RM 0.00</span>
-            </div>
-            <div class="result-row">
-                <span>Max Allowable Commitment</span>
-                <span class="right" id="maxComResult">RM 0.00</span>
-            </div>
-            <div class="result-row">
-                <span>DSR Used</span>
-                <span class="right" id="dsrResult">0%</span>
-            </div>
-            <div class="result-row">
-                <span>Required NDI / MDI</span>
-                <span class="right" id="ndiResult">RM 0.00</span>
-            </div>
-            <div class="result-row">
-                <span>Available Instalment</span>
-                <span class="right" id="instResult">RM 0.00</span>
-            </div>
-            <div class="result-row">
-                <span>Interest Rate Used</span>
-                <span class="right" id="rateResult">0%</span>
-            </div>
-            <div class="result-row">
-                <span>Tenure Used</span>
-                <span class="right" id="tenureResult">0 Years</span>
-            </div>
-            <div class="result-row">
-                <span>Customer Age</span>
-                <span class="right" id="ageResult">-</span>
-            </div>
-
-            <div class="breakdown">
-                <h3>Breakdown</h3>
-                <div class="result-row">
-                    <span>Basic Salary Used</span>
-                    <span class="right" id="brkBasic">RM 0.00</span>
+        <div class="grid-layout">
+            <!-- 📥 左邊：輸入資料 -->
+            <div>
+                <div class="section">
+                    <h2>Application Setup</h2>
+                    <div class="form-row">
+                        <label>Application Type</label>
+                        <input type="text" value="Single Loan" readonly>
+                    </div>
+                    <div class="form-row">
+                        <label>Customer Age</label>
+                        <input type="number" id="age" placeholder="eg: 30" min="18" max="70">
+                    </div>
                 </div>
-                <div class="result-row">
-                    <span>Recognised OT / Allowance</span>
-                    <span class="right" id="brkOt">RM 0.00</span>
+
+                <div class="section">
+                    <h2>Loan Rule</h2>
+                    <div class="form-row">
+                        <label>DSR Limit (%)</label>
+                        <input type="number" id="dsr" placeholder="eg: 70">
+                    </div>
+                    <div class="form-row">
+                        <label>Required NDI / MDI (RM)</label>
+                        <input type="number" id="ndi" placeholder="eg: 1100">
+                    </div>
+                    <div class="form-row">
+                        <label>Total Existing Commitment (RM)</label>
+                        <input type="number" id="commitment" placeholder="eg: 1200">
+                    </div>
+                    <div class="form-row">
+                        <label>Interest Rate (%)</label>
+                        <input type="number" step="0.01" id="rate" placeholder="eg: 4.00">
+                    </div>
+                    <div class="form-row">
+                        <label>Tenure (Years)</label>
+                        <input type="number" id="tenure" placeholder="eg: 35" min="1" max="35">
+                    </div>
                 </div>
-                <div class="result-row">
-                    <span>Total Recognised Income</span>
-                    <span class="right" id="brkTotal">RM 0.00</span>
+
+                <div class="section">
+                    <h2>Applicant Income</h2>
+                    <div class="form-row">
+                        <label>Income Type</label>
+                        <select id="incomeType">
+                            <option value="salary">Salary</option>
+                            <option value="ssm">SSM / Business</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <label>6 Months Net Salary (RM)</label>
+                        <div class="month-grid">
+                            <input type="number" id="m1" placeholder="Month 1 eg: 2800">
+                            <input type="number" id="m2" placeholder="Month 2 eg: 2850">
+                            <input type="number" id="m3" placeholder="Month 3 eg: 2800">
+                            <input type="number" id="m4" placeholder="Month 4 eg: 2900">
+                            <input type="number" id="m5" placeholder="Month 5 eg: 2850">
+                            <input type="number" id="m6" placeholder="Month 6 eg: 2950">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <label>Basic Salary / Month (RM)</label>
+                        <input type="number" id="basic" placeholder="eg: 2850">
+                    </div>
+                    <div class="form-row">
+                        <label>OT / Variable Recognition (%)</label>
+                        <input type="number" id="otPercent" placeholder="eg: 70">
+                    </div>
+
+                    <button class="btn-calculate" onclick="calculate()">Calculate Eligibility</button>
+                    <button class="btn-reset" onclick="resetAll()">Reset</button>
+                    <p class="formula">Formula: Avg Net Income × DSR% - Commitment - Required NDI = Available Instalment</p>
+                </div>
+            </div>
+
+            <!-- 📊 右邊：即時結果 -->
+            <div>
+                <div class="section">
+                    <h2>Eligibility Result</h2>
+                    <div class="result-main">
+                        <div class="label">Accessible Loan Amount</div>
+                        <div class="value" id="loanAmount">RM 0.00</div>
+                    </div>
+
+                    <div class="result-row">
+                        <span>Application Type</span>
+                        <span class="right">Single Loan</span>
+                    </div>
+                    <div class="result-row">
+                        <span>Average 6-Month Net Income</span>
+                        <span class="right" id="avgNet">RM 0.00</span>
+                    </div>
+                    <div class="result-row">
+                        <span>Total Recognised Income</span>
+                        <span class="right" id="totalInc">RM 0.00</span>
+                    </div>
+                    <div class="result-row">
+                        <span>Total Existing Commitment</span>
+                        <span class="right" id="comResult">RM 0.00</span>
+                    </div>
+                    <div class="result-row">
+                        <span>Max Allowable Commitment</span>
+                        <span class="right" id="maxCom">RM 0.00</span>
+                    </div>
+                    <div class="result-row">
+                        <span>DSR Used</span>
+                        <span class="right" id="dsrResult">0%</span>
+                    </div>
+                    <div class="result-row">
+                        <span>Required NDI / MDI</span>
+                        <span class="right" id="ndiResult">RM 0.00</span>
+                    </div>
+                    <div class="result-row">
+                        <span>Available Instalment</span>
+                        <span class="right" id="instResult">RM 0.00</span>
+                    </div>
+                    <div class="result-row">
+                        <span>Interest Rate Used</span>
+                        <span class="right" id="rateResult">0.00%</span>
+                    </div>
+                    <div class="result-row">
+                        <span>Tenure Used</span>
+                        <span class="right" id="tenureResult">0 Years</span>
+                    </div>
+                    <div class="result-row">
+                        <span>Customer Age</span>
+                        <span class="right" id="ageResult">-</span>
+                    </div>
+
+                    <div class="breakdown">
+                        <h3>Breakdown</h3>
+                        <div class="result-row">
+                            <span>Basic Salary Used</span>
+                            <span class="right" id="brkBasic">RM 0.00</span>
+                        </div>
+                        <div class="result-row">
+                            <span>Recognised OT / Allowance</span>
+                            <span class="right" id="brkOt">RM 0.00</span>
+                        </div>
+                        <div class="result-row">
+                            <span>6-Month Average Net</span>
+                            <span class="right" id="brkAvg">RM 0.00</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // 格式化數字
+        // 格式化金額
         function formatRM(num) {
             return 'RM ' + num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
 
-        // 計算貸款額度
+        // 計算主程式
         function calculate() {
+            // 讀取所有值
+            const m1 = parseFloat(document.getElementById('m1').value) || 0;
+            const m2 = parseFloat(document.getElementById('m2').value) || 0;
+            const m3 = parseFloat(document.getElementById('m3').value) || 0;
+            const m4 = parseFloat(document.getElementById('m4').value) || 0;
+            const m5 = parseFloat(document.getElementById('m5').value) || 0;
+            const m6 = parseFloat(document.getElementById('m6').value) || 0;
             const basic = parseFloat(document.getElementById('basic').value) || 0;
-            const ot = parseFloat(document.getElementById('ot').value) || 0;
             const otPercent = parseFloat(document.getElementById('otPercent').value) || 0;
-            const dsr = parseFloat(document.getElementById('dsr').value) || 70;
-            const ndi = parseFloat(document.getElementById('ndi').value) || 1100;
+            const dsr = parseFloat(document.getElementById('dsr').value) || 0;
+            const ndi = parseFloat(document.getElementById('ndi').value) || 0;
             const commitment = parseFloat(document.getElementById('commitment').value) || 0;
-            const rate = parseFloat(document.getElementById('rate').value) || 4.2;
-            const tenure = parseFloat(document.getElementById('tenure').value) || 35;
-            const age = parseInt(document.getElementById('age').value) || '-';
+            const rate = parseFloat(document.getElementById('rate').value) || 0;
+            const tenure = parseFloat(document.getElementById('tenure').value) || 0;
+            const age = document.getElementById('age').value || '-';
 
-            // 可承認收入
-            const recognisedOt = ot * (otPercent / 100);
+            // 計算6個月平均收入
+            const avgNet = (m1 + m2 + m3 + m4 + m5 + m6) / 6;
+
+            // 計算承認收入
+            const otAmount = Math.max(0, avgNet - basic);
+            const recognisedOt = otAmount * (otPercent / 100);
             const totalIncome = basic + recognisedOt;
 
-            // DSR 計算
+            // DSR與額度計算
             const maxCommitment = totalIncome * (dsr / 100);
             const availableInstalment = maxCommitment - commitment - ndi;
-            const usedDSR = totalIncome > 0 ? ((commitment + Math.max(availableInstalment,0)) / totalIncome * 100) : 0;
+            const usedDSR = totalIncome > 0 ? ((commitment + Math.max(availableInstalment, 0)) / totalIncome * 100) : 0;
 
-            // 貸款金額公式
+            // 貸款額度公式
             const monthlyRate = rate / 100 / 12;
             const months = tenure * 12;
             let loanAmount = 0;
@@ -345,36 +391,4 @@
                 loanAmount = availableInstalment * (Math.pow(1 + monthlyRate, months) - 1) / (monthlyRate * Math.pow(1 + monthlyRate, months));
             }
 
-            // 顯示結果
-            document.getElementById('loanAmount').innerText = formatRM(Math.max(loanAmount, 0));
-            document.getElementById('incResult').innerText = formatRM(totalIncome);
-            document.getElementById('comResult').innerText = formatRM(commitment);
-            document.getElementById('maxComResult').innerText = formatRM(maxCommitment);
-            document.getElementById('dsrResult').innerText = usedDSR.toFixed(1) + '%';
-            document.getElementById('ndiResult').innerText = formatRM(ndi);
-            document.getElementById('instResult').innerText = formatRM(Math.max(availableInstalment, 0));
-            document.getElementById('rateResult').innerText = rate.toFixed(2) + '%';
-            document.getElementById('tenureResult').innerText = tenure + ' Years';
-            document.getElementById('ageResult').innerText = age;
-
-            document.getElementById('brkBasic').innerText = formatRM(basic);
-            document.getElementById('brkOt').innerText = formatRM(recognisedOt);
-            document.getElementById('brkTotal').innerText = formatRM(totalIncome);
-
-            document.getElementById('resultArea').style.display = 'block';
-        }
-
-        // 重置
-        function resetAll() {
-            document.querySelectorAll('input').forEach(i => i.value = '');
-            document.getElementById('dsr').value = 70;
-            document.getElementById('ndi').value = 1100;
-            document.getElementById('commitment').value = 0;
-            document.getElementById('rate').value = 4.20;
-            document.getElementById('tenure').value = 35;
-            document.getElementById('otPercent').value = 70;
-            document.getElementById('resultArea').style.display = 'none';
-        }
-    </script>
-</body>
-</html>
+            // 填入結果
