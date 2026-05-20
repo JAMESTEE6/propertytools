@@ -312,7 +312,9 @@
             const totalIncome = basic + recognisedOt;
             const maxCommitment = avgNet * (dsr / 100);
             const availableInstalment = maxCommitment - commitment - ndi;
-            const usedDSR = totalIncome > 0 ? ((commitment + Math.max(availableInstalment, 0)) / totalIncome * 100) : 0;
+            const usedDSR = = avgNet > 0 
+        ? ((commitment + Math.max(availableInstalment, 0)) / avgNet * 100) 
+        : 0;
 
             const monthlyRate = rate / 100 / 12;
             const months = tenure * 12;
