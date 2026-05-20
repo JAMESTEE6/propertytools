@@ -250,71 +250,37 @@
             height: 16px;
             border: none !important;
         }
-/* ========== 專門用於列印的設定 - 完全符合你的要求 ========== */
+/* ========== 最基本列印設定 ========== */
 @media print {
-    /* A4標準尺寸 + 最佳邊距，最大化可用空間 */
     @page {
         size: A4;
-        margin: 8mm !important; /* 邊距剛好，不會裁切內容 */
+        margin: 8mm;
     }
 
-    /* 全局重置：列印基礎設定 */
     html, body {
-        margin: 0 !important;
-        padding: 0 !important;
-        width: 100% !important;
-        background: #ffffff !important;
-        color: #000000 !important;
-        font-size: 11px !important; /* 稍微縮小字體，節省空間 */
-        line-height: 1.4 !important; /* 緊湊行高，避免內容過長 */
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
+        margin: 0;
+        padding: 0;
+        background: #fff;
+        font-size: 11.5px;
     }
 
-    /* ✅ 1. 只顯示右邊預覽區，其餘全部隱藏 */
-    .container > a,
-    .container > h1,
-    .card:first-child,
-    .btn-group,
-    button,
-    .back-btn {
-        display: none !important;
+    /* ✅ 只顯示預覽區，其他全部隱藏 */
+    .back-btn, h1, .card:first-child, button {
+        display: none;
     }
 
-    /* ✅ 2. 移除所有邊框、背景、陰影，只保留內容 */
-    .card,
-    .form-preview {
-        border: none !important;
-        box-shadow: none !important;
-        background: transparent !important;
-        padding: 0 !important;
-        margin: 0 !important;
-        width: 100% !important;
-        min-height: auto !important;
+    /* ✅ 移除所有邊框、背景、陰影 */
+    .card, .form-preview {
+        border: none;
+        box-shadow: none;
+        background: transparent;
+        padding: 0;
+        margin: 0;
     }
 
-    /* ✅ 3. 強制所有內容不分頁、不被切斷 */
-    .form-preview,
-    .terms,
-    .sign-area {
-        page-break-inside: avoid !important;
-        break-inside: avoid !important;
-    }
-
-    /* 調整簽名區位置，確保剛好在頁面底部 */
-    .sign-area {
-        margin-top: 25px !important;
-        display: flex !important;
-        justify-content: space-between !important;
-        width: 100% !important;
-    }
-
-    /* 保留底線格式，方便填寫 */
-    .row-item {
-        border-bottom: 1px solid #000 !important;
-    }
-    .sign-col {
-        border-top: 1px solid #000 !important;
+    /* ✅ 強制所有內容在同一頁不分開 */
+    .form-preview, .terms, .sign-area {
+        page-break-inside: avoid;
     }
 }
     </style>
