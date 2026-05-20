@@ -53,15 +53,33 @@ p {
     color: #7f8c8d;
     font-size: 14px;
 }
+/* 🔹 只改這一段，其他 100% 保留你原本的所有設定 */
 .back-btn {
-    display: inline-block;
-    margin: 20px 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background-color: #374151;
+    color: #ffffff !important; /* 強制白色，蓋掉藍色 */
     padding: 8px 16px;
-    background: #2980b9;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 6px;
+    border-radius: 4px;
+    text-decoration: none !important;
+    font-weight: 500;
+    font-size: 14px;
+    margin-bottom: 30px;
 }
+.back-btn:hover {
+    background-color: #1f2937;
+    color: #ffffff !important;
+}
+.back-btn svg {
+    stroke: #ffffff;
+    width: 16px;
+    height: 16px;
+}
+
+/* 🔹 再加 2 行，只隱藏多餘的重複項目，不刪程式、不改表單 */
+.container > a:nth-child(2) { display: none !important; }
+.container > h1:nth-child(3) { display: none !important; }
 .back-btn:hover {
     background: #1f618d;
 }
