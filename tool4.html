@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bank Policy Database</title>
     <style>
-        /* ========== 全局重置 ========== */
+        /* ========== 全局基礎設定 ========== */
         * {
             margin: 0;
             padding: 0;
@@ -13,7 +13,6 @@
             font-family: 'Segoe UI', Arial, sans-serif;
         }
 
-        /* ========== 整體背景 ========== */
         body {
             background-color: #ffffff;
             line-height: 1.6;
@@ -23,10 +22,8 @@
         .top-section {
             background-color: #bfff00;
             padding: 30px 20px 40px;
-            position: relative;
         }
 
-        /* 返回按鈕 */
         .back-btn {
             background-color: #0a2463;
             color: #ffffff;
@@ -41,13 +38,12 @@
             margin-bottom: 35px;
         }
 
-        /* 標題 */
         .page-title {
             text-align: center;
             color: #000000;
         }
         .page-title h1 {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 700;
             margin-bottom: 4px;
         }
@@ -56,18 +52,18 @@
             opacity: 0.85;
         }
 
-        /* ========== 銀行卡片排版 - 3列整齊並排 ========== */
+        /* ========== 排版：3列排列，自動換行，21個框整齊排列 ========== */
         .banks-container {
             max-width: 1600px;
-            margin: -20px auto 50px;
+            margin: -20px auto 60px;
             padding: 0 20px;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 25px;
+            gap: 28px;
             align-items: start;
         }
 
-        /* ========== 單張銀行卡片 ========== */
+        /* ========== 銀行卡片樣式 ========== */
         .bank-card {
             background-color: #ffffff;
             border-radius: 8px;
@@ -76,14 +72,10 @@
             width: 100%;
         }
 
-        /* 銀行標題欄 */
         .bank-header {
             padding: 16px 20px;
             color: #ffffff;
             font-weight: bold;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
         }
         .bank-name {
             font-size: 20px;
@@ -94,34 +86,34 @@
             opacity: 0.9;
         }
 
-        /* 所有銀行專屬顏色 全部設好 */
-        .color-cimb     { background-color: #002b5c; }
-        .color-pbb      { background-color: #006659; }
-        .color-rhb      { background-color: #e21b23; }
-        .color-hlb      { background-color: #007a3d; }
-        .color-alliance { background-color: #0073ce; }
-        .color-ambank   { background-color: #004a99; }
-        .color-affin    { background-color: #004b93; }
-        .color-islam    { background-color: #009640; }
-        .color-rakyat   { background-color: #d31145; }
-        .color-muamalat { background-color: #006747; }
-        .color-mbsb     { background-color: #004795; }
-        .color-bsn      { background-color: #003b7e; }
-        .color-agro     { background-color: #002f6c; }
-        .color-hsbc     { background-color: #db0011; }
-        .color-boc      { background-color: #a30013; }
-        .color-scb      { background-color: #00338d; }
-        .color-alrajhi  { background-color: #006039; }
-        .color-uob      { background-color: #003d88; }
-        .color-ocbc     { background-color: #ed1c24; }
-        .color-maybank  { background-color: #ed1b24; }
+        /* ========== 21家銀行專屬顏色 ========== */
+        .color-cimb       { background-color: #002b5c; }
+        .color-public     { background-color: #006659; }
+        .color-rhb        { background-color: #e21b23; }
+        .color-hlb        { background-color: #007a3d; }
+        .color-alliance   { background-color: #0073ce; }
+        .color-ambank     { background-color: #004a99; }
+        .color-affin      { background-color: #004b93; }
+        .color-islam      { background-color: #009640; }
+        .color-rakyat     { background-color: #d31145; }
+        .color-maybank    { background-color: #ed1b24; }
+        .color-muamalat   { background-color: #006747; }
+        .color-mbsb       { background-color: #004795; }
+        .color-bsn        { background-color: #003b7e; }
+        .color-agro       { background-color: #002f6c; }
+        .color-hsbc       { background-color: #db0011; }
+        .color-boc        { background-color: #a30013; }
+        .color-scb        { background-color: #00338d; }
+        .color-alrajhi    { background-color: #006039; }
+        .color-uob        { background-color: #003d88; }
+        .color-ocbc       { background-color: #ed1c24; }
+        .color-bankislam  { background-color: #009640; }
 
-        /* 內容區 */
+        /* ========== 內容欄位 ========== */
         .policy-body {
             padding: 22px 24px;
         }
 
-        /* 每一行規則 */
         .policy-row {
             display: flex;
             justify-content: space-between;
@@ -143,7 +135,6 @@
             text-align: right;
         }
 
-        /* 更新時間 */
         .update-text {
             margin-top: 18px;
             padding-top: 12px;
@@ -152,13 +143,25 @@
             text-align: right;
         }
 
-        /* 手機/平板自動適應 */
+        /* ========== 手機平板自動適應 ========== */
         @media (max-width: 1200px) {
             .banks-container { grid-template-columns: repeat(2, 1fr); }
         }
         @media (max-width: 768px) {
             .banks-container { grid-template-columns: 1fr; }
         }
+    </style>
+</head>
+<body>
+
+    <!-- 頂部 -->
+    <div class="top-section">
+        <a href="#" class="back-btn">← Back to Menu</a>
+        <div class="page-title">
+            <h1>BANK POLICY DATABASE</h1>
+            <p>Latest Financing Guidelines & Requirements</p>
+        </div>
+    </div>
     </style>
 </head>
 <body>
