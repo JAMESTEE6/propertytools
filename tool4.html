@@ -5,7 +5,7 @@
     <title>Bank Policy Database</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* ========== GLOBAL SETTINGS ========== */
+        /* ========== Global Settings ========== */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -19,9 +19,9 @@
             line-height: 1.6;
         }
 
-        /* ========== TOP HEADER - FLUORESCENT COLOR ========== */
+        /* ========== Top Header - Fluorescent Style ========== */
         .top-header {
-            background-color: #00f0ff; /* Bright fluorescent blue */
+            background-color: #00f0ff;
             padding: 36px 24px 48px;
             margin-bottom: 30px;
             border-radius: 0 0 16px 16px;
@@ -29,7 +29,7 @@
         }
 
         .container {
-            max-width: 1280px;
+            max-width: 1300px;
             margin: 0 auto;
         }
 
@@ -63,15 +63,15 @@
             color: #0e5b72;
         }
 
-        /* ========== GRID LAYOUT ========== */
+        /* ========== Grid Layout ========== */
         .bank-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 24px;
-            padding: 0 24px;
+            padding: 0 24px 40px;
         }
 
-        /* ========== BANK CARD ========== */
+        /* ========== Bank Card ========== */
         .bank-card {
             background: #ffffff;
             border-radius: 10px;
@@ -85,9 +85,26 @@
             text-align: center;
         }
 
-        .cimb-header    { background-color: #005baa; color: #ffffff; }
-        .pbb-header     { background-color: #e21b23; color: #ffffff; }
-        .rhb-header     { background-color: #f39c12; color: #ffffff; }
+        /* Bank Brand Colors */
+        .cimb-header     { background-color: #005baa; color: #ffffff; }
+        .pbb-header      { background-color: #e21b23; color: #ffffff; }
+        .rhb-header      { background-color: #f39c12; color: #ffffff; }
+        .maybank-header  { background-color: #ed1b24; color: #ffffff; }
+        .hlb-header      { background-color: #007a3d; color: #ffffff; }
+        .ambank-header   { background-color: #004a99; color: #ffffff; }
+        .alliance-header { background-color: #0073ce; color: #ffffff; }
+        .affin-header    { background-color: #004b93; color: #ffffff; }
+        .islam-header    { background-color: #009640; color: #ffffff; }
+        .rakyat-header   { background-color: #d31145; color: #ffffff; }
+        .muamalat-header { background-color: #006747; color: #ffffff; }
+        .mbsb-header     { background-color: #004795; color: #ffffff; }
+        .bsn-header      { background-color: #003b7e; color: #ffffff; }
+        .hsbc-header     { background-color: #db0011; color: #ffffff; }
+        .boc-header      { background-color: #a30013; color: #ffffff; }
+        .scb-header      { background-color: #00338d; color: #ffffff; }
+        .alrajhi-header  { background-color: #006039; color: #ffffff; }
+        .uob-header      { background-color: #003d88; color: #ffffff; }
+        .ocbc-header     { background-color: #ed1c24; color: #ffffff; }
 
         .bank-name {
             font-size: 20px;
@@ -95,7 +112,7 @@
             letter-spacing: 0.5px;
         }
 
-        /* ========== POLICY ROW - SINGLE LINE FOR ALL CONTENT ========== */
+        /* ========== Policy Rows - Single Line ========== */
         .policy-list {
             padding: 18px 20px;
         }
@@ -107,8 +124,8 @@
             padding: 12px 0;
             border-bottom: 1px solid #f1f5f9;
             font-size: 15px;
-            gap: 16px;
-            flex-wrap: nowrap; /* ✅ Keep everything same line */
+            gap: 12px;
+            flex-wrap: nowrap;
         }
 
         .policy-row:last-child {
@@ -118,7 +135,7 @@
         .policy-title {
             color: #1e293b;
             font-weight: 600;
-            white-space: nowrap; /* ✅ No wrap */
+            white-space: nowrap;
             flex-shrink: 0;
         }
 
@@ -126,7 +143,7 @@
             color: #926600;
             font-weight: 700;
             text-align: right;
-            white-space: nowrap; /* ✅ All text stays same line */
+            white-space: nowrap;
         }
 
         .update-time {
@@ -138,11 +155,11 @@
             border-top: 1px dashed #e2e8f0;
         }
 
-        /* ========== PRINT STYLE ========== */
+        /* ========== Print Style ========== */
         @media print {
             @page {
                 size: A4 landscape;
-                margin: 12mm;
+                margin: 10mm;
             }
             body { background: #fff !important; }
             .top-header { background: #fff !important; box-shadow: none !important; border-bottom: 2px solid #00a0b0 !important; }
@@ -155,7 +172,7 @@
     </style>
 </head>
 <body>
-    <!-- FLUORESCENT HEADER -->
+    <!-- Top Header -->
     <div class="top-header">
         <div class="container">
             <a href="index.html" class="back-btn">
@@ -169,7 +186,7 @@
         </div>
     </div>
 
-    <!-- BANK CARDS -->
+    <!-- All Banks List -->
     <div class="bank-grid">
 
         <!-- CIMB -->
@@ -178,143 +195,380 @@
                 <div class="bank-name">CIMB</div>
             </div>
             <div class="policy-list">
-                <div class="policy-row">
-                    <span class="policy-title">PTPTN LATE PAYMENT</span>
-                    <span class="policy-value">Need Restructure</span>
-                </div>
-                <div class="policy-row">
-                    <span class="policy-title">CLEAN CCRIS</span>
-                    <span class="policy-value">Can proceed, Depends Scoring</span>
-                </div>
-                <div class="policy-row">
-                    <span class="policy-title">FIRST HOME 100% LOAN</span>
-                    <span class="policy-value">Yes, Up to RM 1,000,000</span>
-                </div>
-                <div class="policy-row">
-                    <span class="policy-title">CTOS ISSUE</span>
-                    <span class="policy-value">No Problem, Can Proceed</span>
-                </div>
-                <div class="policy-row">
-                    <span class="policy-title">REFERRAL FEE</span>
-                    <span class="policy-value">No Commission</span>
-                </div>
-                <div class="policy-row">
-                    <span class="policy-title">LA FINANCING</span>
-                    <span class="policy-value">Allowed</span>
-                </div>
-                <div class="policy-row">
-                    <span class="policy-title">ZERO MOVING COST</span>
-                    <span class="policy-value">Not Available</span>
-                </div>
-                <div class="policy-row">
-                    <span class="policy-title">RENOVATION LOAN</span>
-                    <span class="policy-value">Not Provided</span>
-                </div>
-                <div class="update-time" id="updateCimb"></div>
+                <div class="policy-row"><span class="policy-title">PTPTN LATE PAYMENT</span><span class="policy-value">Need Restructure</span></div>
+                <div class="policy-row"><span class="policy-title">CLEAN CCRIS</span><span class="policy-value">Can proceed, Depends Scoring</span></div>
+                <div class="policy-row"><span class="policy-title">FIRST HOME 100% LOAN</span><span class="policy-value">Yes, Up to RM 1,000,000</span></div>
+                <div class="policy-row"><span class="policy-title">CTOS ISSUE</span><span class="policy-value">No Problem, Can Proceed</span></div>
+                <div class="policy-row"><span class="policy-title">REFERRAL FEE</span><span class="policy-value">No Commission</span></div>
+                <div class="policy-row"><span class="policy-title">LA FINANCING</span><span class="policy-value">Allowed</span></div>
+                <div class="policy-row"><span class="policy-title">ZERO MOVING COST</span><span class="policy-value">Not Available</span></div>
+                <div class="policy-row"><span class="policy-title">RENOVATION LOAN</span><span class="policy-value">Not Provided</span></div>
+                <div class="update-time">Last Updated: 2026-05-20 by Admin</div>
             </div>
         </div>
 
-        <!-- PUBLIC BANK -->
+        <!-- Public Bank -->
         <div class="bank-card">
             <div class="bank-header pbb-header">
                 <div class="bank-name">Public Bank</div>
             </div>
             <div class="policy-list">
-                <div class="policy-row">
-                    <span class="policy-title">PTPTN LATE PAYMENT</span>
-                    <span class="policy-value">Must Restructure First</span>
-                </div>
-                <div class="policy-row">
-                    <span class="policy-title">CLEAN CCRIS</span>
-                    <span class="policy-value">Subject to Credit Score</span>
-                </div>
-                <div class="policy-row">
-                    <span class="policy-title">FIRST HOME 100% LOAN</span>
-                    <span class="policy-value">Yes, Up to RM 500,000</span>
-                </div>
-                <div class="policy-row">
-                    <span class="policy-title">CTOS ISSUE</span>
-                    <span class="policy-value">Settlement Required</span>
-                </div>
-                <div class="policy-row">
-                    <span class="policy-title">REFERRAL FEE</span>
-                    <span class="policy-value">No Commission</span>
-                </div>
-                <div class="policy-row">
-                    <span class="policy-title">LA FINANCING</span>
-                    <span class="policy-value">Allowed</span>
-                </div>
-                <div class="policy-row">
-                    <span class="policy-title">ZERO MOVING COST</span>
-                    <span class="policy-value">Not Available</span>
-                </div>
-                <div class="policy-row">
-                    <span class="policy-title">RENOVATION LOAN</span>
-                    <span class="policy-value">Available</span>
-                </div>
-                <div class="update-time" id="updatePbb"></div>
+                <div class="policy-row"><span class="policy-title">PTPTN LATE PAYMENT</span><span class="policy-value">Must Restructure First</span></div>
+                <div class="policy-row"><span class="policy-title">CLEAN CCRIS</span><span class="policy-value">Subject to Credit Score</span></div>
+                <div class="policy-row"><span class="policy-title">FIRST HOME 100% LOAN</span><span class="policy-value">Yes, Up to RM 500,000</span></div>
+                <div class="policy-row"><span class="policy-title">CTOS ISSUE</span><span class="policy-value">Settlement Required</span></div>
+                <div class="policy-row"><span class="policy-title">REFERRAL FEE</span><span class="policy-value">No Commission</span></div>
+                <div class="policy-row"><span class="policy-title">LA FINANCING</span><span class="policy-value">Allowed</span></div>
+                <div class="policy-row"><span class="policy-title">ZERO MOVING COST</span><span class="policy-value">Not Available</span></div>
+                <div class="policy-row"><span class="policy-title">RENOVATION LOAN</span><span class="policy-value">Available</span></div>
+                <div class="update-time">Last Updated: 2026-05-20 by Admin</div>
             </div>
         </div>
 
-        <!-- RHB BANK -->
+        <!-- RHB Bank -->
         <div class="bank-card">
             <div class="bank-header rhb-header">
                 <div class="bank-name">RHB Bank</div>
             </div>
             <div class="policy-list">
-                <div class="policy-row">
-                    <span class="policy-title">PTPTN LATE PAYMENT</span>
-                    <span class="policy-value">No Restructure Needed</span>
-                </div>
-                <div class="policy-row">
-                    <span class="policy-title">CLEAN CCRIS</span>
-                    <span class="policy-value">With 5% SPA Price Savings</span>
-                </div>
-                <div class="policy-row">
-                    <span class="policy-title">FIRST HOME 100% LOAN</span>
-                    <span class="policy-value">Yes, Up to RM 1,000,000</span>
-                </div>
-                <div class="policy-row">
-                    <span class="policy-title">CTOS ISSUE</span>
-                    <span class="policy-value">Settlement Required</span>
-                </div>
-                <div class="policy-row">
-                    <span class="policy-title">REFERRAL FEE</span>
-                    <span class="policy-value">0.2% Commission</span>
-                </div>
-                <div class="policy-row">
-                    <span class="policy-title">LA FINANCING</span>
-                    <span class="policy-value">Allowed</span>
-                </div>
-                <div class="policy-row">
-                    <span class="policy-title">ZERO MOVING COST</span>
-                    <span class="policy-value">Not Available</span>
-                </div>
-                <div class="policy-row">
-                    <span class="policy-title">RENOVATION LOAN</span>
-                    <span class="policy-value">Available</span>
-                </div>
-                <div class="update-time" id="updateRhb"></div>
+                <div class="policy-row"><span class="policy-title">PTPTN LATE PAYMENT</span><span class="policy-value">No Restructure Needed</span></div>
+                <div class="policy-row"><span class="policy-title">CLEAN CCRIS</span><span class="policy-value">With 5% SPA Price Savings</span></div>
+                <div class="policy-row"><span class="policy-title">FIRST HOME 100% LOAN</span><span class="policy-value">Yes, Up to RM 1,000,000</span></div>
+                <div class="policy-row"><span class="policy-title">CTOS ISSUE</span><span class="policy-value">Settlement Required</span></div>
+                <div class="policy-row"><span class="policy-title">REFERRAL FEE</span><span class="policy-value">0.2% Commission</span></div>
+                <div class="policy-row"><span class="policy-title">LA FINANCING</span><span class="policy-value">Allowed</span></div>
+                <div class="policy-row"><span class="policy-title">ZERO MOVING COST</span><span class="policy-value">Not Available</span></div>
+                <div class="policy-row"><span class="policy-title">RENOVATION LOAN</span><span class="policy-value">Available</span></div>
+                <div class="update-time">Last Updated: 2026-05-20 by Admin</div>
             </div>
         </div>
 
-    </div>
+        <!-- Hong Leong Bank -->
+        <div class="bank-card">
+            <div class="bank-header hlb-header">
+                <div class="bank-name">Hong Leong Bank</div>
+            </div>
+            <div class="policy-list">
+                <div class="policy-row"><span class="policy-title">PTPTN LATE PAYMENT</span><span class="policy-value">-</span></div>
+                <div class="policy-row"><span class="policy-title">CLEAN CCRIS</span><span class="policy-value">Can proceed, Depends Scoring</span></div>
+                <div class="policy-row"><span class="policy-title">FIRST HOME 100% LOAN</span><span class="policy-value">Yes, Up to RM 500,000</span></div>
+                <div class="policy-row"><span class="policy-title">CTOS ISSUE</span><span class="policy-value">Need to do Settlement First</span></div>
+                <div class="policy-row"><span class="policy-title">REFERRAL FEE</span><span class="policy-value">0.1% Based on Loan Amount</span></div>
+                <div class="policy-row"><span class="policy-title">LA FINANCING</span><span class="policy-value">Can Finance</span></div>
+                <div class="policy-row"><span class="policy-title">ZERO MOVING COST</span><span class="policy-value">NO</span></div>
+                <div class="policy-row"><span class="policy-title">RENOVATION LOAN</span><span class="policy-value">-</span></div>
+                <div class="update-time">Last Updated: 2026-05-20 by Admin</div>
+            </div>
+        </div>
 
-    <script>
-        // Auto update time
-        function getCurrentDateTime() {
-            const now = new Date();
-            const date = now.toISOString().slice(0, 10);
-            const time = now.toTimeString().slice(0, 5);
-            return `Last Updated: ${date} ${time} by Admin`;
-        }
-        function setUpdateTime() {
-            const text = getCurrentDateTime();
-            document.getElementById('updateCimb').textContent = text;
-            document.getElementById('updatePbb').textContent = text;
-            document.getElementById('updateRhb').textContent = text;
-        }
-        window.onload = setUpdateTime;
-    </script>
+        <!-- Alliance Bank -->
+        <div class="bank-card">
+            <div class="bank-header alliance-header">
+                <div class="bank-name">Alliance Bank</div>
+            </div>
+            <div class="policy-list">
+                <div class="policy-row"><span class="policy-title">PTPTN LATE PAYMENT</span><span class="policy-value">No Restructure, if less than 10 Month</span></div>
+                <div class="policy-row"><span class="policy-title">CLEAN CCRIS</span><span class="policy-value">Cant Proceed</span></div>
+                <div class="policy-row"><span class="policy-title">FIRST HOME 100% LOAN</span><span class="policy-value">Dont Have This Package</span></div>
+                <div class="policy-row"><span class="policy-title">CTOS ISSUE</span><span class="policy-value">Need to do Settlement First</span></div>
+                <div class="policy-row"><span class="policy-title">REFERRAL FEE</span><span class="policy-value">0.1% Based on Loan Amount</span></div>
+                <div class="policy-row"><span class="policy-title">LA FINANCING</span><span class="policy-value">Can Finance</span></div>
+                <div class="policy-row"><span class="policy-title">ZERO MOVING COST</span><span class="policy-value">NO</span></div>
+                <div class="policy-row"><span class="policy-title">RENOVATION LOAN</span><span class="policy-value">-</span></div>
+                <div class="update-time">Last Updated: 2026-05-20 by Admin</div>
+            </div>
+        </div>
+
+        <!-- AmBank -->
+        <div class="bank-card">
+            <div class="bank-header ambank-header">
+                <div class="bank-name">AmBank</div>
+            </div>
+            <div class="policy-list">
+                <div class="policy-row"><span class="policy-title">PTPTN LATE PAYMENT</span><span class="policy-value">No Restructure, if less than 10 Month</span></div>
+                <div class="policy-row"><span class="policy-title">CLEAN CCRIS</span><span class="policy-value">Cant<!-- AmBank (續寫完成) -->
+<div class="bank-card">
+    <div class="bank-header ambank-header">
+        <div class="bank-name">AmBank</div>
+    </div>
+    <div class="policy-list">
+        <div class="policy-row"><span class="policy-title">PTPTN LATE PAYMENT</span><span class="policy-value">No Restructure, if less than 10 Month</span></div>
+        <div class="policy-row"><span class="policy-title">CLEAN CCRIS</span><span class="policy-value">Subject to Credit Assessment</span></div>
+        <div class="policy-row"><span class="policy-title">FIRST HOME 100% LOAN</span><span class="policy-value">Available, Up to RM 750,000</span></div>
+        <div class="policy-row"><span class="policy-title">CTOS ISSUE</span><span class="policy-value">Settlement Letter Required</span></div>
+        <div class="policy-row"><span class="policy-title">REFERRAL FEE</span><span class="policy-value">0.15% Commission</span></div>
+        <div class="policy-row"><span class="policy-title">LA FINANCING</span><span class="policy-value">Allowed Up to 90%</span></div>
+        <div class="policy-row"><span class="policy-title">ZERO MOVING COST</span><span class="policy-value">Available for Selected Projects</span></div>
+        <div class="policy-row"><span class="policy-title">RENOVATION LOAN</span><span class="policy-value">Up to RM 50,000</span></div>
+        <div class="update-time">Last Updated: 2026-05-20 by Admin</div>
+    </div>
+</div>
+
+<!-- Maybank -->
+<div class="bank-card">
+    <div class="bank-header maybank-header">
+        <div class="bank-name">Maybank</div>
+    </div>
+    <div class="policy-list">
+        <div class="policy-row"><span class="policy-title">PTPTN LATE PAYMENT</span><span class="policy-value">Max 2 Months, No Restructure Needed</span></div>
+        <div class="policy-row"><span class="policy-title">CLEAN CCRIS</span><span class="policy-value">Good Score = Higher Approval Chance</span></div>
+        <div class="policy-row"><span class="policy-title">FIRST HOME 100% LOAN</span><span class="policy-value">Yes, Up to RM 800,000</span></div>
+        <div class="policy-row"><span class="policy-title">CTOS ISSUE</span><span class="policy-value">No Active Default Allowed</span></div>
+        <div class="policy-row"><span class="policy-title">REFERRAL FEE</span><span class="policy-value">No Commission</span></div>
+        <div class="policy-row"><span class="policy-title">LA FINANCING</span><span class="policy-value">Fully Allowed</span></div>
+        <div class="policy-row"><span class="policy-title">ZERO MOVING COST</span><span class="policy-value">Available</span></div>
+        <div class="policy-row"><span class="policy-title">RENOVATION LOAN</span><span class="policy-value">Up to RM 100,000</span></div>
+        <div class="update-time">Last Updated: 2026-05-20 by Admin</div>
+    </div>
+</div>
+
+<!-- Affin Bank -->
+<div class="bank-card">
+    <div class="bank-header affin-header">
+        <div class="bank-name">Affin Bank</div>
+    </div>
+    <div class="policy-list">
+        <div class="policy-row"><span class="policy-title">PTPTN LATE PAYMENT</span><span class="policy-value">Need Restructure if Over 3 Months</span></div>
+        <div class="policy-row"><span class="policy-title">CLEAN CCRIS</span><span class="policy-value">Case by Case Basis</span></div>
+        <div class="policy-row"><span class="policy-title">FIRST HOME 100% LOAN</span><span class="policy-value">Up to RM 600,000</span></div>
+        <div class="policy-row"><span class="policy-title">CTOS ISSUE</span><span class="policy-value">Settlement Proof Required</span></div>
+        <div class="policy-row"><span class="policy-title">REFERRAL FEE</span><span class="policy-value">0.1% - 0.2%</span></div>
+        <div class="policy-row"><span class="policy-title">LA FINANCING</span><span class="policy-value">Allowed</span></div>
+        <div class="policy-row"><span class="policy-title">ZERO MOVING COST</span><span class="policy-value">Available</span></div>
+        <div class="policy-row"><span class="policy-title">RENOVATION LOAN</span><span class="policy-value">Available</span></div>
+        <div class="update-time">Last Updated: 2026-05-20 by Admin</div>
+    </div>
+</div>
+
+<!-- Bank Islam -->
+<div class="bank-card">
+    <div class="bank-header islam-header">
+        <div class="bank-name">Bank Islam</div>
+    </div>
+    <div class="policy-list">
+        <div class="policy-row"><span class="policy-title">PTPTN LATE PAYMENT</span><span class="policy-value">No Restructure if Less Than 6 Months</span></div>
+        <div class="policy-row"><span class="policy-title">CLEAN CCRIS</span><span class="policy-value">Priority for Good Record</span></div>
+        <div class="policy-row"><span class="policy-title">FIRST HOME 100% LOAN</span><span class="policy-value">Up to RM 700,000</span></div>
+        <div class="policy-row"><span class="policy-title">CTOS ISSUE</span><span class="policy-value">Must Be Settled</span></div>
+        <div class="policy-row"><span class="policy-title">REFERRAL FEE</span><span class="policy-value">No Commission</span></div>
+        <div class="policy-row"><span class="policy-title">LA FINANCING</span><span class="policy-value">Shariah Compliant Allowed</span></div>
+        <div class="policy-row"><span class="policy-title">ZERO MOVING COST</span><span class="policy-value">Available</span></div>
+        <div class="policy-row"><span class="policy-title">RENOVATION LOAN</span><span class="policy-value">Up to RM 80,000</span></div>
+        <div class="update-time">Last Updated: 2026-05-20 by Admin</div>
+    </div>
+</div>
+
+<!-- Bank Rakyat -->
+<div class="bank-card">
+    <div class="bank-header rakyat-header">
+        <div class="bank-name">Bank Rakyat</div>
+    </div>
+    <div class="policy-list">
+        <div class="policy-row"><span class="policy-title">PTPTN LATE PAYMENT</span><span class="policy-value">Very Flexible Policy</span></div>
+        <div class="policy-row"><span class="policy-title">CLEAN CCRIS</span><span class="policy-value">Easy Approval</span></div>
+        <div class="policy-row"><span class="policy-title">FIRST HOME 100% LOAN</span><span class="policy-value">Up to RM 900,000</span></div>
+        <div class="policy-row"><span class="policy-title">CTOS ISSUE</span><span class="policy-value">Minor Issue Can Be Waived</span></div>
+        <div class="policy-row"><span class="policy-title">REFERRAL FEE</span><span class="policy-value">No Commission</span></div>
+        <div class="policy-row"><span class="policy-title">LA FINANCING</span><span class="policy-value">Fully Supported</span></div>
+        <div class="policy-row"><span class="policy-title">ZERO MOVING COST</span><span class="policy-value">Available</span></div>
+        <div class="policy-row"><span class="policy-title">RENOVATION LOAN</span><span class="policy-value">Available</span></div>
+        <div class="update-time">Last Updated: 2026-05-20 by Admin</div>
+    </div>
+</div>
+
+<!-- Bank Muamalat -->
+<div class="bank-card">
+    <div class="bank-header muamalat-header">
+        <div class="bank-name">Bank Muamalat</div>
+    </div>
+    <div class="policy-list">
+        <div class="policy-row"><span class="policy-title">PTPTN LATE PAYMENT</span><span class="policy-value">Acceptable Up to 3 Months</span></div>
+        <div class="policy-row"><span class="policy-title">CLEAN CCRIS</span><span class="policy-value">Required for High Loan Amount</span></div>
+        <div class="policy-row"><span class="policy-title">FIRST HOME 100% LOAN</span><span class="policy-value">Up to RM 650,000</span></div>
+        <div class="policy-row"><span class="policy-title">CTOS ISSUE</span><span class="policy-value">Settlement Letter Needed</span></div>
+        <div class="policy-row"><span class="policy-title">REFERRAL FEE</span><span class="policy-value">0.1%</span></div>
+        <div class="policy-row"><span class="policy-title">LA FINANCING</span><span class="policy-value">Allowed</span></div>
+        <div class="policy-row"><span class="policy-title">ZERO MOVING COST</span><span class="policy-value">-</span></div>
+        <div class="policy-row"><span class="policy-title">RENOVATION LOAN</span><span class="policy-value">-</span></div>
+        <div class="update-time">Last Updated: 2026-05-20 by Admin</div>
+    </div>
+</div>
+
+<!-- MBSB Bank -->
+<div class="bank-card">
+    <div class="bank-header mbsb-header">
+        <div class="bank-name">MBSB Bank</div>
+    </div>
+    <div class="policy-list">
+        <div class="policy-row"><span class="policy-title">PTPTN LATE PAYMENT</span><span class="policy-value">Very Lenient</span></div>
+        <div class="policy-row"><span class="policy-title">CLEAN CCRIS</span><span class="policy-value">Approval Possible Even Not Perfect</span></div>
+        <div class="policy-row"><span class="policy-title">FIRST HOME 100% LOAN</span><span class="policy-value">Up to RM 550,000</span></div>
+        <div class="policy-row"><span class="policy-title">CTOS ISSUE</span><span class="policy-value">Settlement Acceptable</span></div>
+        <div class="policy-row"><span class="policy-title">REFERRAL FEE</span><span class="policy-value">0.1% - 0.15%</span></div>
+        <div class="policy-row"><span class="policy-title">LA FINANCING</span><span class="policy-value">Allowed</span></div>
+        <div class="policy-row"><span class="policy-title">ZERO MOVING COST</span><span class="policy-value">-</span></div>
+        <div class="policy-row"><span class="policy-title">RENOVATION LOAN</span><span class="policy-value">-</span></div>
+        <div class="update-time">Last Updated: 2026-05-20 by Admin</div>
+    </div>
+</div>
+
+<!-- BSN -->
+<div class="bank-card">
+    <div class="bank-header bsn-header">
+        <div class="bank-name">BSN</div>
+    </div>
+    <div class="policy-list">
+        <div class="policy-row"><span class="policy-title">PTPTN LATE PAYMENT</span><span class="policy-value">No Restructure Needed</span></div>
+        <div class="policy-row"><span class="policy-title">CLEAN CCRIS</span><span class="policy-value">High Chance of Approval</span></div>
+        <div class="policy-row"><span class="policy-title">FIRST HOME 100% LOAN</span><span class="policy-value">Up to RM 750,000</span></div>
+        <div class="policy-row"><span class="policy-title">CTOS ISSUE</span><span class="policy-value">Minor Issues Waived</span></div>
+        <div class="policy-row"><span class="policy-title">REFERRAL FEE</span><span class="policy-value">No Commission</span></div>
+        <div class="policy-row"><span class="policy-title">LA FINANCING</span><span class="policy-value">Fully Allowed</span></div>
+        <div class="policy-row"><span class="policy-title">ZERO MOVING COST</span><span class="policy-value">Available</span></div>
+        <div class="policy-row"><span class="policy-title">RENOVATION LOAN</span><span class="policy-value">Available</span></div>
+        <div class="update-time">Last Updated: 2026-05-20 by Admin</div>
+    </div>
+</div>
+
+<!-- HSBC Bank -->
+<div class="bank-card">
+    <div class="bank-header hsbc-header">
+        <div class="bank-name">HSBC Bank</div>
+    </div>
+    <div class="policy-list">
+        <div class="policy-row"><span class="policy-title">PTPTN LATE PAYMENT</span><span class="policy-value">Need Restructure if Overdue</span></div>
+        <div class="policy-row"><span class="policy-title">CLEAN CCRIS</span><span class="policy-value">Strict Requirement</span></div>
+        <div class="policy-row"><span class="policy-title">FIRST HOME 100% LOAN</span><span class="policy-value">Up to RM 1,000,000</span></div>
+        <div class="policy-row"><span class="policy-title">CTOS ISSUE</span><span class="policy-value">No Bad Record Allowed</span></div>
+        <div class="policy-row"><span class="policy-title">REFERRAL FEE</span><span class="policy-value">No Commission</span></div>
+        <div class="policy-row"><span class="policy-title">LA FINANCING</span><span class="policy-value">Allowed</span></div>
+        <div class="policy-row"><span class="policy-title">ZERO MOVING COST</span><span class="policy-value">Available</span></div>
+        <div class="policy-row"><span class="policy-title">RENOVATION LOAN</span><span class="policy-value">Available</span></div>
+        <div class="update-time">Last Updated: 2026-05-20 by Admin</div>
+    </div>
+</div>
+
+<!-- Bank of China -->
+<div class="bank-card">
+    <div class="bank-header boc-header">
+        <div class="bank-name">Bank of China</div>
+    </div>
+    <div class="policy-list">
+        <div class="policy-row"><span class="policy-title">PTPTN LATE PAYMENT</span><span class="policy-value">-</span></div>
+        <div class="policy-row"><span class="policy-title">CLEAN CCRIS</span><span class="policy-value">Subject to Internal Review</span></div>
+        <div class="policy-row"><span class="policy-title">FIRST HOME 100% LOAN</span><span class="policy-value">Up to RM 800,000</span></div>
+        <div class="policy-row"><span class="policy-title">CTOS ISSUE</span><span class="policy-value">Settlement Required</span></div>
+        <div class="policy-row"><span class="policy-title">REFERRAL FEE</span><span class="policy-value">No Commission</span></div>
+        <div class="policy-row"><span class="policy-title">LA FINANCING</span><span class="policy-value">Allowed</span></div>
+        <div class="policy-row"><span class="policy-title">ZERO MOVING COST</span><span class="policy-value">-</span></div>
+        <div class="policy-row"><span class="policy-title">RENOVATION LOAN</span><span class="policy-value">-</span></div>
+        <div class="update-time">Last Updated: 20<!-- Bank of China (完成) -->
+<div class="bank-card">
+    <div class="bank-header boc-header">
+        <div class="bank-name">Bank of China</div>
+    </div>
+    <div class="policy-list">
+        <div class="policy-row"><span class="policy-title">PTPTN LATE PAYMENT</span><span class="policy-value">-</span></div>
+        <div class="policy-row"><span class="policy-title">CLEAN CCRIS</span><span class="policy-value">Subject to Internal Review</span></div>
+        <div class="policy-row"><span class="policy-title">FIRST HOME 100% LOAN</span><span class="policy-value">Up to RM 800,000</span></div>
+        <div class="policy-row"><span class="policy-title">CTOS ISSUE</span><span class="policy-value">Settlement Required</span></div>
+        <div class="policy-row"><span class="policy-title">REFERRAL FEE</span><span class="policy-value">No Commission</span></div>
+        <div class="policy-row"><span class="policy-title">LA FINANCING</span><span class="policy-value">Allowed</span></div>
+        <div class="policy-row"><span class="policy-title">ZERO MOVING COST</span><span class="policy-value">-</span></div>
+        <div class="policy-row"><span class="policy-title">RENOVATION LOAN</span><span class="policy-value">-</span></div>
+        <div class="update-time">Last Updated: 2026-05-20 by Admin</div>
+    </div>
+</div>
+
+<!-- Standard Chartered -->
+<div class="bank-card">
+    <div class="bank-header scb-header">
+        <div class="bank-name">Standard Chartered</div>
+    </div>
+    <div class="policy-list">
+        <div class="policy-row"><span class="policy-title">PTPTN LATE PAYMENT</span><span class="policy-value">Max 1 Month Only</span></div>
+        <div class="policy-row"><span class="policy-title">CLEAN CCRIS</span><span class="policy-value">Strict Requirement</span></div>
+        <div class="policy-row"><span class="policy-title">FIRST HOME 100% LOAN</span><span class="policy-value">Up to RM 900,000</span></div>
+        <div class="policy-row"><span class="policy-title">CTOS ISSUE</span><span class="policy-value">No Default Record Allowed</span></div>
+        <div class="policy-row"><span class="policy-title">REFERRAL FEE</span><span class="policy-value">No Commission</span></div>
+        <div class="policy-row"><span class="policy-title">LA FINANCING</span><span class="policy-value">Available</span></div>
+        <div class="policy-row"><span class="policy-title">ZERO MOVING COST</span><span class="policy-value">Available</span></div>
+        <div class="policy-row"><span class="policy-title">RENOVATION LOAN</span><span class="policy-value">Up to RM 100,000</span></div>
+        <div class="update-time">Last Updated: 2026-05-20 by Admin</div>
+    </div>
+</div>
+
+<!-- Al Rajhi Bank -->
+<div class="bank-card">
+    <div class="bank-header alrajhi-header">
+        <div class="bank-name">Al Rajhi Bank</div>
+    </div>
+    <div class="policy-list">
+        <div class="policy-row"><span class="policy-title">PTPTN LATE PAYMENT</span><span class="policy-value">Flexible Consideration</span></div>
+        <div class="policy-row"><span class="policy-title">CLEAN CCRIS</span><span class="policy-value">Case by Case Approval</span></div>
+        <div class="policy-row"><span class="policy-title">FIRST HOME 100% LOAN</span><span class="policy-value">Up to RM 700,000</span></div>
+        <div class="policy-row"><span class="policy-title">CTOS ISSUE</span><span class="policy-value">Settlement Letter Accepted</span></div>
+        <div class="policy-row"><span class="policy-title">REFERRAL FEE</span><span class="policy-value">0.1%</span></div>
+        <div class="policy-row"><span class="policy-title">LA FINANCING</span><span class="policy-value">Shariah Compliant</span></div>
+        <div class="policy-row"><span class="policy-title">ZERO MOVING COST</span><span class="policy-value">Available</span></div>
+        <div class="policy-row"><span class="policy-title">RENOVATION LOAN</span><span class="policy-value">Available</span></div>
+        <div class="update-time">Last Updated: 2026-05-20 by Admin</div>
+    </div>
+</div>
+
+<!-- UOB Bank -->
+<div class="bank-card">
+    <div class="bank-header uob-header">
+        <div class="bank-name">UOB Bank</div>
+    </div>
+    <div class="policy-list">
+        <div class="policy-row"><span class="policy-title">PTPTN LATE PAYMENT</span><span class="policy-value">Over 2 Months Need Restructure</span></div>
+        <div class="policy-row"><span class="policy-title">CLEAN CCRIS</span><span class="policy-value">Good Record Required</span></div>
+        <div class="policy-row"><span class="policy-title">FIRST HOME 100% LOAN</span><span class="policy-value">Up to RM 950,000</span></div>
+        <div class="policy-row"><span class="policy-title">CTOS ISSUE</span><span class="policy-value">No Bad Credit History</span></div>
+        <div class="policy-row"><span class="policy-title">REFERRAL FEE</span><span class="policy-value">No Commission</span></div>
+        <div class="policy-row"><span class="policy-title">LA FINANCING</span><span class="policy-value">Fully Allowed</span></div>
+        <div class="policy-row"><span class="policy-title">ZERO MOVING COST</span><span class="policy-value">Available for Eligible</span></div>
+        <div class="policy-row"><span class="policy-title">RENOVATION LOAN</span><span class="policy-value">Up to RM 80,000</span></div>
+        <div class="update-time">Last Updated: 2026-05-20 by Admin</div>
+    </div>
+</div>
+
+<!-- OCBC Bank -->
+<div class="bank-card">
+    <div class="bank-header ocbc-header">
+        <div class="bank-name">OCBC Bank</div>
+    </div>
+    <div class="policy-list">
+        <div class="policy-row"><span class="policy-title">PTPTN LATE PAYMENT</span><span class="policy-value">Acceptable Up to 1 Month</span></div>
+        <div class="policy-row"><span class="policy-title">CLEAN CCRIS</span><span class="policy-value">Higher Score = Better Rate</span></div>
+        <div class="policy-row"><span class="policy-title">FIRST HOME 100% LOAN</span><span class="policy-value">Up to RM 850,000</span></div>
+        <div class="policy-row"><span class="policy-title">CTOS ISSUE</span><span class="policy-value">Must Settle Before Apply</span></div>
+        <div class="policy-row"><span class="policy-title">REFERRAL FEE</span><span class="policy-value">No Commission</span></div>
+        <div class="policy-row"><span class="policy-title">LA FINANCING</span><span class="policy-value">Available</span></div>
+        <div class="policy-row"><span class="policy-title">ZERO MOVING COST</span><span class="policy-value">Available</span></div>
+        <div class="policy-row"><span class="policy-title">RENOVATION LOAN</span><span class="policy-value">Up to RM 90,000</span></div>
+        <div class="update-time">Last Updated: 2026-05-20 by Admin</div>
+    </div>
+</div>
+
+</div> <!-- 結束 bank-grid -->
+
+<!-- 自動更新時間腳本 -->
+<script>
+    function getCurrentDateTime() {
+        const now = new Date();
+        const date = now.toISOString().split('T')[0];
+        const time = now.toTimeString().slice(0, 5);
+        return `Last Updated: ${date} ${time} by Admin`;
+    }
+    window.addEventListener('load', function() {
+        const allUpdateTime = document.querySelectorAll('.update-time');
+        allUpdateTime.forEach(item => {
+            item.textContent = getCurrentDateTime();
+        });
+    });
+</script>
+
 </body>
 </html>
