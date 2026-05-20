@@ -5,7 +5,7 @@
     <title>Bank Policy Database</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* ========== 全局基礎設定 ========== */
+        /* ========== GLOBAL STYLES ========== */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -16,16 +16,16 @@
         body {
             background-color: #f8fafc;
             color: #0f172a;
-            line-height: 1.65;
+            line-height: 1.7;
         }
 
-        /* ========== 🔹 頂部區 - 鮮艷突出顏色 ========== */
+        /* ========== TOP HEADER - VIBRANT COLOR ========== */
         .top-header {
-            background-color: #e6f7ff; /* 清新亮藍色，夠鮮明又舒服 */
-            padding: 32px 24px 44px;
-            margin-bottom: 28px;
-            border-radius: 0 0 14px 14px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            background-color: #2563eb; /* Bright, vibrant blue */
+            padding: 36px 24px 48px;
+            margin-bottom: 30px;
+            border-radius: 0 0 16px 16px;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
         }
 
         .container {
@@ -33,12 +33,12 @@
             margin: 0 auto;
         }
 
-        /* ========== 返回按鈕 ========== */
+        /* ========== BACK BUTTON ========== */
         .back-btn {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background-color: #253858;
+            background-color: #1e40af;
             color: #ffffff;
             padding: 10px 22px;
             border-radius: 8px;
@@ -47,33 +47,32 @@
             font-weight: 600;
             margin-bottom: 36px;
             border: none;
-            transition: background 0.2s;
+            transition: all 0.2s ease;
         }
 
         .back-btn:hover {
-            background-color: #1e2b48;
-            color: #ffffff;
-            text-decoration: none;
+            background-color: #1e3a8a;
+            transform: translateY(-1px);
         }
 
-        /* ========== 標題 - 字體加深加粗 ========== */
+        /* ========== TITLE - DARK & BOLD TEXT ========== */
         h1 {
             text-align: center;
             font-size: 32px;
             font-weight: 800;
-            color: #0b2b5c;
+            color: #ffffff; /* High contrast white text */
             margin-bottom: 8px;
-            letter-spacing: 0.6px;
+            letter-spacing: 0.7px;
         }
 
         .subtitle {
             text-align: center;
-            font-size: 16px;
+            font-size: 17px;
             font-weight: 500;
-            color: #2c4b82;
+            color: #dbeafe; /* Soft light color for subtitle */
         }
 
-        /* ========== 網格布局 ========== */
+        /* ========== GRID LAYOUT ========== */
         .bank-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -81,16 +80,22 @@
             padding: 0 24px;
         }
 
-        /* ========== 銀行卡片 ========== */
+        /* ========== BANK CARDS ========== */
         .bank-card {
             background: #ffffff;
             border-radius: 12px;
-            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.09);
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
             overflow: hidden;
             border: 1px solid #e2e8f0;
+            transition: transform 0.2s ease;
         }
 
-        /* 🔹 銀行頂部主題色 */
+        .bank-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+        }
+
+        /* ========== BANK HEADER COLORS ========== */
         .bank-header {
             padding: 18px 22px;
             text-align: center;
@@ -99,14 +104,17 @@
         .cimb-header    { background-color: #005baa; color: #ffffff; }
         .pbb-header     { background-color: #e21b23; color: #ffffff; }
         .rhb-header     { background-color: #f39c12; color: #ffffff; }
+        .maybank-header { background-color: #ff0000; color: #ffffff; }
+        .hlb-header     { background-color: #007a3d; color: #ffffff; }
+        .ambank-header  { background-color: #004a99; color: #ffffff; }
 
         .bank-name {
-            font-size: 21px;
+            font-size: 22px;
             font-weight: 700;
-            letter-spacing: 0.4px;
+            letter-spacing: 0.5px;
         }
 
-        /* ========== 內容區 - 字體加深 ========== */
+        /* ========== POLICY CONTENT - DARKER TEXT ========== */
         .policy-list {
             padding: 24px;
         }
@@ -125,14 +133,14 @@
         }
 
         .policy-title {
-            color: #1e293b;
+            color: #0f172a; /* Very dark text for readability */
             font-weight: 600;
             text-align: left;
             max-width: 65%;
         }
 
         .policy-value {
-            color: #926c00;
+            color: #854d0e; /* Dark golden color */
             font-weight: 700;
             text-align: right;
             max-width: 35%;
@@ -148,7 +156,7 @@
             border-top: 1px dashed #e2e8f0;
         }
 
-        /* ========== 列印設定 ========== */
+        /* ========== PRINT SETTINGS ========== */
         @media print {
             @page {
                 size: A4 landscape;
@@ -156,22 +164,30 @@
             }
 
             body {
-                background: #fff !important;
+                background: #ffffff !important;
                 font-size: 12pt;
                 padding: 0;
             }
 
             .top-header {
-                background: #fff !important;
-                padding: 10px 0;
-                box-shadow: none;
+                background: #ffffff !important;
+                box-shadow: none !important;
+                border-bottom: 2px solid #2563eb !important;
+            }
+
+            h1 {
+                color: #000000 !important;
+            }
+
+            .subtitle {
+                color: #333333 !important;
             }
 
             .back-btn { display: none !important; }
 
             .bank-card {
                 box-shadow: none !important;
-                border: 1px solid #ddd !important;
+                border: 1px solid #cccccc !important;
                 page-break-inside: avoid !important;
             }
 
@@ -181,13 +197,13 @@
             }
 
             .policy-value {
-                color: #000 !important;
+                color: #000000 !important;
             }
         }
     </style>
 </head>
 <body>
-    <!-- 🔹 頂部鮮艷標題區 -->
+    <!-- TOP HEADER SECTION -->
     <div class="top-header">
         <div class="container">
             <a href="index.html" class="back-btn">
@@ -202,10 +218,10 @@
         </div>
     </div>
 
-    <!-- 🔹 銀行政策列表 -->
+    <!-- BANK POLICY LIST -->
     <div class="bank-grid">
 
-        <!-- ✅ CIMB -->
+        <!-- CIMB -->
         <div class="bank-card">
             <div class="bank-header cimb-header">
                 <div class="bank-name">CIMB</div>
@@ -220,34 +236,34 @@
                     <span class="policy-value">Can proceed, Depends Scoring</span>
                 </div>
                 <div class="policy-row">
-                    <span class="policy-title">FIRST HOME 100% LOAN PACKAGE</span>
-                    <span class="policy-value">Yes, Up to 1 Million</span>
+                    <span class="policy-title">FIRST HOME 100% LOAN</span>
+                    <span class="policy-value">Yes, Up to RM 1,000,000</span>
                 </div>
                 <div class="policy-row">
                     <span class="policy-title">CTOS ISSUE</span>
-                    <span class="policy-value">Can Proceed, No Issue</span>
+                    <span class="policy-value">No Problem, Can Proceed</span>
                 </div>
                 <div class="policy-row">
-                    <span class="policy-title">REFERRAL FEES</span>
-                    <span class="policy-value">No Referral</span>
+                    <span class="policy-title">REFERRAL FEE</span>
+                    <span class="policy-value">No Commission</span>
                 </div>
                 <div class="policy-row">
-                    <span class="policy-title">LA FINANCE</span>
-                    <span class="policy-value">Can Finance</span>
+                    <span class="policy-title">LA FINANCING</span>
+                    <span class="policy-value">Allowed</span>
                 </div>
                 <div class="policy-row">
                     <span class="policy-title">ZERO MOVING COST</span>
-                    <span class="policy-value">NO</span>
+                    <span class="policy-value">Not Available</span>
                 </div>
                 <div class="policy-row">
                     <span class="policy-title">RENOVATION LOAN</span>
-                    <span class="policy-value">-</span>
+                    <span class="policy-value">Not Provided</span>
                 </div>
                 <div class="update-time" id="updateCimb"></div>
             </div>
         </div>
 
-        <!-- ✅ PUBLIC BANK -->
+        <!-- PUBLIC BANK -->
         <div class="bank-card">
             <div class="bank-header pbb-header">
                 <div class="bank-name">Public Bank</div>
@@ -255,41 +271,41 @@
             <div class="policy-list">
                 <div class="policy-row">
                     <span class="policy-title">PTPTN LATE PAYMENT</span>
-                    <span class="policy-value">Need Restructure</span>
+                    <span class="policy-value">Must Restructure First</span>
                 </div>
                 <div class="policy-row">
                     <span class="policy-title">CLEAN CCRIS</span>
-                    <span class="policy-value">Can proceed, Depends Scoring</span>
+                    <span class="policy-value">Subject to Credit Score</span>
                 </div>
                 <div class="policy-row">
-                    <span class="policy-title">FIRST HOME 100% LOAN PACKAGE</span>
-                    <span class="policy-value">Yes, Up to 500k</span>
+                    <span class="policy-title">FIRST HOME 100% LOAN</span>
+                    <span class="policy-value">Yes, Up to RM 500,000</span>
                 </div>
                 <div class="policy-row">
                     <span class="policy-title">CTOS ISSUE</span>
-                    <span class="policy-value">Need to do Settlement First</span>
+                    <span class="policy-value">Settlement Required</span>
                 </div>
                 <div class="policy-row">
-                    <span class="policy-title">REFERRAL FEES</span>
-                    <span class="policy-value">No Referral</span>
+                    <span class="policy-title">REFERRAL FEE</span>
+                    <span class="policy-value">No Commission</span>
                 </div>
                 <div class="policy-row">
-                    <span class="policy-title">LA FINANCE</span>
-                    <span class="policy-value">Can Finance</span>
+                    <span class="policy-title">LA FINANCING</span>
+                    <span class="policy-value">Allowed</span>
                 </div>
                 <div class="policy-row">
                     <span class="policy-title">ZERO MOVING COST</span>
-                    <span class="policy-value">NO</span>
+                    <span class="policy-value">Not Available</span>
                 </div>
                 <div class="policy-row">
                     <span class="policy-title">RENOVATION LOAN</span>
-                    <span class="policy-value">Yes</span>
+                    <span class="policy-value">Available</span>
                 </div>
                 <div class="update-time" id="updatePbb"></div>
             </div>
         </div>
 
-        <!-- ✅ RHB BANK -->
+        <!-- RHB BANK -->
         <div class="bank-card">
             <div class="bank-header rhb-header">
                 <div class="bank-name">RHB Bank</div>
@@ -297,35 +313,35 @@
             <div class="policy-list">
                 <div class="policy-row">
                     <span class="policy-title">PTPTN LATE PAYMENT</span>
-                    <span class="policy-value">No Need Restructure</span>
+                    <span class="policy-value">No Restructure Needed</span>
                 </div>
                 <div class="policy-row">
                     <span class="policy-title">CLEAN CCRIS</span>
-                    <span class="policy-value">Can Proceed - With Tnc 5% Saving based on SPA Price</span>
+                    <span class="policy-value">With 5% SPA Price Savings</span>
                 </div>
                 <div class="policy-row">
-                    <span class="policy-title">FIRST HOME 100% LOAN PACKAGE</span>
-                    <span class="policy-value">Yes, Up to 1 Million</span>
+                    <span class="policy-title">FIRST HOME 100% LOAN</span>
+                    <span class="policy-value">Yes, Up to RM 1,000,000</span>
                 </div>
                 <div class="policy-row">
                     <span class="policy-title">CTOS ISSUE</span>
-                    <span class="policy-value">Need to do Settlement First</span>
+                    <span class="policy-value">Settlement Required</span>
                 </div>
                 <div class="policy-row">
-                    <span class="policy-title">REFERRAL FEES</span>
-                    <span class="policy-value">0.2 if u pass back lms Staff</span>
+                    <span class="policy-title">REFERRAL FEE</span>
+                    <span class="policy-value">0.2% Commission</span>
                 </div>
                 <div class="policy-row">
-                    <span class="policy-title">LA FINANCE</span>
-                    <span class="policy-value">Can Finance</span>
+                    <span class="policy-title">LA FINANCING</span>
+                    <span class="policy-value">Allowed</span>
                 </div>
                 <div class="policy-row">
                     <span class="policy-title">ZERO MOVING COST</span>
-                    <span class="policy-value">NO</span>
+                    <span class="policy-value">Not Available</span>
                 </div>
                 <div class="policy-row">
                     <span class="policy-title">RENOVATION LOAN</span>
-                    <span class="policy-value">Yes</span>
+                    <span class="policy-value">Available</span>
                 </div>
                 <div class="update-time" id="updateRhb"></div>
             </div>
@@ -334,7 +350,7 @@
     </div>
 
     <script>
-        // 自動實時更新時間
+        // AUTO REAL-TIME UPDATE TIME
         function getCurrentDateTime() {
             const now = new Date();
             const date = now.toISOString().slice(0, 10);
