@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bank Policy Database</title>
     <style>
-        /* ========== 全局設定 ========== */
+        /* ========== 全局基礎設定 ========== */
         * {
             margin: 0;
             padding: 0;
@@ -15,22 +15,22 @@
 
         body {
             background-color: #f8fbfe;
-            padding-bottom: 40px;
+            padding: 24px 0;
         }
 
-        /* ========== 頂部標題欄 (螢光藍) ========== */
+        /* ========== 頂部標題欄 ========== */
         .top-bar {
             background-color: #00f0ff;
-            padding: 18px 20px;
+            padding: 16px 20px;
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 28px;
         }
 
         .top-bar h1 {
-            font-size: 17px;
+            font-size: 18px;
             font-weight: 700;
             color: #0a2a4a;
-            margin-bottom: 3px;
+            margin-bottom: 2px;
         }
 
         .top-bar p {
@@ -38,33 +38,35 @@
             color: #154b70;
         }
 
-        /* ========== 主容器 3列布局 ========== */
-        .banks-wrapper {
-            max-width: 1280px;
+        /* ========== 主容器 - 3列整齊排列、自動換行、上下滑動 ========== */
+        .banks-container {
+            max-width: 1260px;
             margin: 0 auto;
-            padding: 0 15px;
+            padding: 0 16px;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 22px;
+            gap: 24px;
         }
 
-        /* ========== 銀行卡片 ========== */
+        /* ========== 銀行卡片 - 完全跟你範例一樣的樣式 ========== */
         .bank-card {
             background: #ffffff;
-            border-radius: 4px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+            border-radius: 6px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
             border: 1px solid #e2e8f0;
             overflow: hidden;
         }
 
-        /* ========== 銀行專屬標題欄顏色 已全部加好 ========== */
+        /* 銀行標題欄 */
         .bank-header {
-            padding: 10px;
+            padding: 12px;
             text-align: center;
-            font-size: 16px;
+            font-size: 17px;
             font-weight: 700;
             color: #ffffff;
         }
+
+        /* 所有銀行專屬顏色 已預先設好 */
         .color-cimb     { background-color: #005baa; }
         .color-pbb      { background-color: #e21b23; }
         .color-rhb      { background-color: #f39c12; }
@@ -74,10 +76,10 @@
         .color-affin    { background-color: #004b93; }
         .color-islam    { background-color: #009640; }
         .color-rakyat   { background-color: #d31145; }
-        .color-muamalat { background-color: #ed1b24; }
-        .color-mbsb     { background-color: #006747; }
-        .color-bsn      { background-color: #004795; }
-        .color-agro     { background-color: #003b7e; }
+        .color-muamalat { background-color: #006747; }
+        .color-mbsb     { background-color: #004795; }
+        .color-bsn      { background-color: #003b7e; }
+        .color-agro     { background-color: #002f6c; }
         .color-hsbc     { background-color: #db0011; }
         .color-boc      { background-color: #a30013; }
         .color-scb      { background-color: #00338d; }
@@ -86,18 +88,19 @@
         .color-ocbc     { background-color: #ed1c24; }
         .color-maybank  { background-color: #ed1b24; }
 
-        /* ========== 內容區 ========== */
-        .policy-body {
-            padding: 14px 16px;
+        /* 內容區域 */
+        .policy-content {
+            padding: 18px 20px;
         }
 
+        /* 每一行規則 */
         .policy-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 5px 0;
-            font-size: 12.5px;
+            padding: 7px 0;
             border-bottom: 1px solid #f1f5f9;
+            font-size: 14px;
             white-space: nowrap;
         }
 
@@ -112,25 +115,37 @@
             text-align: right;
         }
 
-        .update-footer {
-            margin-top: 10px;
-            padding-top: 8px;
+        /* 更新時間 */
+        .update-text {
+            margin-top: 12px;
+            padding-top: 10px;
             border-top: 1px dashed #e2e8f0;
-            font-size: 11px;
+            font-size: 12px;
             color: #718096;
             text-align: right;
         }
 
-        /* ========== 響應式調整 ========== */
+        /* 返回按鈕 */
+        .back-btn {
+            margin: 20px auto;
+            max-width: 1260px;
+            padding: 0 16px;
+        }
+        .back-btn a {
+            font-size: 14px;
+            color: #005baa;
+            text-decoration: none;
+        }
+        .back-btn a:hover {
+            text-decoration: underline;
+        }
+
+        /* 手機版自動適應 */
         @media(max-width: 992px) {
-            .banks-wrapper {
-                grid-template-columns: repeat(2, 1fr);
-            }
+            .banks-container { grid-template-columns: repeat(2, 1fr); }
         }
         @media(max-width: 600px) {
-            .banks-wrapper {
-                grid-template-columns: 1fr;
-            }
+            .banks-container { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -142,13 +157,18 @@
         <p>Latest Financing Guidelines & Requirements</p>
     </div>
 
-    <!-- 銀行內容區 -->
-    <div class="banks-wrapper">
+    <!-- 返回選單 -->
+    <div class="back-btn">
+        <a href="index.html">← Back to Menu</a>
+    </div>
 
-        <!-- ✅ 標準模板 直接複製即可 -->
+    <!-- 銀行列表區 -->
+    <div class="banks-container">
+
+        <!-- ✅ 標準範例模板 (完全對應你 CIMB 的樣子) -->
         <div class="bank-card">
             <div class="bank-header color-cimb">CIMB</div>
-            <div class="policy-body">
+            <div class="policy-content">
                 <div class="policy-row">
                     <span class="policy-label">PTPTN LATE PAYMENT</span>
                     <span class="policy-value">Need Restructure</span>
@@ -185,14 +205,17 @@
                     <span class="policy-label">MINIMUM INCOME</span>
                     <span class="policy-value">-</span>
                 </div>
-                <div class="update-footer">Last Updated: 2026-05-20 23:33 by Admin</div>
+                <div class="update-text">Last Updated: 2026-05-20 23:33 by Admin</div>
             </div>
         </div>
 
-        <!-- 👇 其他銀行全部照這個格式新增就好，替換對應的 color-xxx 類別名即可 -->
+        <!-- 👇 其餘 20+ 間銀行，直接複製上面整個 <div class="bank-card">...</div> 區塊，修改：
+             1. class="color-xxx" → 替換成對應銀行顏色
+             2. 銀行名稱
+             3. 各項內容即可，格式完全一模一樣 -->
 
     </div>
-    
+
 </body>
 </html>
     <!-- Top Header -->
