@@ -15,9 +15,16 @@
 
         body {
             background-color: #f8fafc;
-            padding: 28px 24px;
             color: #1e293b;
             line-height: 1.65;
+        }
+
+        /* ========== 🔹 頂部整個區塊加背景色 ========== */
+        .top-header {
+            background-color: #eef9f0; /* 淺綠柔和主色，清爽不刺眼 */
+            padding: 28px 24px 40px;
+            margin-bottom: 24px;
+            border-radius: 0 0 12px 12px;
         }
 
         .container {
@@ -25,7 +32,7 @@
             margin: 0 auto;
         }
 
-        /* ========== 按鈕與標題 ========== */
+        /* ========== 按鈕 ========== */
         .back-btn {
             display: inline-flex;
             align-items: center;
@@ -47,6 +54,7 @@
             text-decoration: none;
         }
 
+        /* ========== 標題 ========== */
         h1 {
             text-align: center;
             font-size: 30px;
@@ -59,8 +67,7 @@
         .subtitle {
             text-align: center;
             font-size: 15px;
-            color: #64748b;
-            margin-bottom: 40px;
+            color: #526a5b;
         }
 
         /* ========== 網格布局 ========== */
@@ -68,6 +75,7 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 26px;
+            padding: 0 24px;
         }
 
         /* ========== 銀行卡片 ========== */
@@ -79,7 +87,7 @@
             border: 1px solid #e2e8f0;
         }
 
-        /* 🔹 頂部主題區 - 加顏色突出 */
+        /* 🔹 頂部主題區 - 銀行專屬顏色 */
         .bank-header {
             padding: 16px 22px;
             text-align: center;
@@ -149,6 +157,11 @@
                 padding: 0;
             }
 
+            .top-header {
+                background: #fff !important;
+                padding: 10px 0;
+            }
+
             .back-btn { display: none !important; }
 
             .bank-card {
@@ -169,146 +182,150 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <a href="index.html" class="back-btn">
-            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path d="M19 12H5M12 19l-7-7 7-7"/>
-            </svg>
-            Back to Menu
-        </a>
+    <!-- 🔹 頂部帶顏色的標題區 -->
+    <div class="top-header">
+        <div class="container">
+            <a href="index.html" class="back-btn">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                Back to Menu
+            </a>
 
-        <h1>BANK POLICY DATABASE</h1>
-        <p class="subtitle">Latest Financing Guidelines & Requirements</p>
-
-        <div class="bank-grid">
-
-            <!-- ✅ CIMB -->
-            <div class="bank-card">
-                <div class="bank-header cimb-header">
-                    <div class="bank-name">CIMB</div>
-                </div>
-                <div class="policy-list">
-                    <div class="policy-row">
-                        <span class="policy-title">PTPTN LATE PAYMENT</span>
-                        <span class="policy-value">Need Restructure</span>
-                    </div>
-                    <div class="policy-row">
-                        <span class="policy-title">CLEAN CCRIS</span>
-                        <span class="policy-value">Can proceed, Depends Scoring</span>
-                    </div>
-                    <div class="policy-row">
-                        <span class="policy-title">FIRST HOME 100% LOAN PACKAGE</span>
-                        <span class="policy-value">Yes, Up to 1 Million</span>
-                    </div>
-                    <div class="policy-row">
-                        <span class="policy-title">CTOS ISSUE</span>
-                        <span class="policy-value">Can Proceed, No Issue</span>
-                    </div>
-                    <div class="policy-row">
-                        <span class="policy-title">REFERRAL FEES</span>
-                        <span class="policy-value">No Referral</span>
-                    </div>
-                    <div class="policy-row">
-                        <span class="policy-title">LA FINANCE</span>
-                        <span class="policy-value">Can Finance</span>
-                    </div>
-                    <div class="policy-row">
-                        <span class="policy-title">ZERO MOVING COST</span>
-                        <span class="policy-value">NO</span>
-                    </div>
-                    <div class="policy-row">
-                        <span class="policy-title">RENOVATION LOAN</span>
-                        <span class="policy-value">-</span>
-                    </div>
-                    <div class="update-time" id="updateCimb"></div>
-                </div>
-            </div>
-
-            <!-- ✅ PUBLIC BANK -->
-            <div class="bank-card">
-                <div class="bank-header pbb-header">
-                    <div class="bank-name">Public Bank</div>
-                </div>
-                <div class="policy-list">
-                    <div class="policy-row">
-                        <span class="policy-title">PTPTN LATE PAYMENT</span>
-                        <span class="policy-value">Need Restructure</span>
-                    </div>
-                    <div class="policy-row">
-                        <span class="policy-title">CLEAN CCRIS</span>
-                        <span class="policy-value">Can proceed, Depends Scoring</span>
-                    </div>
-                    <div class="policy-row">
-                        <span class="policy-title">FIRST HOME 100% LOAN PACKAGE</span>
-                        <span class="policy-value">Yes, Up to 500k</span>
-                    </div>
-                    <div class="policy-row">
-                        <span class="policy-title">CTOS ISSUE</span>
-                        <span class="policy-value">Need to do Settlement First</span>
-                    </div>
-                    <div class="policy-row">
-                        <span class="policy-title">REFERRAL FEES</span>
-                        <span class="policy-value">No Referral</span>
-                    </div>
-                    <div class="policy-row">
-                        <span class="policy-title">LA FINANCE</span>
-                        <span class="policy-value">Can Finance</span>
-                    </div>
-                    <div class="policy-row">
-                        <span class="policy-title">ZERO MOVING COST</span>
-                        <span class="policy-value">NO</span>
-                    </div>
-                    <div class="policy-row">
-                        <span class="policy-title">RENOVATION LOAN</span>
-                        <span class="policy-value">Yes</span>
-                    </div>
-                    <div class="update-time" id="updatePbb"></div>
-                </div>
-            </div>
-
-            <!-- ✅ RHB BANK -->
-            <div class="bank-card">
-                <div class="bank-header rhb-header">
-                    <div class="bank-name">RHB Bank</div>
-                </div>
-                <div class="policy-list">
-                    <div class="policy-row">
-                        <span class="policy-title">PTPTN LATE PAYMENT</span>
-                        <span class="policy-value">No Need Restructure</span>
-                    </div>
-                    <div class="policy-row">
-                        <span class="policy-title">CLEAN CCRIS</span>
-                        <span class="policy-value">Can Proceed - With Tnc 5% Saving based on SPA Price</span>
-                    </div>
-                    <div class="policy-row">
-                        <span class="policy-title">FIRST HOME 100% LOAN PACKAGE</span>
-                        <span class="policy-value">Yes, Up to 1 Million</span>
-                    </div>
-                    <div class="policy-row">
-                        <span class="policy-title">CTOS ISSUE</span>
-                        <span class="policy-value">Need to do Settlement First</span>
-                    </div>
-                    <div class="policy-row">
-                        <span class="policy-title">REFERRAL FEES</span>
-                        <span class="policy-value">0.2 if u pass back lms Staff</span>
-                    </div>
-                    <div class="policy-row">
-                        <span class="policy-title">LA FINANCE</span>
-                        <span class="policy-value">Can Finance</span>
-                    </div>
-                    <div class="policy-row">
-                        <span class="policy-title">ZERO MOVING COST</span>
-                        <span class="policy-value">NO</span>
-                    </div>
-                    <div class="policy-row">
-                        <span class="policy-title">RENOVATION LOAN</span>
-                        <span class="policy-value">Yes</span>
-                    </div>
-                    <div class="update-time" id="updateRhb"></div>
-                </div>
-            </div>
-
+            <h1>BANK POLICY DATABASE</h1>
+            <p class="subtitle">Latest Financing Guidelines & Requirements</p>
         </div>
+    </div>
+
+    <!-- 🔹 銀行列表區 -->
+    <div class="bank-grid">
+
+        <!-- ✅ CIMB -->
+        <div class="bank-card">
+            <div class="bank-header cimb-header">
+                <div class="bank-name">CIMB</div>
+            </div>
+            <div class="policy-list">
+                <div class="policy-row">
+                    <span class="policy-title">PTPTN LATE PAYMENT</span>
+                    <span class="policy-value">Need Restructure</span>
+                </div>
+                <div class="policy-row">
+                    <span class="policy-title">CLEAN CCRIS</span>
+                    <span class="policy-value">Can proceed, Depends Scoring</span>
+                </div>
+                <div class="policy-row">
+                    <span class="policy-title">FIRST HOME 100% LOAN PACKAGE</span>
+                    <span class="policy-value">Yes, Up to 1 Million</span>
+                </div>
+                <div class="policy-row">
+                    <span class="policy-title">CTOS ISSUE</span>
+                    <span class="policy-value">Can Proceed, No Issue</span>
+                </div>
+                <div class="policy-row">
+                    <span class="policy-title">REFERRAL FEES</span>
+                    <span class="policy-value">No Referral</span>
+                </div>
+                <div class="policy-row">
+                    <span class="policy-title">LA FINANCE</span>
+                    <span class="policy-value">Can Finance</span>
+                </div>
+                <div class="policy-row">
+                    <span class="policy-title">ZERO MOVING COST</span>
+                    <span class="policy-value">NO</span>
+                </div>
+                <div class="policy-row">
+                    <span class="policy-title">RENOVATION LOAN</span>
+                    <span class="policy-value">-</span>
+                </div>
+                <div class="update-time" id="updateCimb"></div>
+            </div>
+        </div>
+
+        <!-- ✅ PUBLIC BANK -->
+        <div class="bank-card">
+            <div class="bank-header pbb-header">
+                <div class="bank-name">Public Bank</div>
+            </div>
+            <div class="policy-list">
+                <div class="policy-row">
+                    <span class="policy-title">PTPTN LATE PAYMENT</span>
+                    <span class="policy-value">Need Restructure</span>
+                </div>
+                <div class="policy-row">
+                    <span class="policy-title">CLEAN CCRIS</span>
+                    <span class="policy-value">Can proceed, Depends Scoring</span>
+                </div>
+                <div class="policy-row">
+                    <span class="policy-title">FIRST HOME 100% LOAN PACKAGE</span>
+                    <span class="policy-value">Yes, Up to 500k</span>
+                </div>
+                <div class="policy-row">
+                    <span class="policy-title">CTOS ISSUE</span>
+                    <span class="policy-value">Need to do Settlement First</span>
+                </div>
+                <div class="policy-row">
+                    <span class="policy-title">REFERRAL FEES</span>
+                    <span class="policy-value">No Referral</span>
+                </div>
+                <div class="policy-row">
+                    <span class="policy-title">LA FINANCE</span>
+                    <span class="policy-value">Can Finance</span>
+                </div>
+                <div class="policy-row">
+                    <span class="policy-title">ZERO MOVING COST</span>
+                    <span class="policy-value">NO</span>
+                </div>
+                <div class="policy-row">
+                    <span class="policy-title">RENOVATION LOAN</span>
+                    <span class="policy-value">Yes</span>
+                </div>
+                <div class="update-time" id="updatePbb"></div>
+            </div>
+        </div>
+
+        <!-- ✅ RHB BANK -->
+        <div class="bank-card">
+            <div class="bank-header rhb-header">
+                <div class="bank-name">RHB Bank</div>
+            </div>
+            <div class="policy-list">
+                <div class="policy-row">
+                    <span class="policy-title">PTPTN LATE PAYMENT</span>
+                    <span class="policy-value">No Need Restructure</span>
+                </div>
+                <div class="policy-row">
+                    <span class="policy-title">CLEAN CCRIS</span>
+                    <span class="policy-value">Can Proceed - With Tnc 5% Saving based on SPA Price</span>
+                </div>
+                <div class="policy-row">
+                    <span class="policy-title">FIRST HOME 100% LOAN PACKAGE</span>
+                    <span class="policy-value">Yes, Up to 1 Million</span>
+                </div>
+                <div class="policy-row">
+                    <span class="policy-title">CTOS ISSUE</span>
+                    <span class="policy-value">Need to do Settlement First</span>
+                </div>
+                <div class="policy-row">
+                    <span class="policy-title">REFERRAL FEES</span>
+                    <span class="policy-value">0.2 if u pass back lms Staff</span>
+                </div>
+                <div class="policy-row">
+                    <span class="policy-title">LA FINANCE</span>
+                    <span class="policy-value">Can Finance</span>
+                </div>
+                <div class="policy-row">
+                    <span class="policy-title">ZERO MOVING COST</span>
+                    <span class="policy-value">NO</span>
+                </div>
+                <div class="policy-row">
+                    <span class="policy-title">RENOVATION LOAN</span>
+                    <span class="policy-value">Yes</span>
+                </div>
+                <div class="update-time" id="updateRhb"></div>
+            </div>
+        </div>
+
     </div>
 
     <script>
