@@ -36,8 +36,8 @@
             padding: 0;
         }
         body {
-            background: #0f172a;
-            color: #f8fafc;
+            background: #121a2b;
+            color: #ffffff;
             padding: 20px;
         }
         .container {
@@ -62,23 +62,23 @@
         .grid-layout {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 24px;
+            gap: 30px;
             align-items: start;
         }
 
         /* ========== 區塊樣式 ========== */
         .section {
             background: #1e293b;
-            border-radius: 12px;
-            padding: 24px;
+            border-radius: 6px;
+            padding: 18px;
             margin-bottom: 20px;
             border: 1px solid #334155;
         }
         .section h2 {
             color: #fbbf24;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: bold;
-            margin-bottom: 18px;
+            margin-bottom: 16px;
         }
         .form-row {
             margin-bottom: 16px;
@@ -91,13 +91,14 @@
         }
         input, select {
             width: 100%;
-            padding: 12px 14px;
+            padding: 10px 12px;
             background: #0f172a;
             border: 1px solid #475569;
-            border-radius: 8px;
-            color: #fff;
-            font-size: 15px;
+            border-radius: 4px;
+            color: #ffffff;
+            font-size: 14px;
         }
+        /* ✅ 透明提示文字 */
         input::placeholder {
             color: #64748b;
             opacity: 0.7;
@@ -107,69 +108,74 @@
             border-color: #fbbf24;
         }
 
-        /* ========== 6個月輸入 ========== */
+        /* ========== 6個月輸入排版 ========== */
         .month-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            gap: 10px;
         }
 
-        /* ========== 按鈕 ========== */
+        /* ========== 按鈕樣式 ========== */
         .btn-calculate {
             width: 100%;
             background: linear-gradient(90deg, #fbbf24, #d97706);
             border: none;
-            padding: 14px;
-            border-radius: 8px;
-            color: #000;
+            padding: 12px;
+            border-radius: 4px;
+            color: #000000;
             font-weight: bold;
-            font-size: 17px;
+            font-size: 16px;
             cursor: pointer;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
+        }
+        .btn-calculate:hover {
+            background: linear-gradient(90deg, #facc15, #b45309);
         }
         .btn-reset {
             width: 100%;
             background: #334155;
             border: none;
-            padding: 12px;
-            border-radius: 8px;
-            color: #fff;
-            font-size: 16px;
+            padding: 10px;
+            border-radius: 4px;
+            color: #ffffff;
+            font-size: 15px;
             cursor: pointer;
+        }
+        .btn-reset:hover {
+            background: #475569;
         }
         .formula {
             font-size: 12px;
             color: #94a3b8;
             text-align: center;
-            margin-top: 12px;
-            line-height: 1.5;
+            margin-top: 10px;
         }
 
-        /* ========== 結果區 ========== */
+        /* ========== 結果區樣式 ========== */
         .result-main {
             text-align: center;
             background: #27272a;
             border: 1px solid #fbbf24;
-            border-radius: 10px;
-            padding: 24px;
-            margin-bottom: 24px;
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 20px;
         }
         .result-main .label {
-            font-size: 16px;
+            font-size: 15px;
             color: #cbd5e1;
         }
         .result-main .value {
-            font-size: 36px;
+            font-size: 32px;
             font-weight: bold;
             color: #fcd34d;
-            margin-top: 10px;
+            margin-top: 8px;
         }
         .result-row {
             display: flex;
             justify-content: space-between;
-            padding: 12px 0;
+            padding: 10px 0;
             border-bottom: 1px solid #273549;
-            font-size: 15px;
+            font-size: 14px;
         }
         .result-row .right {
             font-weight: 500;
@@ -177,8 +183,8 @@
         }
         .breakdown h3 {
             color: #fbbf24;
-            margin: 24px 0 12px;
-            font-size: 18px;
+            margin: 20px 0 10px;
+            font-size: 16px;
         }
     </style>
 </head>
@@ -219,11 +225,11 @@
                     </div>
                     <div class="form-row">
                         <label>Required NDI / MDI (RM)</label>
-                        <input type="number" id="ndi" placeholder="eg: 1100" value="1100">
+                        <input type="number" id="ndi" placeholder="eg: 1098" value="1098">
                     </div>
                     <div class="form-row">
                         <label>Total Existing Commitment (RM)</label>
-                        <input type="number" id="commitment" placeholder="eg: 1200" value="0">
+                        <input type="number" id="commitment" placeholder="eg: 0" value="0">
                     </div>
                     <div class="form-row">
                         <label>Interest Rate (%)</label>
@@ -270,9 +276,7 @@
                     <button class="btn-reset" onclick="resetAll()">Reset</button>
                     <p class="formula">Formula: Avg Net Income × DSR% - Commitment - Required NDI = Available Instalment</p>
                 </div>
-            </div>
-
-            <!-- 📊 右邊：即時結果 -->
+            </div>            <!-- 📊 右邊：結果顯示 -->
             <div>
                 <div class="section">
                     <h2>Eligibility Result</h2>
@@ -346,15 +350,14 @@
         </div>
     </div>
 
-        <script>
+    <script>
         // 格式化金額
         function formatRM(num) {
             return 'RM ' + Math.max(num, 0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
 
-        // 計算主程式
+        // 計算功能
         function calculate() {
-            // 讀取所有值
             const m1 = parseFloat(document.getElementById('m1').value) || 0;
             const m2 = parseFloat(document.getElementById('m2').value) || 0;
             const m3 = parseFloat(document.getElementById('m3').value) || 0;
@@ -373,24 +376,76 @@
             // 計算6個月平均收入
             const avgNet = (m1 + m2 + m3 + m4 + m5 + m6) / 6;
 
-            // 計算承認收入
+            // 計算可承認收入
             const otAmount = Math.max(0, avgNet - basic);
             const recognisedOt = otAmount * (otPercent / 100);
             const totalIncome = basic + recognisedOt;
 
-            // DSR與額度計算
+            // DSR 計算
             const maxCommitment = totalIncome * (dsr / 100);
             const availableInstalment = maxCommitment - commitment - ndi;
             const usedDSR = totalIncome > 0 ? ((commitment + Math.max(availableInstalment, 0)) / totalIncome * 100) : 0;
 
-            // 貸款額度公式
+            // 貸款額度計算
             const monthlyRate = rate / 100 / 12;
             const months = tenure * 12;
             let loanAmount = 0;
             if (availableInstalment > 0 && monthlyRate > 0) {
-                loanAmount = availableInstalment * (Math.pow(1 + monthlyRate, months) - 1) / (monthlyRate * Math.pow(1 + monthlyRate, months));
-            }
+                loanAmount = availableInstalment * ( (Math.pow(1 + monthlyRate, months) - 1) / 
+                 (monthlyRate * Math.pow(1 + monthlyRate, months));
+}
 
-            // 更新所有結果顯示
-            document.getElementById('loanAmount').innerText = formatRM(loanAmount);
-            document.getElementById('avgNet').innerText = formatRM(avgNet
+// ✅ 更新右邊所有顯示結果
+document.getElementById('loanAmount').innerText = formatRM(loanAmount);
+document.getElementById('avgNet').innerText = formatRM(avgNet);
+document.getElementById('totalInc').innerText = formatRM(totalIncome);
+document.getElementById('comResult').innerText = formatRM(commitment);
+document.getElementById('maxCom').innerText = formatRM(maxCommitment);
+document.getElementById('dsrResult').innerText = usedDSR.toFixed(2) + '%';
+document.getElementById('ndiResult').innerText = formatRM(ndi);
+document.getElementById('instResult').innerText = formatRM(Math.max(availableInstalment, 0));
+document.getElementById('rateResult').innerText = rate.toFixed(2) + '%';
+document.getElementById('tenureResult').innerText = tenure + ' Years';
+document.getElementById('ageResult').innerText = age;
+document.getElementById('brkBasic').innerText = formatRM(basic);
+document.getElementById('brkOt').innerText = formatRM(recognisedOt);
+document.getElementById('brkAvg').innerText = formatRM(avgNet);
+}
+
+// ✅ Reset 重置功能
+function resetAll() {
+    document.getElementById('age').value = '';
+    document.getElementById('dsr').value = '70';
+    document.getElementById('ndi').value = '1098';
+    document.getElementById('commitment').value = '0';
+    document.getElementById('rate').value = '4.00';
+    document.getElementById('tenure').value = '35';
+    document.getElementById('incomeType').value = 'salary';
+    document.getElementById('m1').value = '';
+    document.getElementById('m2').value = '';
+    document.getElementById('m3').value = '';
+    document.getElementById('m4').value = '';
+    document.getElementById('m5').value = '';
+    document.getElementById('m6').value = '';
+    document.getElementById('basic').value = '';
+    document.getElementById('otPercent').value = '70';
+
+    // 重置結果欄位
+    document.getElementById('loanAmount').innerText = 'RM 0.00';
+    document.getElementById('avgNet').innerText = 'RM 0.00';
+    document.getElementById('totalInc').innerText = 'RM 0.00';
+    document.getElementById('comResult').innerText = 'RM 0.00';
+    document.getElementById('maxCom').innerText = 'RM 0.00';
+    document.getElementById('dsrResult').innerText = '0.00%';
+    document.getElementById('ndiResult').innerText = 'RM 0.00';
+    document.getElementById('instResult').innerText = 'RM 0.00';
+    document.getElementById('rateResult').innerText = '0.00%';
+    document.getElementById('tenureResult').innerText = '0 Years';
+    document.getElementById('ageResult').innerText = '-';
+    document.getElementById('brkBasic').innerText = 'RM 0.00';
+    document.getElementById('brkOt').innerText = 'RM 0.00';
+    document.getElementById('brkAvg').innerText = 'RM 0.00';
+}
+    </script>
+</body>
+</html>
