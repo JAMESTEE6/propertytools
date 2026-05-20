@@ -251,28 +251,48 @@
             border: none !important;
         }
 
-        /* ✅ 強制列印在1頁 */
-        @media print {
-            @page {
-                size: A4;
-                margin: 5mm;
-            }
-            body * {
-                visibility: hidden;
-            }
-            .form-preview, .form-preview * {
-                visibility: visible;
-            }
-            .form-preview {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                border: none;
-                transform: scale(0.95);
-                transform-origin: top left;
-            }
-        }
+       /* ========== 專門用於列印的設定 ========== */
+@media print {
+    /* 重置所有邊距，盡量利用頁面空間 */
+    @page {
+        size: A4;          /* 固定A4尺寸 */
+        margin: 8mm;       /* 縮小邊距，避免浪費空間 */
+    }
+
+    html, body {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        height: auto !important;
+        background: #fff !important;
+        color: #000 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+/* 禁止區塊被切斷分頁 */
+    .form-container,
+    .agreement-section,
+    .signature-section {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        margin: 0 0 8px 0 !important;  /* 減少區塊之間的多餘間距 */
+        padding: 0 !important;
+    }
+
+    /* 縮短簽名欄上方的空白，避免被推到下一頁 */
+    .signature-section {
+        margin-top: 15px !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        width: 100% !important;
+    }
+
+    /* 隱藏不需要列印的元素 */
+    button, .back-button, .sidebar, .header, .footer {
+        display: none !important;
+    }
+}
     </style>
 </head>
 <body>
