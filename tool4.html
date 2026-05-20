@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bank Policy Database</title>
     <style>
-        /* ========== 全局重置 ========== */
+        /* ========== 基礎重置 ========== */
         * {
             margin: 0;
             padding: 0;
@@ -14,63 +14,71 @@
         }
 
         body {
-            background-color: #ffffff;
+            background-color: #f8fbfe;
             padding: 0;
             margin: 0;
         }
 
-        /* ========== 頂部標題欄 完全照你截圖 ========== */
-        .page-header {
+        /* ========== 頂部標題欄 ========== */
+        .top-header {
             background-color: #00f0ff;
-            padding: 12px 20px;
+            padding: 15px 20px;
             text-align: center;
             margin-bottom: 30px;
         }
 
-        .page-header h1 {
-            font-size: 17px;
+        .top-header h1 {
+            font-size: 18px;
             font-weight: 700;
             color: #082b4b;
-            margin-bottom: 2px;
+            margin-bottom: 3px;
         }
 
-        .page-header p {
+        .top-header p {
             font-size: 12px;
             color: #1a5379;
         }
 
-        /* ========== 核心排版 解決重疊！！ ========== */
-        .banks-grid {
+        /* ========== 返回按鈕 ========== */
+        .back-link {
+            margin: 0 0 20px 20px;
+            font-size: 14px;
+            color: #5a189a;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        /* ========== 主容器 - 固定3列、不重疊、自動換行 ========== */
+        .banks-container {
             max-width: 1280px;
             margin: 0 auto;
-            padding: 0 20px 40px;
-            /* 3列整齊排列 自動換行 上下滑動 */
+            padding: 0 15px 40px;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 25px;
             align-items: start;
         }
 
-        /* ========== 銀行卡片 跟你範例完全一樣 ========== */
+        /* ========== 銀行卡片 - 完整外觀樣式 ========== */
         .bank-card {
-            background: #ffffff;
-            border: 1px solid #e5e7eb;
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
             border-radius: 6px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
             overflow: hidden;
             width: 100%;
         }
 
-        /* 銀行頂部藍色標題欄 */
+        /* 銀行標題欄 */
         .bank-header {
-            padding: 10px;
+            padding: 12px;
             text-align: center;
-            font-size: 16px;
+            font-size: 17px;
             font-weight: bold;
             color: #ffffff;
         }
 
-        /* 所有銀行專屬顏色 已設定好 */
+        /* 所有銀行專屬顏色 */
         .color-cimb     { background-color: #005baa; }
         .color-pbb      { background-color: #e21b23; }
         .color-rhb      { background-color: #f39c12; }
@@ -92,23 +100,23 @@
         .color-ocbc     { background-color: #ed1c24; }
         .color-maybank  { background-color: #ed1b24; }
 
-        /* 內容區 */
+        /* 內容區域 */
         .policy-body {
-            padding: 16px 20px;
+            padding: 18px 22px;
         }
 
-        /* 每一行 左右對齊 不換行 */
+        /* 每一行規則 */
         .policy-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 6px 0;
-            border-bottom: 1px solid #f0f2f5;
+            padding: 8px 0;
+            border-bottom: 1px solid #f1f5f9;
             font-size: 14px;
             white-space: nowrap;
         }
 
-        .policy-name {
+        .policy-label {
             color: #2c3e50;
             font-weight: 500;
         }
@@ -120,96 +128,83 @@
         }
 
         /* 更新時間 */
-        .update-info {
+        .update-footer {
             margin-top: 12px;
             padding-top: 10px;
             border-top: 1px dashed #e2e8f0;
             font-size: 12px;
-            color: #738091;
+            color: #718096;
             text-align: right;
         }
 
-        /* 返回按鈕 */
-        .back-link {
-            margin: 15px 0 10px 20px;
-            font-size: 14px;
-            color: #005baa;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        /* 手機平板自動調整 */
+        /* 手機版自動調整 */
         @media (max-width: 1024px) {
-            .banks-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
+            .banks-container { grid-template-columns: repeat(2, 1fr); }
         }
         @media (max-width: 640px) {
-            .banks-grid {
-                grid-template-columns: 1fr;
-            }
+            .banks-container { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
     <!-- 頂部標題 -->
-    <div class="page-header">
+    <div class="top-header">
         <h1>Bank Policy Database</h1>
         <p>Latest Financing Guidelines & Requirements</p>
     </div>
 
     <!-- 返回按鈕 -->
-    <div class="back-link">← Back to Menu</div>
+    <a href="#" class="back-link">← Back to Menu</a>
 
-    <!-- 銀行列表區 上下滑動不重疊 -->
-    <div class="banks-grid">
+    <!-- 銀行列表 - 全部有卡片外觀 -->
+    <div class="banks-container">
 
-        <!-- ✅ 標準模板 1:1 複製你CIMB範例 -->
+        <!-- ✅ 標準模板 完全還原你的樣式 -->
         <div class="bank-card">
             <div class="bank-header color-cimb">CIMB</div>
             <div class="policy-body">
                 <div class="policy-row">
-                    <span class="policy-name">PTPTN LATE PAYMENT</span>
+                    <span class="policy-label">PTPTN LATE PAYMENT</span>
                     <span class="policy-value">Need Restructure</span>
                 </div>
                 <div class="policy-row">
-                    <span class="policy-name">CLEAN CCRIS</span>
+                    <span class="policy-label">CLEAN CCRIS</span>
                     <span class="policy-value">Can proceed, Depends Scoring</span>
                 </div>
                 <div class="policy-row">
-                    <span class="policy-name">FIRST HOME 100% LOAN</span>
+                    <span class="policy-label">FIRST HOME 100% LOAN</span>
                     <span class="policy-value">Yes, Up to RM 1,000,000</span>
                 </div>
                 <div class="policy-row">
-                    <span class="policy-name">CTOS ISSUE</span>
+                    <span class="policy-label">CTOS ISSUE</span>
                     <span class="policy-value">No Problem, Can Proceed</span>
                 </div>
                 <div class="policy-row">
-                    <span class="policy-name">REFERRAL FEE</span>
+                    <span class="policy-label">REFERRAL FEE</span>
                     <span class="policy-value">No Commission</span>
                 </div>
                 <div class="policy-row">
-                    <span class="policy-name">LA FINANCING</span>
+                    <span class="policy-label">LA FINANCING</span>
                     <span class="policy-value">Allowed</span>
                 </div>
                 <div class="policy-row">
-                    <span class="policy-name">ZERO MOVING COST</span>
+                    <span class="policy-label">ZERO MOVING COST</span>
                     <span class="policy-value">Not Available</span>
                 </div>
                 <div class="policy-row">
-                    <span class="policy-name">RENOVATION LOAN</span>
+                    <span class="policy-label">RENOVATION LOAN</span>
                     <span class="policy-value">Not Provided</span>
                 </div>
                 <div class="policy-row">
-                    <span class="policy-name">MINIMUM INCOME</span>
+                    <span class="policy-label">MINIMUM INCOME</span>
                     <span class="policy-value">-</span>
                 </div>
-                <div class="update-info">Last Updated: 2026-05-20 23:33 by Admin</div>
+                <div class="update-footer">Last Updated: 2026-05-20 23:33 by Admin</div>
             </div>
         </div>
 
-        <!-- 👇 剩下20多間銀行 直接複製上面整個區塊 修改名稱、顏色、內容就好，格式完全一樣 -->
+        <!-- 👇 其他銀行直接複製上面整塊修改即可，樣式完全保留 -->
 
     </div>
 
