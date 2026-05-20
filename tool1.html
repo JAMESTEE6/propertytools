@@ -250,37 +250,58 @@
             height: 16px;
             border: none !important;
         }
-/* ========== 最基本列印設定 ========== */
 @media print {
     @page {
-        size: A4;
-        margin: 8mm;
+        size: A4 portrait;
+        margin: 12mm 15mm;  /* 標準正式文件邊距 */
     }
 
     html, body {
         margin: 0;
         padding: 0;
         background: #fff;
-        font-size: 11.5px;
+        font-size: 11pt;        /* 正式文件標準字體大小 */
+        line-height: 1.35;      /* 行距舒適不鬆散 */
+        color: #000;
     }
 
-    /* ✅ 只顯示預覽區，其他全部隱藏 */
-    .back-btn, h1, .card:first-child, button {
-        display: none;
+    /* 只顯示右邊預覽區，其餘全部隱藏 */
+    .back-btn, h1, .card:first-child, .btn-group {
+        display: none !important;
     }
 
-    /* ✅ 移除所有邊框、背景、陰影 */
+    /* 移除所有多餘框線，保留表單本身的底線 */
     .card, .form-preview {
-        border: none;
-        box-shadow: none;
-        background: transparent;
-        padding: 0;
-        margin: 0;
+        border: none !important;
+        box-shadow: none !important;
+        background: transparent !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
     }
 
-    /* ✅ 強制所有內容在同一頁不分開 */
-    .form-preview, .terms, .sign-area {
-        page-break-inside: avoid;
+    /* 強制所有內容整體在同一頁，絕不分開 */
+    .form-preview,
+    .section-title,
+    .terms,
+    .sign-area {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+    }
+
+    /* 調整條款區行距，避免太長被推到下一頁 */
+    .terms {
+        font-size: 10pt !important;
+        line-height: 1.4 !important;
+        margin-top: 15px !important;
+    }
+
+    /* 簽名區位置剛好放在底部，不超出頁面 */
+    .sign-area {
+        margin-top: 25px !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        width: 100% !important;
     }
 }
     </style>
