@@ -5,7 +5,7 @@
     <title>Bank Policy Database</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* ========== 全局設定 ========== */
+        /* ========== GLOBAL SETTINGS ========== */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -16,16 +16,16 @@
         body {
             background-color: #f8fafc;
             color: #0f172a;
-            line-height: 1.7;
+            line-height: 1.6;
         }
 
-        /* ========== 🔹 頂部 - 螢光鮮艷藍色 ========== */
+        /* ========== TOP HEADER - FLUORESCENT COLOR ========== */
         .top-header {
-            background-color: #00e5ff; /* 螢光亮藍色 */
+            background-color: #00f0ff; /* Bright fluorescent blue */
             padding: 36px 24px 48px;
             margin-bottom: 30px;
             border-radius: 0 0 16px 16px;
-            box-shadow: 0 0 15px rgba(0, 229, 255, 0.5); /* 發光效果 */
+            box-shadow: 0 0 18px rgba(0, 240, 255, 0.5);
         }
 
         .container {
@@ -33,12 +33,11 @@
             margin: 0 auto;
         }
 
-        /* ========== 返回按鈕 ========== */
         .back-btn {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background-color: #0891b2;
+            background-color: #0284c7;
             color: #ffffff;
             padding: 10px 22px;
             border-radius: 8px;
@@ -47,86 +46,69 @@
             font-weight: 600;
             margin-bottom: 36px;
             border: none;
-            transition: all 0.2s ease;
         }
 
-        .back-btn:hover {
-            background-color: #0e7490;
-            transform: translateY(-1px);
-        }
-
-        /* ========== 標題 - 深色加粗對比強 ========== */
         h1 {
             text-align: center;
             font-size: 32px;
             font-weight: 800;
-            color: #082f49; /* 深藍字體，對比超清晰 */
+            color: #083344;
             margin-bottom: 8px;
-            letter-spacing: 0.7px;
         }
 
         .subtitle {
             text-align: center;
             font-size: 17px;
             font-weight: 600;
-            color: #155e75;
+            color: #0e5b72;
         }
 
-        /* ========== 網格布局 ========== */
+        /* ========== GRID LAYOUT ========== */
         .bank-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 28px;
+            gap: 24px;
             padding: 0 24px;
         }
 
-        /* ========== 銀行卡片 ========== */
+        /* ========== BANK CARD ========== */
         .bank-card {
             background: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
             overflow: hidden;
             border: 1px solid #e2e8f0;
-            transition: transform 0.2s ease;
         }
 
-        .bank-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
-        }
-
-        /* ========== 銀行頂部專屬顏色 ========== */
         .bank-header {
-            padding: 18px 22px;
+            padding: 16px 20px;
             text-align: center;
         }
 
         .cimb-header    { background-color: #005baa; color: #ffffff; }
         .pbb-header     { background-color: #e21b23; color: #ffffff; }
         .rhb-header     { background-color: #f39c12; color: #ffffff; }
-        .maybank-header { background-color: #cc0000; color: #ffffff; }
-        .hlb-header     { background-color: #007a3d; color: #ffffff; }
-        .ambank-header  { background-color: #004a99; color: #ffffff; }
-        .uob-header     { background-color: #006699; color: #ffffff; }
 
         .bank-name {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 700;
             letter-spacing: 0.5px;
         }
 
-        /* ========== 內容區 - 字體加深 ========== */
+        /* ========== POLICY ROW - SINGLE LINE FOR ALL CONTENT ========== */
         .policy-list {
-            padding: 24px;
+            padding: 18px 20px;
         }
 
         .policy-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 13px 0;
+            padding: 12px 0;
             border-bottom: 1px solid #f1f5f9;
             font-size: 15px;
+            gap: 16px;
+            flex-wrap: nowrap; /* ✅ Keep everything same line */
         }
 
         .policy-row:last-child {
@@ -134,73 +116,46 @@
         }
 
         .policy-title {
-            color: #0f172a;
+            color: #1e293b;
             font-weight: 600;
-            text-align: left;
-            max-width: 65%;
+            white-space: nowrap; /* ✅ No wrap */
+            flex-shrink: 0;
         }
 
         .policy-value {
-            color: #854d0e;
+            color: #926600;
             font-weight: 700;
             text-align: right;
-            max-width: 35%;
+            white-space: nowrap; /* ✅ All text stays same line */
         }
 
         .update-time {
-            margin-top: 22px;
-            padding-top: 15px;
-            font-size: 13px;
-            font-weight: 500;
-            color: #64748b;
+            margin-top: 16px;
+            padding-top: 12px;
+            font-size: 12.5px;
+            color: #738499;
             text-align: right;
             border-top: 1px dashed #e2e8f0;
         }
 
-        /* ========== 列印設定 ========== */
+        /* ========== PRINT STYLE ========== */
         @media print {
             @page {
                 size: A4 landscape;
                 margin: 12mm;
             }
-
-            body {
-                background: #ffffff !important;
-                font-size: 12pt;
-                padding: 0;
-            }
-
-            .top-header {
-                background: #ffffff !important;
-                box-shadow: none !important;
-                border-bottom: 2px solid #0094b3 !important;
-            }
-
-            h1, .subtitle {
-                color: #000000 !important;
-            }
-
+            body { background: #fff !important; }
+            .top-header { background: #fff !important; box-shadow: none !important; border-bottom: 2px solid #00a0b0 !important; }
+            h1 { color: #000 !important; }
             .back-btn { display: none !important; }
-
-            .bank-card {
-                box-shadow: none !important;
-                border: 1px solid #cccccc !important;
-                page-break-inside: avoid !important;
-            }
-
-            .bank-header {
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-
-            .policy-value {
-                color: #000000 !important;
-            }
+            .bank-card { border: 1px solid #ccc !important; box-shadow: none !important; }
+            .bank-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .policy-value { color: #000 !important; }
         }
     </style>
 </head>
 <body>
-    <!-- 頂部螢光標題區 -->
+    <!-- FLUORESCENT HEADER -->
     <div class="top-header">
         <div class="container">
             <a href="index.html" class="back-btn">
@@ -209,13 +164,12 @@
                 </svg>
                 Back to Menu
             </a>
-
             <h1>BANK POLICY DATABASE</h1>
             <p class="subtitle">Latest Financing Guidelines & Requirements</p>
         </div>
     </div>
 
-    <!-- 銀行政策列表 -->
+    <!-- BANK CARDS -->
     <div class="bank-grid">
 
         <!-- CIMB -->
@@ -260,7 +214,7 @@
             </div>
         </div>
 
-        <!-- Public Bank -->
+        <!-- PUBLIC BANK -->
         <div class="bank-card">
             <div class="bank-header pbb-header">
                 <div class="bank-name">Public Bank</div>
@@ -302,7 +256,7 @@
             </div>
         </div>
 
-        <!-- RHB Bank -->
+        <!-- RHB BANK -->
         <div class="bank-card">
             <div class="bank-header rhb-header">
                 <div class="bank-name">RHB Bank</div>
@@ -347,21 +301,19 @@
     </div>
 
     <script>
-        // 自動實時更新時間
+        // Auto update time
         function getCurrentDateTime() {
             const now = new Date();
             const date = now.toISOString().slice(0, 10);
             const time = now.toTimeString().slice(0, 5);
             return `Last Updated: ${date} ${time} by Admin`;
         }
-
         function setUpdateTime() {
             const text = getCurrentDateTime();
             document.getElementById('updateCimb').textContent = text;
             document.getElementById('updatePbb').textContent = text;
             document.getElementById('updateRhb').textContent = text;
         }
-
         window.onload = setUpdateTime;
     </script>
 </body>
