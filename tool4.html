@@ -5,159 +5,163 @@
     <title>Bank Policy Database</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* ========== 基礎設定 ========== */
+        /* ========== 全局基礎設定 ========== */
         * {
             box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, Arial, sans-serif !important;
             margin: 0;
             padding: 0;
+            font-family: 'Segoe UI', 'Roboto', Arial, sans-serif !important;
         }
+
         body {
             background-color: #f8fafc;
+            padding: 28px 24px;
             color: #1e293b;
-            padding: 24px;
-            line-height: 1.6;
+            line-height: 1.65;
         }
+
         .container {
-            max-width: 1300px;
+            max-width: 1280px;
             margin: 0 auto;
         }
 
-        /* ========== 返回按鈕 ========== */
+        /* ========== 按鈕與標題 ========== */
         .back-btn {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             background-color: #334155;
             color: #ffffff;
-            padding: 8px 18px;
+            padding: 9px 20px;
             border-radius: 6px;
             text-decoration: none;
-            font-weight: 500;
             font-size: 14px;
-            margin-bottom: 28px;
+            font-weight: 500;
+            margin-bottom: 32px;
             border: none;
-            transition: background 0.2s;
         }
+
         .back-btn:hover {
             background-color: #1e293b;
             color: #ffffff;
             text-decoration: none;
         }
 
-        /* ========== 標題區 ========== */
         h1 {
             text-align: center;
-            font-size: 28px;
+            font-size: 30px;
             font-weight: 700;
             color: #0f172a;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
         }
+
         .subtitle {
             text-align: center;
             font-size: 15px;
             color: #64748b;
-            margin-bottom: 36px;
+            margin-bottom: 40px;
         }
 
-        /* ========== 銀行卡片網格 ========== */
+        /* ========== 網格布局 ========== */
         .bank-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
+            gap: 26px;
         }
+
+        /* ========== 銀行卡片 ========== */
         .bank-card {
             background: #ffffff;
             border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
             overflow: hidden;
-            transition: all 0.2s;
-        }
-        .bank-card:hover {
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border: 1px solid #e2e8f0;
         }
 
-        /* ========== 卡片頂部 - 真實Logo ========== */
+        /* 🔹 頂部主題區 - 加顏色突出 */
         .bank-header {
-            background: #ffffff;
-            padding: 18px 20px;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        .bank-logo {
-            height: 42px;
-            width: auto;
-            object-fit: contain;
-        }
-        .bank-info h2 {
-            font-size: 19px;
-            font-weight: 600;
-            color: #0f172a;
-            margin: 0;
-        }
-        .bank-info p {
-            font-size: 12px;
-            color: #64748b;
-            margin: 1px 0 0 0;
+            padding: 16px 22px;
+            text-align: center;
         }
 
-        /* ========== 政策內容排版 ========== */
-        .policy-list {
-            padding: 20px;
+        .cimb-header    { background-color: #005baa; color: #ffffff; }
+        .pbb-header     { background-color: #e21b23; color: #ffffff; }
+        .rhb-header     { background-color: #f39c12; color: #ffffff; }
+
+        .bank-name {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
         }
+
+        /* ========== 內容區排版 ========== */
+        .policy-list {
+            padding: 22px;
+        }
+
         .policy-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 11px 0;
+            padding: 12px 0;
             border-bottom: 1px solid #f1f5f9;
-            font-size: 14.5px;
-            gap: 12px;
+            font-size: 14.8px;
         }
+
         .policy-row:last-child {
             border-bottom: none;
         }
+
         .policy-title {
             color: #334155;
             font-weight: 500;
             text-align: left;
             max-width: 65%;
         }
+
         .policy-value {
             color: #b48608;
-            font-weight: 500;
+            font-weight: 600;
             text-align: right;
             max-width: 35%;
         }
+
         .update-time {
-            margin-top: 16px;
-            padding-top: 12px;
+            margin-top: 20px;
+            padding-top: 14px;
             font-size: 12.5px;
             color: #94a3b8;
             text-align: right;
             border-top: 1px dashed #f1f5f9;
         }
 
-        /* ========== 列印專用設定 ========== */
+        /* ========== 列印設定 ========== */
         @media print {
             @page {
                 size: A4 landscape;
                 margin: 12mm;
             }
+
             body {
                 background: #fff !important;
                 font-size: 12pt;
                 padding: 0;
             }
+
             .back-btn { display: none !important; }
+
             .bank-card {
                 box-shadow: none !important;
                 border: 1px solid #ddd !important;
                 page-break-inside: avoid !important;
             }
+
+            .bank-header {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
             .policy-value {
                 color: #000 !important;
             }
@@ -178,14 +182,10 @@
 
         <div class="bank-grid">
 
-            <!-- ✅ CIMB BANK -->
+            <!-- ✅ CIMB -->
             <div class="bank-card">
-                <div class="bank-header">
-                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/7/75/CIMB_Group_logo.svg/220px-CIMB_Group_logo.svg.png" alt="CIMB Logo" class="bank-logo">
-                    <div class="bank-info">
-                        <h2>CIMB</h2>
-                        <p>Bank Policy</p>
-                    </div>
+                <div class="bank-header cimb-header">
+                    <div class="bank-name">CIMB</div>
                 </div>
                 <div class="policy-list">
                     <div class="policy-row">
@@ -226,12 +226,8 @@
 
             <!-- ✅ PUBLIC BANK -->
             <div class="bank-card">
-                <div class="bank-header">
-                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/8d/Public_Bank_logo.svg/220px-Public_Bank_logo.svg.png" alt="Public Bank Logo" class="bank-logo">
-                    <div class="bank-info">
-                        <h2>Public Bank</h2>
-                        <p>Bank Policy</p>
-                    </div>
+                <div class="bank-header pbb-header">
+                    <div class="bank-name">Public Bank</div>
                 </div>
                 <div class="policy-list">
                     <div class="policy-row">
@@ -272,12 +268,8 @@
 
             <!-- ✅ RHB BANK -->
             <div class="bank-card">
-                <div class="bank-header">
-                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/9/99/RHB_Bank_logo.svg/220px-RHB_Bank_logo.svg.png" alt="RHB Bank Logo" class="bank-logo">
-                    <div class="bank-info">
-                        <h2>RHB Bank</h2>
-                        <p>Bank Policy</p>
-                    </div>
+                <div class="bank-header rhb-header">
+                    <div class="bank-name">RHB Bank</div>
                 </div>
                 <div class="policy-list">
                     <div class="policy-row">
@@ -320,7 +312,7 @@
     </div>
 
     <script>
-        // ✅ 自動即時更新 LAST UPDATED 時間
+        // 自動更新時間
         function getCurrentDateTime() {
             const now = new Date();
             const date = now.toISOString().slice(0, 10);
