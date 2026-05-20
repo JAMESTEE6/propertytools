@@ -5,30 +5,7 @@
     <title>Eligibility Check Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* ========== 統一回上按鈕 ========== */
-        .back-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background-color: #374151;
-            color: #ffffff !important;
-            padding: 8px 16px;
-            border-radius: 4px;
-            text-decoration: none !important;
-            font-weight: 500;
-            font-size: 14px;
-            margin-bottom: 24px;
-        }
-        .back-btn:hover {
-            background-color: #1f2937;
-        }
-        .back-btn svg {
-            stroke: #ffffff;
-            width: 16px;
-            height: 16px;
-        }
-
-        /* ========== 整體樣式 ========== */
+        /* ========== 通用設定 ========== */
         * {
             box-sizing: border-box;
             font-family: Arial, Helvetica, sans-serif;
@@ -58,7 +35,7 @@
             margin-bottom: 32px;
         }
 
-        /* ========== 左右佈局 ========== */
+        /* ========== 佈局 ========== */
         .grid-layout {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -98,24 +75,24 @@
             color: #ffffff;
             font-size: 14px;
         }
-        /* ✅ 透明提示文字 */
+
+        /* ✅ 重點：所有提示文字設為透明淺色 */
         input::placeholder {
-            color: #64748b;
-            opacity: 0.7;
+            color: #64748b !important;
+            opacity: 0.7 !important;
         }
         input:focus, select:focus {
             outline: none;
             border-color: #fbbf24;
         }
 
-        /* ========== 6個月輸入排版 ========== */
         .month-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
         }
 
-        /* ========== 按鈕樣式 ========== */
+        /* ========== 按鈕 ========== */
         .btn-calculate {
             width: 100%;
             background: linear-gradient(90deg, #fbbf24, #d97706);
@@ -128,9 +105,6 @@
             cursor: pointer;
             margin-bottom: 10px;
         }
-        .btn-calculate:hover {
-            background: linear-gradient(90deg, #facc15, #b45309);
-        }
         .btn-reset {
             width: 100%;
             background: #334155;
@@ -141,9 +115,6 @@
             font-size: 15px;
             cursor: pointer;
         }
-        .btn-reset:hover {
-            background: #475569;
-        }
         .formula {
             font-size: 12px;
             color: #94a3b8;
@@ -151,7 +122,7 @@
             margin-top: 10px;
         }
 
-        /* ========== 結果區樣式 ========== */
+        /* ========== 結果顯示區 ========== */
         .result-main {
             text-align: center;
             background: #27272a;
@@ -190,20 +161,19 @@
 </head>
 <body>
     <div class="container">
-        <!-- 🔙 返回主選單 -->
-        <a href="index.html" class="back-btn">
-            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <!-- 返回按鈕 -->
+        <a href="index.html" class="back-btn" style="display:inline-flex;align-items:center;gap:6px;background:#374151;color:white;padding:8px 16px;border-radius:4px;text-decoration:none;margin-bottom:24px;">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path d="M19 12H5M12 19l-7-7 7-7"/>
             </svg>
             Back to Menu
         </a>
 
-        <!-- 📌 標題 -->
         <h1>Eligibility Check Pro</h1>
         <p class="subtitle">Single Loan · 6-Month Average · DSR + NDI Calculation</p>
 
         <div class="grid-layout">
-            <!-- 📥 左邊：輸入資料 -->
+            <!-- 左邊：輸入區 -->
             <div>
                 <div class="section">
                     <h2>Application Setup</h2>
@@ -276,7 +246,9 @@
                     <button class="btn-reset" onclick="resetAll()">Reset</button>
                     <p class="formula">Formula: Avg Net Income × DSR% - Commitment - Required NDI = Available Instalment</p>
                 </div>
-            </div>            <!-- 📊 右邊：結果顯示 -->
+            </div>
+
+            <!-- 右邊：結果區 -->
             <div>
                 <div class="section">
                     <h2>Eligibility Result</h2>
@@ -285,65 +257,23 @@
                         <div class="value" id="loanAmount">RM 0.00</div>
                     </div>
 
-                    <div class="result-row">
-                        <span>Application Type</span>
-                        <span class="right">Single Loan</span>
-                    </div>
-                    <div class="result-row">
-                        <span>Average 6-Month Net Income</span>
-                        <span class="right" id="avgNet">RM 0.00</span>
-                    </div>
-                    <div class="result-row">
-                        <span>Total Recognised Income</span>
-                        <span class="right" id="totalInc">RM 0.00</span>
-                    </div>
-                    <div class="result-row">
-                        <span>Total Existing Commitment</span>
-                        <span class="right" id="comResult">RM 0.00</span>
-                    </div>
-                    <div class="result-row">
-                        <span>Max Allowable Commitment</span>
-                        <span class="right" id="maxCom">RM 0.00</span>
-                    </div>
-                    <div class="result-row">
-                        <span>DSR Used</span>
-                        <span class="right" id="dsrResult">0%</span>
-                    </div>
-                    <div class="result-row">
-                        <span>Required NDI / MDI</span>
-                        <span class="right" id="ndiResult">RM 0.00</span>
-                    </div>
-                    <div class="result-row">
-                        <span>Available Instalment</span>
-                        <span class="right" id="instResult">RM 0.00</span>
-                    </div>
-                    <div class="result-row">
-                        <span>Interest Rate Used</span>
-                        <span class="right" id="rateResult">0.00%</span>
-                    </div>
-                    <div class="result-row">
-                        <span>Tenure Used</span>
-                        <span class="right" id="tenureResult">0 Years</span>
-                    </div>
-                    <div class="result-row">
-                        <span>Customer Age</span>
-                        <span class="right" id="ageResult">-</span>
-                    </div>
+                    <div class="result-row"><span>Application Type</span><span class="right">Single Loan</span></div>
+                    <div class="result-row"><span>Average 6-Month Net Income</span><span class="right" id="avgNet">RM 0.00</span></div>
+                    <div class="result-row"><span>Total Recognised Income</span><span class="right" id="totalInc">RM 0.00</span></div>
+                    <div class="result-row"><span>Total Existing Commitment</span><span class="right" id="comResult">RM 0.00</span></div>
+                    <div class="result-row"><span>Max Allowable Commitment</span><span class="right" id="maxCom">RM 0.00</span></div>
+                    <div class="result-row"><span>DSR Used</span><span class="right" id="dsrResult">0.00%</span></div>
+                    <div class="result-row"><span>Required NDI / MDI</span><span class="right" id="ndiResult">RM 0.00</span></div>
+                    <div class="result-row"><span>Available Instalment</span><span class="right" id="instResult">RM 0.00</span></div>
+                    <div class="result-row"><span>Interest Rate Used</span><span class="right" id="rateResult">0.00%</span></div>
+                    <div class="result-row"><span>Tenure Used</span><span class="right" id="tenureResult">0 Years</span></div>
+                    <div class="result-row"><span>Customer Age</span><span class="right" id="ageResult">-</span></div>
 
                     <div class="breakdown">
                         <h3>Breakdown</h3>
-                        <div class="result-row">
-                            <span>Basic Salary Used</span>
-                            <span class="right" id="brkBasic">RM 0.00</span>
-                        </div>
-                        <div class="result-row">
-                            <span>Recognised OT / Allowance</span>
-                            <span class="right" id="brkOt">RM 0.00</span>
-                        </div>
-                        <div class="result-row">
-                            <span>6-Month Average Net</span>
-                            <span class="right" id="brkAvg">RM 0.00</span>
-                        </div>
+                        <div class="result-row"><span>Basic Salary Used</span><span class="right" id="brkBasic">RM 0.00</span></div>
+                        <div class="result-row"><span>Recognised OT / Allowance</span><span class="right" id="brkOt">RM 0.00</span></div>
+                        <div class="result-row"><span>6-Month Average Net</span><span class="right" id="brkAvg">RM 0.00</span></div>
                     </div>
                 </div>
             </div>
@@ -356,7 +286,7 @@
             return 'RM ' + Math.max(num, 0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
 
-        // 計算功能
+        // ✅ 完整計算函數
         function calculate() {
             const m1 = parseFloat(document.getElementById('m1').value) || 0;
             const m2 = parseFloat(document.getElementById('m2').value) || 0;
@@ -373,79 +303,39 @@
             const tenure = parseFloat(document.getElementById('tenure').value) || 0;
             const age = document.getElementById('age').value || '-';
 
-            // 計算6個月平均收入
+            // 計算
             const avgNet = (m1 + m2 + m3 + m4 + m5 + m6) / 6;
-
-            // 計算可承認收入
             const otAmount = Math.max(0, avgNet - basic);
             const recognisedOt = otAmount * (otPercent / 100);
             const totalIncome = basic + recognisedOt;
-
-            // DSR 計算
             const maxCommitment = totalIncome * (dsr / 100);
             const availableInstalment = maxCommitment - commitment - ndi;
             const usedDSR = totalIncome > 0 ? ((commitment + Math.max(availableInstalment, 0)) / totalIncome * 100) : 0;
 
-            // 貸款額度計算
+            // 貸款額度公式
             const monthlyRate = rate / 100 / 12;
             const months = tenure * 12;
             let loanAmount = 0;
             if (availableInstalment > 0 && monthlyRate > 0) {
-                loanAmount = availableInstalment * ( (Math.pow(1 + monthlyRate, months) - 1) / 
-                 (monthlyRate * Math.pow(1 + monthlyRate, months));
-}
+                loanAmount = availableInstalment * (Math.pow(1 + monthlyRate, months) - 1) / 
+                             (monthlyRate * Math.pow(1 + monthlyRate, months));
+            }
 
-// ✅ 更新右邊所有顯示結果
-document.getElementById('loanAmount').innerText = formatRM(loanAmount);
-document.getElementById('avgNet').innerText = formatRM(avgNet);
-document.getElementById('totalInc').innerText = formatRM(totalIncome);
-document.getElementById('comResult').innerText = formatRM(commitment);
-document.getElementById('maxCom').innerText = formatRM(maxCommitment);
-document.getElementById('dsrResult').innerText = usedDSR.toFixed(2) + '%';
-document.getElementById('ndiResult').innerText = formatRM(ndi);
-document.getElementById('instResult').innerText = formatRM(Math.max(availableInstalment, 0));
-document.getElementById('rateResult').innerText = rate.toFixed(2) + '%';
-document.getElementById('tenureResult').innerText = tenure + ' Years';
-document.getElementById('ageResult').innerText = age;
-document.getElementById('brkBasic').innerText = formatRM(basic);
-document.getElementById('brkOt').innerText = formatRM(recognisedOt);
-document.getElementById('brkAvg').innerText = formatRM(avgNet);
-}
+            // ✅ 更新所有結果
+            document.getElementById('loanAmount').innerText = formatRM(loanAmount);
+            document.getElementById('avgNet').innerText = formatRM(avgNet);
+            document.getElementById('totalInc').innerText = formatRM(totalIncome);
+            document.getElementById('comResult').innerText = formatRM(commitment);
+            document.getElementById('maxCom').innerText = formatRM(maxCommitment);
+            document.getElementById('dsrResult').innerText = usedDSR.toFixed(2) + '%';
+            document.getElementById('ndiResult').innerText = formatRM(ndi);
+            document.getElementById('instResult').innerText = formatRM(Math.max(availableInstalment, 0));
+            document.getElementById('rateResult').innerText = rate.toFixed(2) + '%';
+            document.getElementById('tenureResult').innerText = tenure + ' Years';
+            document.getElementById('ageResult').innerText = age;
+            document.getElementById('brkBasic').innerText = formatRM(basic);
+            document.getElementById('brkOt').innerText = formatRM(recognisedOt);
+            document.getElementById('brkAvg').innerText = formatRM(avgNet);
+        }
 
-// ✅ Reset 重置功能
-function resetAll() {
-    document.getElementById('age').value = '';
-    document.getElementById('dsr').value = '70';
-    document.getElementById('ndi').value = '1098';
-    document.getElementById('commitment').value = '0';
-    document.getElementById('rate').value = '4.00';
-    document.getElementById('tenure').value = '35';
-    document.getElementById('incomeType').value = 'salary';
-    document.getElementById('m1').value = '';
-    document.getElementById('m2').value = '';
-    document.getElementById('m3').value = '';
-    document.getElementById('m4').value = '';
-    document.getElementById('m5').value = '';
-    document.getElementById('m6').value = '';
-    document.getElementById('basic').value = '';
-    document.getElementById('otPercent').value = '70';
-
-    // 重置結果欄位
-    document.getElementById('loanAmount').innerText = 'RM 0.00';
-    document.getElementById('avgNet').innerText = 'RM 0.00';
-    document.getElementById('totalInc').innerText = 'RM 0.00';
-    document.getElementById('comResult').innerText = 'RM 0.00';
-    document.getElementById('maxCom').innerText = 'RM 0.00';
-    document.getElementById('dsrResult').innerText = '0.00%';
-    document.getElementById('ndiResult').innerText = 'RM 0.00';
-    document.getElementById('instResult').innerText = 'RM 0.00';
-    document.getElementById('rateResult').innerText = '0.00%';
-    document.getElementById('tenureResult').innerText = '0 Years';
-    document.getElementById('ageResult').innerText = '-';
-    document.getElementById('brkBasic').innerText = 'RM 0.00';
-    document.getElementById('brkOt').innerText = 'RM 0.00';
-    document.getElementById('brkAvg').innerText = 'RM 0.00';
-}
-    </script>
-</body>
-</html>
+        //
