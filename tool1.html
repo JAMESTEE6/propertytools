@@ -252,56 +252,61 @@
         }
 /* ========== 專門用於列印的設定 ========== */
 @media print {
-    /* 重置所有邊距，盡量利用頁面空間 */
+    /* A4尺寸+最佳邊距，最大化可用空間 */
     @page {
-        size: A4;          /* 固定A4尺寸 */
-        margin: 8mm;       /* 縮小邊距，避免浪費空間 */
+        size: A4;
+        margin: 7mm !important; /* 不大不小，內容不會被裁切 */
     }
 
     html, body {
         margin: 0 !important;
         padding: 0 !important;
         width: 100% !important;
-        height: auto !important;
-        background: #fff !important;
-        color: #000 !important;
-        font-size: 11.5px !important;   /* 稍微縮小字體省空間 */
-        line-height: 1.4 !important;    /* 減少行距 */
+        background: #ffffff !important;
+        color: #000000 !important;
+        font-size: 11.5px !important; /* 剛好的字體，節省空間又清晰 */
+        line-height: 1.4 !important;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
     }
 
-    /* ✅ 列印時移除所有外框、邊線、陰影 */
-    .form-container,
-    .agreement-section,
-    .terms-box,
-    .section {
-        border: none !important;        /* 刪除外框 */
-        box-shadow: none !important;    /* 刪除陰影 */
-        background: transparent !important;
+    /* ✅ 1. 只顯示右邊預覽區，其餘全部隱藏 */
+    .enter-details,
+    .back-button,
+    button,
+    .header,
+    .sidebar,
+    .no-print {
+        display: none !important;
     }
 
-    /* 禁止區塊被切斷分頁 */
+    /* ✅ 2. 移除所有邊框、背景、陰影 */
     .form-container,
+    .preview-section,
+    .agreement-section,
+    .terms-box,
+    .signature-section {
+        border: none !important;
+        box-shadow: none !important;
+        background: transparent !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    /* ✅ 3. 強制所有內容不換頁，全部留在同一頁 */
+    .preview-section,
     .agreement-section,
     .signature-section {
         page-break-inside: avoid !important;
         break-inside: avoid !important;
-        margin: 0 0 8px 0 !important;  /* 減少區塊之間的多餘間距 */
-        padding: 0 !important;
-    }
-
-    /* 縮短簽名欄上方的空白，避免被推到下一頁 */
-    .signature-section {
-        margin-top: 12px !important;   /* 更小的間距 */
-        display: flex !important;
-        justify-content: space-between !important;
         width: 100% !important;
     }
 
-    /* 隱藏不需要列印的元素 */
-    button, .back-button, .sidebar, .header, .footer {
-        display: none !important;
+    /* 調整簽名區間距，確保不會超出頁面 */
+    .signature-section {
+        margin-top: 18px !important;
+        display: flex !important;
+        justify-content: space-between !important;
     }
 }
     </style>
