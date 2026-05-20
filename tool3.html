@@ -310,7 +310,7 @@
             const otAmount = Math.max(0, avgNet - basic);
             const recognisedOt = otAmount * (otPercent / 100);
             const totalIncome = basic + recognisedOt;
-            const maxCommitment = totalIncome * (dsr / 100);
+            const maxCommitment = avgNet * (dsr / 100);
             const availableInstalment = maxCommitment - commitment - ndi;
             const usedDSR = totalIncome > 0 ? ((commitment + Math.max(availableInstalment, 0)) / totalIncome * 100) : 0;
 
