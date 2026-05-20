@@ -5,7 +5,7 @@
     <title>Bank Policy Database</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* ========== GLOBAL STYLES ========== */
+        /* ========== 全局設定 ========== */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -19,13 +19,13 @@
             line-height: 1.7;
         }
 
-        /* ========== TOP HEADER - VIBRANT COLOR ========== */
+        /* ========== 🔹 頂部 - 螢光鮮艷藍色 ========== */
         .top-header {
-            background-color: #2563eb; /* Bright, vibrant blue */
+            background-color: #00e5ff; /* 螢光亮藍色 */
             padding: 36px 24px 48px;
             margin-bottom: 30px;
             border-radius: 0 0 16px 16px;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.5); /* 發光效果 */
         }
 
         .container {
@@ -33,12 +33,12 @@
             margin: 0 auto;
         }
 
-        /* ========== BACK BUTTON ========== */
+        /* ========== 返回按鈕 ========== */
         .back-btn {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background-color: #1e40af;
+            background-color: #0891b2;
             color: #ffffff;
             padding: 10px 22px;
             border-radius: 8px;
@@ -51,16 +51,16 @@
         }
 
         .back-btn:hover {
-            background-color: #1e3a8a;
+            background-color: #0e7490;
             transform: translateY(-1px);
         }
 
-        /* ========== TITLE - DARK & BOLD TEXT ========== */
+        /* ========== 標題 - 深色加粗對比強 ========== */
         h1 {
             text-align: center;
             font-size: 32px;
             font-weight: 800;
-            color: #ffffff; /* High contrast white text */
+            color: #082f49; /* 深藍字體，對比超清晰 */
             margin-bottom: 8px;
             letter-spacing: 0.7px;
         }
@@ -68,11 +68,11 @@
         .subtitle {
             text-align: center;
             font-size: 17px;
-            font-weight: 500;
-            color: #dbeafe; /* Soft light color for subtitle */
+            font-weight: 600;
+            color: #155e75;
         }
 
-        /* ========== GRID LAYOUT ========== */
+        /* ========== 網格布局 ========== */
         .bank-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -80,7 +80,7 @@
             padding: 0 24px;
         }
 
-        /* ========== BANK CARDS ========== */
+        /* ========== 銀行卡片 ========== */
         .bank-card {
             background: #ffffff;
             border-radius: 12px;
@@ -95,7 +95,7 @@
             box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
         }
 
-        /* ========== BANK HEADER COLORS ========== */
+        /* ========== 銀行頂部專屬顏色 ========== */
         .bank-header {
             padding: 18px 22px;
             text-align: center;
@@ -104,9 +104,10 @@
         .cimb-header    { background-color: #005baa; color: #ffffff; }
         .pbb-header     { background-color: #e21b23; color: #ffffff; }
         .rhb-header     { background-color: #f39c12; color: #ffffff; }
-        .maybank-header { background-color: #ff0000; color: #ffffff; }
+        .maybank-header { background-color: #cc0000; color: #ffffff; }
         .hlb-header     { background-color: #007a3d; color: #ffffff; }
         .ambank-header  { background-color: #004a99; color: #ffffff; }
+        .uob-header     { background-color: #006699; color: #ffffff; }
 
         .bank-name {
             font-size: 22px;
@@ -114,7 +115,7 @@
             letter-spacing: 0.5px;
         }
 
-        /* ========== POLICY CONTENT - DARKER TEXT ========== */
+        /* ========== 內容區 - 字體加深 ========== */
         .policy-list {
             padding: 24px;
         }
@@ -133,14 +134,14 @@
         }
 
         .policy-title {
-            color: #0f172a; /* Very dark text for readability */
+            color: #0f172a;
             font-weight: 600;
             text-align: left;
             max-width: 65%;
         }
 
         .policy-value {
-            color: #854d0e; /* Dark golden color */
+            color: #854d0e;
             font-weight: 700;
             text-align: right;
             max-width: 35%;
@@ -156,7 +157,7 @@
             border-top: 1px dashed #e2e8f0;
         }
 
-        /* ========== PRINT SETTINGS ========== */
+        /* ========== 列印設定 ========== */
         @media print {
             @page {
                 size: A4 landscape;
@@ -172,15 +173,11 @@
             .top-header {
                 background: #ffffff !important;
                 box-shadow: none !important;
-                border-bottom: 2px solid #2563eb !important;
+                border-bottom: 2px solid #0094b3 !important;
             }
 
-            h1 {
+            h1, .subtitle {
                 color: #000000 !important;
-            }
-
-            .subtitle {
-                color: #333333 !important;
             }
 
             .back-btn { display: none !important; }
@@ -203,7 +200,7 @@
     </style>
 </head>
 <body>
-    <!-- TOP HEADER SECTION -->
+    <!-- 頂部螢光標題區 -->
     <div class="top-header">
         <div class="container">
             <a href="index.html" class="back-btn">
@@ -218,7 +215,7 @@
         </div>
     </div>
 
-    <!-- BANK POLICY LIST -->
+    <!-- 銀行政策列表 -->
     <div class="bank-grid">
 
         <!-- CIMB -->
@@ -263,7 +260,7 @@
             </div>
         </div>
 
-        <!-- PUBLIC BANK -->
+        <!-- Public Bank -->
         <div class="bank-card">
             <div class="bank-header pbb-header">
                 <div class="bank-name">Public Bank</div>
@@ -305,7 +302,7 @@
             </div>
         </div>
 
-        <!-- RHB BANK -->
+        <!-- RHB Bank -->
         <div class="bank-card">
             <div class="bank-header rhb-header">
                 <div class="bank-name">RHB Bank</div>
@@ -350,7 +347,7 @@
     </div>
 
     <script>
-        // AUTO REAL-TIME UPDATE TIME
+        // 自動實時更新時間
         function getCurrentDateTime() {
             const now = new Date();
             const date = now.toISOString().slice(0, 10);
