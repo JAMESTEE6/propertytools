@@ -7,7 +7,7 @@
     <style>
         body { margin: 0; font-family: Arial, sans-serif; background-color: #f8fafc; }
 
-        /* 登入遮罩與框 */
+        /* 登入框 */
         .login-box {
             position: fixed; top: 50%; left: 50%;
             transform: translate(-50%, -50%);
@@ -52,6 +52,7 @@
             font-size: 15px;
             font-weight: 600;
             color: #000;
+            line-height: 1.6;
         }
         .logout-btn {
             background: #dc2626;
@@ -86,7 +87,7 @@
         const 工作表名 = "工作表1";
         let 帳密名單 = [];
 
-        // 馬來西亞時間
+        // ✅ 取得馬來西亞正確時間格式
         function getMYTime() {
             const d = new Date();
             d.setHours(d.getHours() + 8);
@@ -95,23 +96,37 @@
             const day = String(d.getDate()).padStart(2, '0');
             const h = String(d.getHours()).padStart(2, '0');
             const min = String(d.getMinutes()).padStart(2, '0');
-            return `${y}-${m}-${day} ${h}:${min}`;
+            const sec = String(d.getSeconds()).padStart(2, '0');
+            return `${y}-${m}-${day} ${h}:${min}:${sec}`;
+        }
+
+        // ✅ 即時更新 LOGIN TIME
+        function updateCurrentTime() {
+            const now = getMYTime();
+            const account = localStorage.getItem("loginAccount") || "";
+            const last = localStorage.getItem("lastLoginTime") || "First Time Login";
+
+            document.getElementById("loginDisplay").innerHTML = `
+                Welcome: ${account}<br>
+                LOGIN TIME: ${now}<br>
+                LAST LOGIN TIME: ${last}
+            `;
         }
 
         window.onload = function() {
-            // 已經登入 → 直接顯示內容
-            if(sessionStorage.getItem("isLogin") === "true"){
+            // 已登入狀態
+            if(localStorage.getItem("isLogin") === "true"){
                 showContent();
+                setInterval(updateCurrentTime, 1000); // 每秒更新現在時間
                 return;
             }
 
-            // 未登入 → 讀取Google帳密清單
+            // 未登入 → 讀取 Google 帳密
             fetch(`https://docs.google.com/spreadsheets/d/${試算表ID}/export?format=csv&sheet=${encodeURIComponent(工作表名)}`)
             .then(res => res.text())
             .then(csvText => {
                 const 所有列 = csvText.split("\n").filter(列 => 列.trim() !== "").map(列 => 列.split(","));
                 帳密名單 = 所有列.slice(1).map(列 => ({
-                    姓名: (列[0] || "").trim(),
                     帳號: (列[1] || "").trim(),
                     密碼: (列[2] || "").trim()
                 })).filter(i => i.帳號);
@@ -119,38 +134,44 @@
             .catch(() => alert("❌ 無法連線帳號系統，請稍後再試"));
         };
 
-        // 登入驗證
+        // ✅ 登入驗證
         function 執行登入() {
             const 輸帳號 = document.getElementById("acc").value.trim();
             const 輸密碼 = document.getElementById("pwd").value.trim();
-            const 使用者 = 帳密名單.find(d => d.帳號 === 輸帳號 && d.密碼 === 輸密碼);
+            const 正確 = 帳密名單.some(d => d.帳號 === 輸帳號 && d.密碼 === 輸密碼);
             
-            if (使用者) {
-                sessionStorage.setItem("isLogin", "true");
-                sessionStorage.setItem("userName", 使用者.姓名 || 使用者.帳號);
-                sessionStorage.setItem("lastLogin", getMYTime());
+            if (正確) {
+                // 儲存上次登入時間
+                localStorage.setItem("lastLoginTime", localStorage.getItem("currentLoginTime") || getMYTime());
+                // 設定本次登入資料
+                localStorage.setItem("isLogin", "true");
+                localStorage.setItem("loginAccount", 輸帳號);
+                localStorage.setItem("currentLoginTime", getMYTime());
+
                 showContent();
+                setInterval(updateCurrentTime, 1000);
             } else {
                 alert("❌ 帳號或密碼錯誤！");
             }
         }
 
-        // 顯示登入後內容
+        // 顯示登入後畫面
         function showContent() {
             document.querySelector(".mask").style.display = "none";
             document.querySelector(".login-box").style.display = "none";
             document.querySelector(".content").style.display = "block";
-            document.getElementById("loginDisplay").innerHTML = 
-                `Welcome: ${sessionStorage.getItem("userName")} &nbsp; | &nbsp; LAST LOGIN: ${sessionStorage.getItem("lastLogin")}`;
+            updateCurrentTime();
         }
 
-        // 登出
+        // ✅ 登出功能
         function logout() {
-            sessionStorage.clear();
+            localStorage.removeItem("isLogin");
+            localStorage.removeItem("loginAccount");
+            localStorage.removeItem("currentLoginTime");
             window.location.reload();
         }
 
-        // 按Enter快速登入
+        // Enter 鍵登入
         function 按鍵(e) { if (e.key === "Enter") 執行登入(); }
     </script>
 </head>
