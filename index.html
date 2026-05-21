@@ -7,7 +7,7 @@
     <style>
         body { margin: 0; font-family: Arial, sans-serif; background-color: #f8fafc; }
 
-        /* ✅ 登入框設定 */
+        /* 登入遮罩與框 */
         .login-box {
             position: fixed; top: 50%; left: 50%;
             transform: translate(-50%, -50%);
@@ -21,13 +21,24 @@
             border: 1px solid #ddd; border-radius: 6px; 
             font-size: 15px; box-sizing: border-box;
         }
-        .login-box button { width: 100%; padding: 12px; margin-top: 10px; background: #2563eb; color: white; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; }
+        .login-box button { 
+            width: 100%; padding: 12px; margin-top: 10px; 
+            background: #2563eb; color: white; border: none; 
+            border-radius: 6px; font-size: 16px; cursor: pointer; 
+        }
         .login-box button:hover { background: #1d4ed8; }
-        .register-link { display: inline-block; margin-top: 15px; font-size: 14px; color: #2563eb; text-decoration: none; }
+        .register-link { 
+            display: inline-block; margin-top: 15px; 
+            font-size: 14px; color: #2563eb; text-decoration: none; 
+        }
         .register-link:hover { text-decoration: underline; }
-        .mask { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 99998; }
+        .mask { 
+            position: fixed; top: 0; left: 0; width: 100%; 
+            height: 100%; background: rgba(0,0,0,0.5); 
+            z-index: 99998; 
+        }
 
-        /* ✅ 新增：登入資訊欄 */
+        /* 頂部登入資訊欄 */
         .header-bar {
             background: #bfff00;
             padding: 15px 25px;
@@ -54,18 +65,28 @@
         .logout-btn:hover { background: #b91c1c; }
 
         .content { display: none; padding: 25px; max-width: 1200px; margin: 0 auto; }
-        .tool-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 22px; margin-top: 35px; }
-        .tool-card { background: #fff; padding: 22px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); text-decoration: none; color: #333; transition: 0.2s; }
-        .tool-card:hover { transform: translateY(-4px); box-shadow: 0 6px 15px rgba(0,0,0,0.12); }
+        .tool-list { 
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
+            gap: 22px; margin-top: 35px; 
+        }
+        .tool-card { 
+            background: #fff; padding: 22px; border-radius: 10px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08); 
+            text-decoration: none; color: #333; transition: 0.2s; 
+        }
+        .tool-card:hover { 
+            transform: translateY(-4px); 
+            box-shadow: 0 6px 15px rgba(0,0,0,0.12); 
+        }
     </style>
 
     <script>
-        // === 設定區 ===
+        // ========== 設定區 ==========
         const 試算表ID = "1tJsY1dX4P2Wsg6EFmHVkbtDUvPwE0EU8jafFHblFLmg";
         const 工作表名 = "工作表1";
         let 帳密名單 = [];
 
-        // ✅ 取得馬來西亞正確時間
+        // 馬來西亞時間
         function getMYTime() {
             const d = new Date();
             d.setHours(d.getHours() + 8);
@@ -78,71 +99,62 @@
         }
 
         window.onload = function() {
-            // 已登入狀態 → 直接顯示內容與資訊
+            // 已經登入 → 直接顯示內容
             if(sessionStorage.getItem("isLogin") === "true"){
-                document.querySelector(".mask").style.display = "none";
-                document.querySelector(".login-box").style.display = "none";
-                document.querySelector(".content").style.display = "block";
-                showLoginInfo();
+                showContent();
                 return;
             }
 
-            // 未登入 → 載入帳密名單
+            // 未登入 → 讀取Google帳密清單
             fetch(`https://docs.google.com/spreadsheets/d/${試算表ID}/export?format=csv&sheet=${encodeURIComponent(工作表名)}`)
             .then(res => res.text())
             .then(csvText => {
                 const 所有列 = csvText.split("\n").filter(列 => 列.trim() !== "").map(列 => 列.split(","));
-                // 格式對應：第1列標題，第2列起 = 名稱、帳號、密碼
                 帳密名單 = 所有列.slice(1).map(列 => ({
                     姓名: (列[0] || "").trim(),
                     帳號: (列[1] || "").trim(),
                     密碼: (列[2] || "").trim()
                 })).filter(i => i.帳號);
             })
-            .catch(err => alert("❌ 無法連線帳號系統，請稍後再試"));
+            .catch(() => alert("❌ 無法連線帳號系統，請稍後再試"));
         };
 
-        // ✅ 登入驗證
+        // 登入驗證
         function 執行登入() {
             const 輸帳號 = document.getElementById("acc").value.trim();
             const 輸密碼 = document.getElementById("pwd").value.trim();
             const 使用者 = 帳密名單.find(d => d.帳號 === 輸帳號 && d.密碼 === 輸密碼);
             
             if (使用者) {
-                // 儲存登入資訊
                 sessionStorage.setItem("isLogin", "true");
                 sessionStorage.setItem("userName", 使用者.姓名 || 使用者.帳號);
                 sessionStorage.setItem("lastLogin", getMYTime());
-
-                // 顯示頁面
-                document.querySelector(".mask").style.display = "none";
-                document.querySelector(".login-box").style.display = "none";
-                document.querySelector(".content").style.display = "block";
-                showLoginInfo();
+                showContent();
             } else {
-                alert("❌ 帳號或密碼錯誤，請重新輸入");
+                alert("❌ 帳號或密碼錯誤！");
             }
         }
 
-        // ✅ 顯示登入資訊
-        function showLoginInfo() {
-            const name = sessionStorage.getItem("userName") || "使用者";
-            const last = sessionStorage.getItem("lastLogin") || "首次登入";
-            document.getElementById("loginDisplay").innerHTML = `Welcome: ${name} &nbsp; | &nbsp; LAST LOGIN: ${last}`;
+        // 顯示登入後內容
+        function showContent() {
+            document.querySelector(".mask").style.display = "none";
+            document.querySelector(".login-box").style.display = "none";
+            document.querySelector(".content").style.display = "block";
+            document.getElementById("loginDisplay").innerHTML = 
+                `Welcome: ${sessionStorage.getItem("userName")} &nbsp; | &nbsp; LAST LOGIN: ${sessionStorage.getItem("lastLogin")}`;
         }
 
-        // ✅ 登出功能
+        // 登出
         function logout() {
             sessionStorage.clear();
             window.location.reload();
         }
 
-        // Enter 鍵登入
+        // 按Enter快速登入
         function 按鍵(e) { if (e.key === "Enter") 執行登入(); }
     </script>
 </head>
 <body>
-    <!-- 登入遮罩與框 -->
     <div class="mask"></div>
     <div class="login-box">
         <h3>🔒 Please Login</h3>
@@ -153,13 +165,11 @@
         <a href="https://docs.google.com/forms/d/1mqPA5Eakr6naCI3DmFeb05dVm83cDYfrfRhCki9RbeE/viewform?usp=sf_link" target="_blank" class="register-link">👉 Register New Account</a>
     </div>
 
-    <!-- ✅ 登入資訊欄 -->
     <div class="header-bar">
         <div id="loginDisplay" class="user-info"></div>
         <button onclick="logout()" class="logout-btn">Logout</button>
     </div>
 
-    <!-- 工具清單內容 -->
     <div class="content">
         <h1>🏠 Property Tools Dashboard</h1>
         <p>Collection of useful tools, click to use 👇</p>
@@ -168,7 +178,6 @@
             <a href="tool2.html" class="tool-card"><h3>Mortgage Amortization Calculator</h3><p>Shows installment, principal & interest.</p></a>
             <a href="tool3.html" class="tool-card"><h3>Eligibility Check Pro</h3><p>Calculate how much can loan</p></a>
             <a href="tool4.html" class="tool-card"><h3>Bank Policy Database</h3><p>Latest Financing Guidelines & Requirements</p></a>
-            <a href="tool5.html" class="tool-card"><h3>Tool 5</h3><p>Description here</p></a>
         </div>
     </div>
 </body>
