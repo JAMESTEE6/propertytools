@@ -11,7 +11,6 @@
             background-color: #f8fafc; 
         }
 
-        /* 登入框樣式 */
         .login-box {
             position: fixed; 
             top: 50%; 
@@ -73,7 +72,6 @@
             z-index: 99998; 
         }
 
-        /* 頂部登入資訊欄 跟你截圖格式完全一樣 */
         .header-bar {
             background: #bfff00;
             padding: 15px 25px;
@@ -128,15 +126,23 @@
             transform: translateY(-4px); 
             box-shadow: 0 6px 15px rgba(0,0,0,0.12); 
         }
+        .log-viewer {
+            margin-top: 40px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+        .log-viewer h3 { margin-top:0; color:#2563eb; }
+        #logList { font-size:14px; line-height:1.7; max-height:300px; overflow:auto; }
     </style>
 
     <script>
-        // ========== 設定區 ==========
         const 試算表ID = "1tJsY1dX4P2Wsg6EFmHVkbtDUvPwE0EU8jafFHblFLmg";
         const 工作表名 = "工作表1";
         let 帳密名單 = [];
 
-        // ✅ 精準馬來西亞時間計算 (UTC+8 無誤差)
+        // 精準馬來西亞時間
         function getMYTime() {
             const now = new Date();
             const myTime = new Date(now.getTime() + (8 * 60 * 60 * 1000));
@@ -149,7 +155,31 @@
             return `${y}-${m}-${d} ${h}:${min}:${sec}`;
         }
 
-        // ✅ 顯示格式：Welcome + 即時登入時間 + 上一次登入時間
+        // 記錄工具使用
+        function logToolUsage(user, toolName) {
+            const logs = JSON.parse(localStorage.getItem("toolUsageLogs")) || [];
+            logs.unshift({
+                time: getMYTime(),
+                user: user,
+                tool: toolName
+            });
+            // 最多保留 100 筆記錄
+            if(logs.length > 100) logs.pop();
+            localStorage.setItem("toolUsageLogs", JSON.stringify(logs));
+            displayLogs();
+        }
+
+        // 顯示所有記錄
+        function displayLogs() {
+            const logArea = document.getElementById("logList");
+            const logs = JSON.parse(localStorage.getItem("toolUsageLogs")) || [];
+            if(logs.length === 0) {
+                logArea.innerHTML = "暂无使用记录";
+                return;
+            }
+            logArea.innerHTML = logs.map(l => `• ${l.time} | <b>${l.user}</b> 使用了 <b>${l.tool}</b>`).join("<br>");
+        }
+
         function updateDisplay() {
             const user = localStorage.getItem("loginAccount") || "";
             const loginNow = getMYTime();
@@ -163,14 +193,13 @@ LAST LOGIN TIME: ${last}
         }
 
         window.onload = function() {
-            // 已登入 → 直接顯示內容並開始更新時間
             if(localStorage.getItem("IS_LOGIN") === "true"){
                 showPage();
-                setInterval(updateDisplay, 1000); // 每秒同步一次時間
+                setInterval(updateDisplay, 1000);
+                displayLogs();
                 return;
             }
 
-            // 未登入 → 讀取 Google 試算表帳密清單
             fetch(`https://docs.google.com/spreadsheets/d/${試算表ID}/export?format=csv&sheet=${encodeURIComponent(工作表名)}`)
             .then(res => res.text())
             .then(csv => {
@@ -183,20 +212,17 @@ LAST LOGIN TIME: ${last}
             .catch(() => alert("❌ 無法連線帳號系統，請稍後再試"));
         };
 
-        // ✅ 登入邏輯：正確記錄上一次登入時間
         function doLogin() {
             const acc = document.getElementById("acc").value.trim();
             const pwd = document.getElementById("pwd").value.trim();
             const valid = 帳密名單.find(x => x.acc === acc && x.pwd === pwd);
 
             if(valid){
-                // 把「之前的登入時間」設為 LAST LOGIN
                 const oldLoginTime = localStorage.getItem("CURRENT_LOGIN");
                 if(oldLoginTime) {
                     localStorage.setItem("LAST_LOGIN", oldLoginTime);
                 }
 
-                // 儲存本次登入資料
                 const now = getMYTime();
                 localStorage.setItem("IS_LOGIN", "true");
                 localStorage.setItem("loginAccount", acc);
@@ -204,12 +230,12 @@ LAST LOGIN TIME: ${last}
 
                 showPage();
                 setInterval(updateDisplay, 1000);
+                logToolUsage(acc, "登入系統");
             } else {
                 alert("❌ 帳號或密碼錯誤，請重新輸入");
             }
         }
 
-        // 顯示登入後頁面
         function showPage() {
             document.querySelector(".mask").style.display = "none";
             document.querySelector(".login-box").style.display = "none";
@@ -217,21 +243,19 @@ LAST LOGIN TIME: ${last}
             updateDisplay();
         }
 
-        // ✅ 登出功能：保留 LAST LOGIN 記錄
         function logout() {
+            logToolUsage(localStorage.getItem("loginAccount"), "登出系統");
             localStorage.removeItem("IS_LOGIN");
             localStorage.removeItem("loginAccount");
             window.location.reload();
         }
 
-        // 按 Enter 鍵快速登入
         function enterKey(e) { 
             if(e.key === "Enter") doLogin(); 
         }
     </script>
 </head>
 <body>
-    <!-- 登入遮罩與登入框 -->
     <div class="mask"></div>
     <div class="login-box">
         <h3>🔒 Please Login</h3>
@@ -242,21 +266,25 @@ LAST LOGIN TIME: ${last}
         <a href="https://docs.google.com/forms/d/1mqPA5Eakr6naCI3DmFeb05dVm83cDYfrfRhCki9RbeE/viewform?usp=sf_link" target="_blank" class="register-link">👉 Register New Account</a>
     </div>
 
-    <!-- 頂部登入資訊區 -->
     <div class="header-bar">
         <div id="loginDisplay" class="user-info"></div>
         <button onclick="logout()" class="logout-btn">Logout</button>
     </div>
 
-    <!-- 工具清單內容 -->
     <div class="content">
         <h1>🏠 Property Tools Dashboard</h1>
         <p>Collection of useful tools, click to use 👇</p>
         <div class="tool-list">
-            <a href="tool1.html" class="tool-card"><h3>Booking Form Generator</h3><p>Generate & print form</p></a>
-            <a href="tool2.html" class="tool-card"><h3>Mortgage Amortization Calculator</h3><p>Shows installment, principal & interest.</p></a>
-            <a href="tool3.html" class="tool-card"><h3>Eligibility Check Pro</h3><p>Calculate how much can loan</p></a>
-            <a href="tool4.html" class="tool-card"><h3>Bank Policy Database</h3><p>Latest Financing Guidelines & Requirements</p></a>
+            <a href="tool1.html" class="tool-card" onclick="logToolUsage('${localStorage.getItem('loginAccount') || ''}', 'Booking Form Generator')"><h3>Booking Form Generator</h3><p>Generate & print form</p></a>
+            <a href="tool2.html" class="tool-card" onclick="logToolUsage('${localStorage.getItem('loginAccount') || ''}', 'Mortgage Calculator')"><h3>Mortgage Amortization Calculator</h3><p>Shows installment, principal & interest.</p></a>
+            <a href="tool3.html" class="tool-card" onclick="logToolUsage('${localStorage.getItem('loginAccount') || ''}', 'Eligibility Check Pro')"><h3>Eligibility Check Pro</h3><p>Calculate how much can loan</p></a>
+            <a href="tool4.html" class="tool-card" onclick="logToolUsage('${localStorage.getItem('loginAccount') || ''}', 'Bank Policy Database')"><h3>Bank Policy Database</h3><p>Latest Financing Guidelines & Requirements</p></a>
+        </div>
+
+        <!-- ✅ 這裡會顯示所有使用記錄，只有你能看到 -->
+        <div class="log-viewer">
+            <h3>📋 工具使用記錄</h3>
+            <div id="logList"></div>
         </div>
     </div>
 </body>
