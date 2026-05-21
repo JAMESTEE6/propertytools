@@ -11,6 +11,7 @@
             background-color: #f8fafc; 
         }
 
+        /* 登入框樣式 */
         .login-box {
             position: fixed; 
             top: 50%; 
@@ -72,6 +73,7 @@
             z-index: 99998; 
         }
 
+        /* 頂部資訊欄 完全和你截圖一樣 */
         .header-bar {
             background: #bfff00;
             padding: 15px 25px;
@@ -92,9 +94,10 @@
             background: #dc2626;
             color: #fff;
             border: none;
-            padding: 7px 14px;
+            padding: 8px 16px;
             border-radius: 5px;
-            font-size: 14px;
+            font-size: 15px;
+            font-weight: bold;
             cursor: pointer;
         }
         .logout-btn:hover { 
@@ -103,38 +106,51 @@
 
         .content { 
             display: none; 
-            padding: 25px; 
+            padding: 40px 25px; 
             max-width: 1200px; 
             margin: 0 auto; 
+            text-align: center;
+        }
+        .content h1 {
+            font-size: 36px;
+            color: #1e293b;
+            margin-bottom: 10px;
+        }
+        .content p {
+            font-size: 18px;
+            color: #64748b;
+            margin-bottom: 40px;
         }
         .tool-list { 
             display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
-            gap: 22px; 
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+            gap: 25px; 
             margin-top: 35px; 
         }
         .tool-card { 
             background: #fff; 
-            padding: 22px; 
-            border-radius: 10px; 
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08); 
+            padding: 30px 25px; 
+            border-radius: 12px; 
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08); 
             text-decoration: none; 
             color: #333; 
             transition: 0.2s; 
+            text-align: left;
         }
         .tool-card:hover { 
             transform: translateY(-4px); 
-            box-shadow: 0 6px 15px rgba(0,0,0,0.12); 
+            box-shadow: 0 6px 18px rgba(0,0,0,0.12); 
         }
-        .log-viewer {
-            margin-top: 40px;
-            background: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        .tool-card h3 {
+            color: #2563eb;
+            margin-top: 0;
+            font-size: 20px;
         }
-        .log-viewer h3 { margin-top:0; color:#2563eb; }
-        #logList { font-size:14px; line-height:1.7; max-height:300px; overflow:auto; }
+        .tool-card p {
+            color: #64748b;
+            font-size: 15px;
+            margin-bottom: 0;
+        }
     </style>
 
     <script>
@@ -142,7 +158,7 @@
         const 工作表名 = "工作表1";
         let 帳密名單 = [];
 
-        // 精準馬來西亞時間
+        // ✅ 精準馬來西亞時間
         function getMYTime() {
             const now = new Date();
             const myTime = new Date(now.getTime() + (8 * 60 * 60 * 1000));
@@ -155,7 +171,7 @@
             return `${y}-${m}-${d} ${h}:${min}:${sec}`;
         }
 
-        // 記錄工具使用
+        // ✅ 【後台記錄】只存不顯示給用戶
         function logToolUsage(user, toolName) {
             const logs = JSON.parse(localStorage.getItem("toolUsageLogs")) || [];
             logs.unshift({
@@ -163,21 +179,8 @@
                 user: user,
                 tool: toolName
             });
-            // 最多保留 100 筆記錄
-            if(logs.length > 100) logs.pop();
+            if(logs.length > 500) logs.pop(); // 最多保留500筆記錄
             localStorage.setItem("toolUsageLogs", JSON.stringify(logs));
-            displayLogs();
-        }
-
-        // 顯示所有記錄
-        function displayLogs() {
-            const logArea = document.getElementById("logList");
-            const logs = JSON.parse(localStorage.getItem("toolUsageLogs")) || [];
-            if(logs.length === 0) {
-                logArea.innerHTML = "暂无使用记录";
-                return;
-            }
-            logArea.innerHTML = logs.map(l => `• ${l.time} | <b>${l.user}</b> 使用了 <b>${l.tool}</b>`).join("<br>");
         }
 
         function updateDisplay() {
@@ -196,7 +199,6 @@ LAST LOGIN TIME: ${last}
             if(localStorage.getItem("IS_LOGIN") === "true"){
                 showPage();
                 setInterval(updateDisplay, 1000);
-                displayLogs();
                 return;
             }
 
@@ -228,9 +230,9 @@ LAST LOGIN TIME: ${last}
                 localStorage.setItem("loginAccount", acc);
                 localStorage.setItem("CURRENT_LOGIN", now);
 
+                logToolUsage(acc, "登入系統");
                 showPage();
                 setInterval(updateDisplay, 1000);
-                logToolUsage(acc, "登入系統");
             } else {
                 alert("❌ 帳號或密碼錯誤，請重新輸入");
             }
@@ -244,7 +246,8 @@ LAST LOGIN TIME: ${last}
         }
 
         function logout() {
-            logToolUsage(localStorage.getItem("loginAccount"), "登出系統");
+            const user = localStorage.getItem("loginAccount");
+            if(user) logToolUsage(user, "登出系統");
             localStorage.removeItem("IS_LOGIN");
             localStorage.removeItem("loginAccount");
             window.location.reload();
@@ -275,16 +278,22 @@ LAST LOGIN TIME: ${last}
         <h1>🏠 Property Tools Dashboard</h1>
         <p>Collection of useful tools, click to use 👇</p>
         <div class="tool-list">
-            <a href="tool1.html" class="tool-card" onclick="logToolUsage('${localStorage.getItem('loginAccount') || ''}', 'Booking Form Generator')"><h3>Booking Form Generator</h3><p>Generate & print form</p></a>
-            <a href="tool2.html" class="tool-card" onclick="logToolUsage('${localStorage.getItem('loginAccount') || ''}', 'Mortgage Calculator')"><h3>Mortgage Amortization Calculator</h3><p>Shows installment, principal & interest.</p></a>
-            <a href="tool3.html" class="tool-card" onclick="logToolUsage('${localStorage.getItem('loginAccount') || ''}', 'Eligibility Check Pro')"><h3>Eligibility Check Pro</h3><p>Calculate how much can loan</p></a>
-            <a href="tool4.html" class="tool-card" onclick="logToolUsage('${localStorage.getItem('loginAccount') || ''}', 'Bank Policy Database')"><h3>Bank Policy Database</h3><p>Latest Financing Guidelines & Requirements</p></a>
-        </div>
-
-        <!-- ✅ 這裡會顯示所有使用記錄，只有你能看到 -->
-        <div class="log-viewer">
-            <h3>📋 工具使用記錄</h3>
-            <div id="logList"></div>
+            <a href="tool1.html" class="tool-card" onclick="logToolUsage(localStorage.getItem('loginAccount'), 'Booking Form Generator')">
+                <h3>Booking Form Generator</h3>
+                <p>Generate & print form</p>
+            </a>
+            <a href="tool2.html" class="tool-card" onclick="logToolUsage(localStorage.getItem('loginAccount'), 'Mortgage Amortization Calculator')">
+                <h3>Mortgage Amortization Calculator</h3>
+                <p>Shows installment, principal & interest.</p>
+            </a>
+            <a href="tool3.html" class="tool-card" onclick="logToolUsage(localStorage.getItem('loginAccount'), 'Eligibility Check Pro')">
+                <h3>Eligibility Check Pro</h3>
+                <p>Calculate how much can loan</p>
+            </a>
+            <a href="tool4.html" class="tool-card" onclick="logToolUsage(localStorage.getItem('loginAccount'), 'Bank Policy Database')">
+                <h3>Bank Policy Database</h3>
+                <p>Latest Financing Guidelines & Requirements</p>
+            </a>
         </div>
     </div>
 </body>
