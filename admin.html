@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Usage Logs</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background-color: #f8fafc;
+            padding: 30px;
+        }
+        .admin-header {
+            background: #1e40af;
+            color: white;
+            padding: 18px 25px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .admin-header h1 {
+            font-size: 22px;
+        }
+        .back-btn {
+            background: white;
+            color: #1e40af;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .log-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            padding: 25px;
+        }
+        .log-container h2 {
+            color: #1e293b;
+            margin-bottom: 20px;
+            font-size: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        .log-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .log-table th {
+            background: #f1f5f9;
+            text-align: left;
+            padding: 12px;
+            color: #334155;
+            font-weight: bold;
+        }
+        .log-table td {
+            padding: 12px;
+            border-bottom: 1px solid #f1f5f9;
+            color: #334155;
+        }
+        .log-table tr:hover {
+            background: #f8fafc;
+        }
+        .empty {
+            text-align: center;
+            padding: 40px;
+            color: #94a3b8;
+            font-size: 16px;
+        }
+        .clear-btn {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 9px 18px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-header">
+        <h1>📋 系統使用記錄查詢</h1>
+        <a href="index.html" class="back-btn">← 返回首頁</a>
+    </div>
+
+    <div class="log-container">
+        <h2>所有登入 & 工具使用記錄</h2>
+        <table class="log-table">
+            <thead>
+                <tr>
+                    <th>時間</th>
+                    <th>用戶帳號</th>
+                    <th>操作內容</th>
+                </tr>
+            </thead>
+            <tbody id="logBody">
+                <tr>
+                    <td colspan="3" class="empty">暫無任何記錄</td>
+                </tr>
+            </tbody>
+        </table>
+        <button class="clear-btn" onclick="clearLogs()">清空所有記錄</button>
+    </div>
+
+    <script>
+        // 讀取並顯示記錄
+        function loadLogs() {
+            const logs = JSON.parse(localStorage.getItem("toolUsageLogs")) || [];
+            const tbody = document.getElementById("logBody");
+            
+            if(logs.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="3" class="empty">暫無任何記錄</td></tr>`;
+                return;
+            }
+
+            // 最新記錄顯示在最上面
+            tbody.innerHTML = logs.map(item => `
+                <tr>
+                    <td>${item.time}</td>
+                    <td><strong>${item.user}</strong></td>
+                    <td>${item.tool}</td>
+                </tr>
+            `).join("");
+        }
+
+        // 清空記錄
+        function clearLogs() {
+            if(confirm("確定要清空所有記錄嗎？此動作無法還原！")) {
+                localStorage.removeItem("toolUsageLogs");
+                loadLogs();
+            }
+        }
+
+        // 頁面載入時自動讀取
+        window.onload = loadLogs;
+    </script>
+</body>
+</html>
