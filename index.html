@@ -5,40 +5,75 @@
     <title>Property Tools - 實用工具集合</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        body { margin: 0; font-family: Arial, sans-serif; background-color: #f8fafc; }
-
-        /* 登入框 */
-        .login-box {
-            position: fixed; top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            background: #ffffff; padding: 35px;
-            border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-            z-index: 99999; width: 320px; text-align: center;
+        body { 
+            margin: 0; 
+            font-family: Arial, sans-serif; 
+            background-color: #f8fafc; 
         }
-        .login-box h3 { margin: 0 0 20px; color: #333; font-size: 18px; }
+
+        /* 登入框樣式 */
+        .login-box {
+            position: fixed; 
+            top: 50%; 
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #ffffff; 
+            padding: 35px;
+            border-radius: 10px; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            z-index: 99999; 
+            width: 320px; 
+            text-align: center;
+        }
+        .login-box h3 { 
+            margin: 0 0 20px; 
+            color: #333; 
+            font-size: 18px; 
+        }
         .login-box input { 
-            width: 100%; padding: 12px; margin: 8px 0; 
-            border: 1px solid #ddd; border-radius: 6px; 
-            font-size: 15px; box-sizing: border-box;
+            width: 100%; 
+            padding: 12px; 
+            margin: 8px 0; 
+            border: 1px solid #ddd; 
+            border-radius: 6px; 
+            font-size: 15px; 
+            box-sizing: border-box;
         }
         .login-box button { 
-            width: 100%; padding: 12px; margin-top: 10px; 
-            background: #2563eb; color: white; border: none; 
-            border-radius: 6px; font-size: 16px; cursor: pointer; 
+            width: 100%; 
+            padding: 12px; 
+            margin-top: 10px; 
+            background: #2563eb; 
+            color: white; 
+            border: none; 
+            border-radius: 6px; 
+            font-size: 16px; 
+            cursor: pointer; 
         }
-        .login-box button:hover { background: #1d4ed8; }
+        .login-box button:hover { 
+            background: #1d4ed8; 
+        }
         .register-link { 
-            display: inline-block; margin-top: 15px; 
-            font-size: 14px; color: #2563eb; text-decoration: none; 
+            display: inline-block; 
+            margin-top: 15px; 
+            font-size: 14px; 
+            color: #2563eb; 
+            text-decoration: none; 
         }
-        .register-link:hover { text-decoration: underline; }
+        .register-link:hover { 
+            text-decoration: underline; 
+        }
         .mask { 
-            position: fixed; top: 0; left: 0; width: 100%; 
-            height: 100%; background: rgba(0,0,0,0.5); 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(0,0,0,0.5); 
             z-index: 99998; 
         }
 
-        /* 頂部資訊欄 跟你圖片完全一樣 */
+        /* 頂部登入資訊欄 跟你截圖格式完全一樣 */
         .header-bar {
             background: #bfff00;
             padding: 15px 25px;
@@ -64,17 +99,30 @@
             font-size: 14px;
             cursor: pointer;
         }
-        .logout-btn:hover { background: #b91c1c; }
+        .logout-btn:hover { 
+            background: #b91c1c; 
+        }
 
-        .content { display: none; padding: 25px; max-width: 1200px; margin: 0 auto; }
+        .content { 
+            display: none; 
+            padding: 25px; 
+            max-width: 1200px; 
+            margin: 0 auto; 
+        }
         .tool-list { 
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
-            gap: 22px; margin-top: 35px; 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
+            gap: 22px; 
+            margin-top: 35px; 
         }
         .tool-card { 
-            background: #fff; padding: 22px; border-radius: 10px; 
+            background: #fff; 
+            padding: 22px; 
+            border-radius: 10px; 
             box-shadow: 0 2px 10px rgba(0,0,0,0.08); 
-            text-decoration: none; color: #333; transition: 0.2s; 
+            text-decoration: none; 
+            color: #333; 
+            transition: 0.2s; 
         }
         .tool-card:hover { 
             transform: translateY(-4px); 
@@ -88,9 +136,8 @@
         const 工作表名 = "工作表1";
         let 帳密名單 = [];
 
-        // ✅ 【修正版】馬來西亞精準時間 100% 正確
+        // ✅ 精準馬來西亞時間計算 (UTC+8 無誤差)
         function getMYTime() {
-            // 直接用UTC時間+8小時，不會有誤差
             const now = new Date();
             const myTime = new Date(now.getTime() + (8 * 60 * 60 * 1000));
             const y = myTime.getUTCFullYear();
@@ -102,7 +149,7 @@
             return `${y}-${m}-${d} ${h}:${min}:${sec}`;
         }
 
-        // ✅ 即時更新顯示
+        // ✅ 顯示格式：Welcome + 即時登入時間 + 上一次登入時間
         function updateDisplay() {
             const user = localStorage.getItem("loginAccount") || "";
             const loginNow = getMYTime();
@@ -116,13 +163,14 @@ LAST LOGIN TIME: ${last}
         }
 
         window.onload = function() {
+            // 已登入 → 直接顯示內容並開始更新時間
             if(localStorage.getItem("IS_LOGIN") === "true"){
                 showPage();
-                setInterval(updateDisplay, 1000); // 每秒同步
+                setInterval(updateDisplay, 1000); // 每秒同步一次時間
                 return;
             }
 
-            // 讀取Google帳密
+            // 未登入 → 讀取 Google 試算表帳密清單
             fetch(`https://docs.google.com/spreadsheets/d/${試算表ID}/export?format=csv&sheet=${encodeURIComponent(工作表名)}`)
             .then(res => res.text())
             .then(csv => {
@@ -132,21 +180,23 @@ LAST LOGIN TIME: ${last}
                     return { acc: cols[1]?.trim(), pwd: cols[2]?.trim() };
                 }).filter(x => x.acc);
             })
-            .catch(() => alert("❌ 無法連線帳號系統"));
+            .catch(() => alert("❌ 無法連線帳號系統，請稍後再試"));
         };
 
-        // ✅ 登入邏輯修正
+        // ✅ 登入邏輯：正確記錄上一次登入時間
         function doLogin() {
             const acc = document.getElementById("acc").value.trim();
             const pwd = document.getElementById("pwd").value.trim();
             const valid = 帳密名單.find(x => x.acc === acc && x.pwd === pwd);
 
             if(valid){
-                // 先存上次登入時間
-                const previous = localStorage.getItem("CURRENT_LOGIN") || "";
-                if(previous) localStorage.setItem("LAST_LOGIN", previous);
+                // 把「之前的登入時間」設為 LAST LOGIN
+                const oldLoginTime = localStorage.getItem("CURRENT_LOGIN");
+                if(oldLoginTime) {
+                    localStorage.setItem("LAST_LOGIN", oldLoginTime);
+                }
 
-                // 再存本次登入
+                // 儲存本次登入資料
                 const now = getMYTime();
                 localStorage.setItem("IS_LOGIN", "true");
                 localStorage.setItem("loginAccount", acc);
@@ -155,10 +205,11 @@ LAST LOGIN TIME: ${last}
                 showPage();
                 setInterval(updateDisplay, 1000);
             } else {
-                alert("❌ 帳號或密碼錯誤");
+                alert("❌ 帳號或密碼錯誤，請重新輸入");
             }
         }
 
+        // 顯示登入後頁面
         function showPage() {
             document.querySelector(".mask").style.display = "none";
             document.querySelector(".login-box").style.display = "none";
@@ -166,18 +217,21 @@ LAST LOGIN TIME: ${last}
             updateDisplay();
         }
 
+        // ✅ 登出功能：保留 LAST LOGIN 記錄
         function logout() {
             localStorage.removeItem("IS_LOGIN");
             localStorage.removeItem("loginAccount");
-            localStorage.removeItem("CURRENT_LOGIN");
-            // 保留 LAST_LOGIN 給下次看
             window.location.reload();
         }
 
-        function enterKey(e) { if(e.key === "Enter") doLogin(); }
+        // 按 Enter 鍵快速登入
+        function enterKey(e) { 
+            if(e.key === "Enter") doLogin(); 
+        }
     </script>
 </head>
 <body>
+    <!-- 登入遮罩與登入框 -->
     <div class="mask"></div>
     <div class="login-box">
         <h3>🔒 Please Login</h3>
@@ -188,11 +242,13 @@ LAST LOGIN TIME: ${last}
         <a href="https://docs.google.com/forms/d/1mqPA5Eakr6naCI3DmFeb05dVm83cDYfrfRhCki9RbeE/viewform?usp=sf_link" target="_blank" class="register-link">👉 Register New Account</a>
     </div>
 
+    <!-- 頂部登入資訊區 -->
     <div class="header-bar">
         <div id="loginDisplay" class="user-info"></div>
         <button onclick="logout()" class="logout-btn">Logout</button>
     </div>
 
+    <!-- 工具清單內容 -->
     <div class="content">
         <h1>🏠 Property Tools Dashboard</h1>
         <p>Collection of useful tools, click to use 👇</p>
