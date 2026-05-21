@@ -1247,19 +1247,29 @@
 
 <!-- 自動更新時間腳本 -->
 <script>
-    function getCurrentDateTime() {
-        const now = new Date();
-        const date = now.toISOString().split('T')[0];
-        const time = now.toTimeString().slice(0, 5);
-        return `Last Updated: ${date} ${time} by Admin`;
-    }
-    window.addEventListener('load', function() {
-        const allUpdateTime = document.querySelectorAll('.update-time');
-        allUpdateTime.forEach(item => {
-            item.textContent = getCurrentDateTime();
-        });
-    });
-</script>
+function getCurrentDateTime() {
+    const now = new Date();
+    // 轉成馬來西亞時區 UTC+8
+    const options = {
+        timeZone: 'Asia/Kuala_Lumpur',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+    };
+    // 格式化為 2026-05-21 14:13:24
+    const dateTime = new Intl.DateTimeFormat('en-CA', options).format(now).replace(',', '');
+    return `Last Updated: ${dateTime} by Admin`;
+}
 
-</body>
-</html>
+// 頁面載入就執行
+window.addEventListener('load', function() {
+    const allUpdateTime = document.querySelectorAll('.update-text');
+    allUpdateTime.forEach(item => {
+        item.textContent = getCurrentDateTime();
+    });
+});
+</script>
