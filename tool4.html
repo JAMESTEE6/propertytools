@@ -1240,19 +1240,34 @@
         </div>
 </div> <!-- 結束 bank-grid -->
 
-<!-- 獨立更新時間腳本 -->
+<!-- 單獨更新時間腳本 -->
 <script>
-// 獲取馬來西亞當前正確時間
-function getNowTime() {
+// 獲取正確的馬來西亞時間 UTC+8
+function getNowMYT() {
   const d = new Date();
-  const opt = {timeZone:'Asia/Kuala_Lumpur', year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false};
-  return new Intl.DateTimeFormat('en-CA', opt).format(d).replace(',','');
+  // 手動計算時區，避免瀏覽器相容性問題
+  const offset = d.getTimezoneOffset() * 60000;
+  const myTime = new Date(d.getTime() + offset + (8 * 3600000));
+
+  const y = myTime.getFullYear();
+  const m = String(myTime.getMonth() + 1).padStart(2, '0');
+  const day = String(myTime.getDate()).padStart(2, '0');
+  const h = String(myTime.getHours()).padStart(2, '0');
+  const min = String(myTime.getMinutes()).padStart(2, '0');
+  const sec = String(myTime.getSeconds()).padStart(2, '0');
+
+  return `${y}-${m}-${day} ${h}:${min}:${sec}`;
 }
 
-// ✅ 只更新你指定的銀行，其他完全不動
-function updateTime(bankCode) {
-  const el = document.querySelector(`.update-text[data-id="${bankCode}"]`);
-  if(el) el.textContent = `Last Updated: ${getNowTime()} by Admin`;
+// ✅ 重點：只更新指定銀行，其他絕對不動
+function updateBankTime(bankCode) {
+  const timeEl = document.querySelector(`.update-text[data-bank="${bankCode}"]`);
+  if (timeEl) {
+    timeEl.innerText = `Last Updated: ${getNowMYT()} by Admin`;
+    console.log(`✅ ${bankCode} 時間已更新`);
+  } else {
+    console.log(`❌ 找不到銀行: ${bankCode}`);
+  }
 }
 </script>
    
