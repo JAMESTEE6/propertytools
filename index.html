@@ -38,7 +38,7 @@
             z-index: 99998; 
         }
 
-        /* 頂部登入資訊欄 */
+        /* 頂部資訊欄 跟你圖片完全一樣 */
         .header-bar {
             background: #bfff00;
             padding: 15px 25px;
@@ -49,10 +49,11 @@
             gap: 12px;
         }
         .user-info {
-            font-size: 15px;
+            font-size: 16px;
             font-weight: 600;
             color: #000;
-            line-height: 1.6;
+            line-height: 1.8;
+            font-family: Arial, sans-serif;
         }
         .logout-btn {
             background: #dc2626;
@@ -87,101 +88,102 @@
         const 工作表名 = "工作表1";
         let 帳密名單 = [];
 
-        // ✅ 取得馬來西亞正確時間格式
+        // ✅ 【修正版】馬來西亞精準時間 100% 正確
         function getMYTime() {
-            const d = new Date();
-            d.setHours(d.getHours() + 8);
-            const y = d.getFullYear();
-            const m = String(d.getMonth() + 1).padStart(2, '0');
-            const day = String(d.getDate()).padStart(2, '0');
-            const h = String(d.getHours()).padStart(2, '0');
-            const min = String(d.getMinutes()).padStart(2, '0');
-            const sec = String(d.getSeconds()).padStart(2, '0');
-            return `${y}-${m}-${day} ${h}:${min}:${sec}`;
+            // 直接用UTC時間+8小時，不會有誤差
+            const now = new Date();
+            const myTime = new Date(now.getTime() + (8 * 60 * 60 * 1000));
+            const y = myTime.getUTCFullYear();
+            const m = String(myTime.getUTCMonth() + 1).padStart(2, '0');
+            const d = String(myTime.getUTCDate()).padStart(2, '0');
+            const h = String(myTime.getUTCHours()).padStart(2, '0');
+            const min = String(myTime.getUTCMinutes()).padStart(2, '0');
+            const sec = String(myTime.getUTCSeconds()).padStart(2, '0');
+            return `${y}-${m}-${d} ${h}:${min}:${sec}`;
         }
 
-        // ✅ 即時更新 LOGIN TIME
-        function updateCurrentTime() {
-            const now = getMYTime();
-            const account = localStorage.getItem("loginAccount") || "";
-            const last = localStorage.getItem("lastLoginTime") || "First Time Login";
+        // ✅ 即時更新顯示
+        function updateDisplay() {
+            const user = localStorage.getItem("loginAccount") || "";
+            const loginNow = getMYTime();
+            const last = localStorage.getItem("LAST_LOGIN") || "First Time Login";
 
             document.getElementById("loginDisplay").innerHTML = `
-                Welcome: ${account}<br>
-                LOGIN TIME: ${now}<br>
-                LAST LOGIN TIME: ${last}
+Welcome: ${user}<br>
+LOGIN TIME: ${loginNow}<br>
+LAST LOGIN TIME: ${last}
             `;
         }
 
         window.onload = function() {
-            // 已登入狀態
-            if(localStorage.getItem("isLogin") === "true"){
-                showContent();
-                setInterval(updateCurrentTime, 1000); // 每秒更新現在時間
+            if(localStorage.getItem("IS_LOGIN") === "true"){
+                showPage();
+                setInterval(updateDisplay, 1000); // 每秒同步
                 return;
             }
 
-            // 未登入 → 讀取 Google 帳密
+            // 讀取Google帳密
             fetch(`https://docs.google.com/spreadsheets/d/${試算表ID}/export?format=csv&sheet=${encodeURIComponent(工作表名)}`)
             .then(res => res.text())
-            .then(csvText => {
-                const 所有列 = csvText.split("\n").filter(列 => 列.trim() !== "").map(列 => 列.split(","));
-                帳密名單 = 所有列.slice(1).map(列 => ({
-                    帳號: (列[1] || "").trim(),
-                    密碼: (列[2] || "").trim()
-                })).filter(i => i.帳號);
+            .then(csv => {
+                const rows = csv.split("\n").filter(r => r.trim());
+                帳密名單 = rows.slice(1).map(r => {
+                    const cols = r.split(",");
+                    return { acc: cols[1]?.trim(), pwd: cols[2]?.trim() };
+                }).filter(x => x.acc);
             })
-            .catch(() => alert("❌ 無法連線帳號系統，請稍後再試"));
+            .catch(() => alert("❌ 無法連線帳號系統"));
         };
 
-        // ✅ 登入驗證
-        function 執行登入() {
-            const 輸帳號 = document.getElementById("acc").value.trim();
-            const 輸密碼 = document.getElementById("pwd").value.trim();
-            const 正確 = 帳密名單.some(d => d.帳號 === 輸帳號 && d.密碼 === 輸密碼);
-            
-            if (正確) {
-                // 儲存上次登入時間
-                localStorage.setItem("lastLoginTime", localStorage.getItem("currentLoginTime") || getMYTime());
-                // 設定本次登入資料
-                localStorage.setItem("isLogin", "true");
-                localStorage.setItem("loginAccount", 輸帳號);
-                localStorage.setItem("currentLoginTime", getMYTime());
+        // ✅ 登入邏輯修正
+        function doLogin() {
+            const acc = document.getElementById("acc").value.trim();
+            const pwd = document.getElementById("pwd").value.trim();
+            const valid = 帳密名單.find(x => x.acc === acc && x.pwd === pwd);
 
-                showContent();
-                setInterval(updateCurrentTime, 1000);
+            if(valid){
+                // 先存上次登入時間
+                const previous = localStorage.getItem("CURRENT_LOGIN") || "";
+                if(previous) localStorage.setItem("LAST_LOGIN", previous);
+
+                // 再存本次登入
+                const now = getMYTime();
+                localStorage.setItem("IS_LOGIN", "true");
+                localStorage.setItem("loginAccount", acc);
+                localStorage.setItem("CURRENT_LOGIN", now);
+
+                showPage();
+                setInterval(updateDisplay, 1000);
             } else {
-                alert("❌ 帳號或密碼錯誤！");
+                alert("❌ 帳號或密碼錯誤");
             }
         }
 
-        // 顯示登入後畫面
-        function showContent() {
+        function showPage() {
             document.querySelector(".mask").style.display = "none";
             document.querySelector(".login-box").style.display = "none";
             document.querySelector(".content").style.display = "block";
-            updateCurrentTime();
+            updateDisplay();
         }
 
-        // ✅ 登出功能
         function logout() {
-            localStorage.removeItem("isLogin");
+            localStorage.removeItem("IS_LOGIN");
             localStorage.removeItem("loginAccount");
-            localStorage.removeItem("currentLoginTime");
+            localStorage.removeItem("CURRENT_LOGIN");
+            // 保留 LAST_LOGIN 給下次看
             window.location.reload();
         }
 
-        // Enter 鍵登入
-        function 按鍵(e) { if (e.key === "Enter") 執行登入(); }
+        function enterKey(e) { if(e.key === "Enter") doLogin(); }
     </script>
 </head>
 <body>
     <div class="mask"></div>
     <div class="login-box">
         <h3>🔒 Please Login</h3>
-        <input type="text" id="acc" placeholder="Enter Account" onkeydown="按鍵(event)">
-        <input type="password" id="pwd" placeholder="Enter Password" onkeydown="按鍵(event)">
-        <button onclick="執行登入()">Login</button>
+        <input type="text" id="acc" placeholder="Enter Account" onkeydown="enterKey(event)">
+        <input type="password" id="pwd" placeholder="Enter Password" onkeydown="enterKey(event)">
+        <button onclick="doLogin()">Login</button>
         <br>
         <a href="https://docs.google.com/forms/d/1mqPA5Eakr6naCI3DmFeb05dVm83cDYfrfRhCki9RbeE/viewform?usp=sf_link" target="_blank" class="register-link">👉 Register New Account</a>
     </div>
