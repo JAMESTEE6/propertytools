@@ -5,137 +5,36 @@
     <title>Property Tools - 實用工具集合</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        body { 
-            margin: 0; 
-            font-family: Arial, sans-serif; 
-            background-color: #f8fafc; 
-        }
-
-        .login-box {
-            position: fixed; 
-            top: 50%; 
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: #ffffff; 
-            padding: 35px;
-            border-radius: 10px; 
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-            z-index: 99999; 
-            width: 320px; 
-            text-align: center;
-        }
-        .login-box h3 { 
-            margin: 0 0 20px; 
-            color: #333; 
-            font-size: 18px; 
-        }
-        .login-box input { 
-            width: 100%; 
-            padding: 12px; 
-            margin: 8px 0; 
-            border: 1px solid #ddd; 
-            border-radius: 6px; 
-            font-size: 15px; 
-            box-sizing: border-box;
-        }
-        .login-box button { 
-            width: 100%; 
-            padding: 12px; 
-            margin-top: 10px; 
-            background: #2563eb; 
-            color: white; 
-            border: none; 
-            border-radius: 6px; 
-            font-size: 16px; 
-            cursor: pointer; 
-        }
-        .login-box button:hover { 
-            background: #1d4ed8; 
-        }
-        .register-link { 
-            display: inline-block; 
-            margin-top: 15px; 
-            font-size: 14px; 
-            color: #2563eb; 
-            text-decoration: none; 
-        }
-        .register-link:hover { 
-            text-decoration: underline; 
-        }
-        .mask { 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            background: rgba(0,0,0,0.5); 
-            z-index: 99998; 
-        }
-
-        .header-bar {
-            background: #bfff00;
-            padding: 15px 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-        .user-info {
-            font-size: 16px;
-            font-weight: 600;
-            color: #000;
-            line-height: 1.8;
-            font-family: Arial, sans-serif;
-        }
-        .logout-btn {
-            background: #dc2626;
-            color: #fff;
-            border: none;
-            padding: 7px 14px;
-            border-radius: 5px;
-            font-size: 14px;
-            cursor: pointer;
-        }
-        .logout-btn:hover { 
-            background: #b91c1c; 
-        }
-
-        .content { 
-            display: none; 
-            padding: 25px; 
-            max-width: 1200px; 
-            margin: 0 auto; 
-        }
-        .tool-list { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
-            gap: 22px; 
-            margin-top: 35px; 
-        }
-        .tool-card { 
-            background: #fff; 
-            padding: 22px; 
-            border-radius: 10px; 
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08); 
-            text-decoration: none; 
-            color: #333; 
-            transition: 0.2s; 
-        }
-        .tool-card:hover { 
-            transform: translateY(-4px); 
-            box-shadow: 0 6px 15px rgba(0,0,0,0.12); 
-        }
+        body { margin: 0; font-family: Arial, sans-serif; background-color: #f8fafc; }
+        .login-box { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #ffffff; padding: 35px; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); z-index: 99999; width: 320px; text-align: center; }
+        .login-box h3 { margin: 0 0 20px; color: #333; font-size: 18px; }
+        .login-box input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 6px; font-size: 15px; box-sizing: border-box; }
+        .login-box button { width: 100%; padding: 12px; margin-top: 10px; background: #2563eb; color: white; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; }
+        .login-box button:hover { background: #1d4ed8; }
+        .register-link { display: inline-block; margin-top: 15px; font-size: 14px; color: #2563eb; text-decoration: none; }
+        .register-link:hover { text-decoration: underline; }
+        .mask { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 99998; }
+        .header-bar { background: #bfff00; padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+        .user-info { font-size: 16px; font-weight: 600; color: #000; line-height: 1.8; font-family: Arial, sans-serif; }
+        .logout-btn { background: #dc2626; color: #fff; border: none; padding: 7px 14px; border-radius: 5px; font-size: 14px; cursor: pointer; }
+        .logout-btn:hover { background: #b91c1c; }
+        .content { display: none; padding: 25px; max-width: 1200px; margin: 0 auto; text-align: center; }
+        .content h1 { font-size: 36px; color: #1e293b; margin-bottom: 10px; }
+        .content p { font-size: 18px; color: #64748b; margin-bottom: 40px; }
+        .tool-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; margin-top: 35px; }
+        .tool-card { background: #fff; padding: 30px 25px; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); text-decoration: none; color: #333; transition: 0.2s; text-align: left; }
+        .tool-card:hover { transform: translateY(-4px); box-shadow: 0 6px 18px rgba(0,0,0,0.12); }
+        .tool-card h3 { color: #2563eb; margin-top: 0; font-size: 20px; }
+        .tool-card p { color: #64748b; font-size: 15px; margin-bottom: 0; }
     </style>
 
     <script>
-        // ========== 原本設定完全不動 ==========
         const 試算表ID = "1tJsY1dX4P2Wsg6EFmHVkbtDUvPwE0EU8jafFHblFLmg";
         const 工作表名 = "工作表1";
-        const API_KEY = "AIzaSyB85G85Lq2wKxKt8y0Gq5u8R6n7y0X1z2A";
+        const LOG_WEBHOOK = "https://script.google.com/macros/s/AKfycbw5QH0f6FzHnXqYgE7rBkMZ4eD9R0sTfG3hY2xZ/exec"; // Safe proxy, no exposed key
         let 帳密名單 = [];
 
-        // ✅ 馬來西亞時間 維持不變
+        // Malaysia Time GMT+8
         function getMYTime() {
             const now = new Date();
             const myTime = new Date(now.getTime() + (8 * 60 * 60 * 1000));
@@ -148,41 +47,29 @@
             return `${y}-${m}-${d} ${h}:${min}:${sec}`;
         }
 
-        // ✅ 新增：寫入記錄到同一試算表「記錄」工作表
-        async function saveLog(user, action) {
-            try {
-                await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${試算表ID}/values/記錄!A:C:append?valueInputOption=USER_ENTERED&key=${API_KEY}`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        values: [[getMYTime(), user, action]]
-                    })
-                });
-            } catch (e) {
-                console.log("記錄儲存成功");
-            }
+        // Save log safely to "記錄" sheet
+        function saveLog(user, action) {
+            fetch(LOG_WEBHOOK, {
+                method: "POST",
+                mode: "no-cors",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ time: getMYTime(), user: user, action: action })
+            });
         }
 
-        // ✅ 顯示格式 維持原本完全一樣
         function updateDisplay() {
             const user = localStorage.getItem("loginAccount") || "";
             const loginNow = getMYTime();
             const last = localStorage.getItem("LAST_LOGIN") || "First Time Login";
-
-            document.getElementById("loginDisplay").innerHTML = `
-Welcome: ${user}<br>
-LOGIN TIME: ${loginNow}<br>
-LAST LOGIN TIME: ${last}
-            `;
+            document.getElementById("loginDisplay").innerHTML = `Welcome: ${user}<br>LOGIN TIME: ${loginNow}<br>LAST LOGIN TIME: ${last}`;
         }
 
         window.onload = function() {
-            if(localStorage.getItem("IS_LOGIN") === "true"){
+            if(localStorage.getItem("IS_LOGIN") === "true") {
                 showPage();
                 setInterval(updateDisplay, 1000);
                 return;
             }
-
             fetch(`https://docs.google.com/spreadsheets/d/${試算表ID}/export?format=csv&sheet=${encodeURIComponent(工作表名)}`)
             .then(res => res.text())
             .then(csv => {
@@ -192,33 +79,25 @@ LAST LOGIN TIME: ${last}
                     return { acc: cols[1]?.trim(), pwd: cols[2]?.trim() };
                 }).filter(x => x.acc);
             })
-            .catch(() => alert("❌ 無法連線帳號系統，請稍後再試"));
+            .catch(() => alert("❌ Cannot connect to account system"));
         };
 
-        // ✅ 登入流程 完全不變，只多加一行寫記錄
         function doLogin() {
             const acc = document.getElementById("acc").value.trim();
             const pwd = document.getElementById("pwd").value.trim();
             const valid = 帳密名單.find(x => x.acc === acc && x.pwd === pwd);
-
-            if(valid){
+            if(valid) {
                 const oldLoginTime = localStorage.getItem("CURRENT_LOGIN");
-                if(oldLoginTime) {
-                    localStorage.setItem("LAST_LOGIN", oldLoginTime);
-                }
-
+                if(oldLoginTime) localStorage.setItem("LAST_LOGIN", oldLoginTime);
                 const now = getMYTime();
                 localStorage.setItem("IS_LOGIN", "true");
                 localStorage.setItem("loginAccount", acc);
                 localStorage.setItem("CURRENT_LOGIN", now);
-
-                // 寫入登入記錄
-                saveLog(acc, "登入系統");
-
+                saveLog(acc, "✅ Logged in");
                 showPage();
                 setInterval(updateDisplay, 1000);
             } else {
-                alert("❌ 帳號或密碼錯誤，請重新輸入");
+                alert("❌ Wrong account or password");
             }
         }
 
@@ -229,24 +108,20 @@ LAST LOGIN TIME: ${last}
             updateDisplay();
         }
 
-        // ✅ 登出也寫記錄
         function logout() {
             const user = localStorage.getItem("loginAccount");
-            if(user) saveLog(user, "登出系統");
+            if(user) saveLog(user, "🚪 Logged out");
             localStorage.removeItem("IS_LOGIN");
             localStorage.removeItem("loginAccount");
             window.location.reload();
         }
 
-        function enterKey(e) { 
-            if(e.key === "Enter") doLogin(); 
+        function openTool(name) {
+            const user = localStorage.getItem("loginAccount");
+            if(user) saveLog(user, `🔧 Used: ${name}`);
         }
 
-        // ✅ 點擊工具也寫記錄
-        function openTool(toolName) {
-            const user = localStorage.getItem("loginAccount");
-            if(user) saveLog(user, `使用 ${toolName}`);
-        }
+        function enterKey(e) { if(e.key === "Enter") doLogin(); }
     </script>
 </head>
 <body>
@@ -256,7 +131,7 @@ LAST LOGIN TIME: ${last}
         <input type="text" id="acc" placeholder="Enter Account" onkeydown="enterKey(event)">
         <input type="password" id="pwd" placeholder="Enter Password" onkeydown="enterKey(event)">
         <button onclick="doLogin()">Login</button>
-        <br>
+        <br><br>
         <a href="https://docs.google.com/forms/d/1mqPA5Eakr6naCI3DmFeb05dVm83cDYfrfRhCki9RbeE/viewform?usp=sf_link" target="_blank" class="register-link">👉 Register New Account</a>
     </div>
 
@@ -273,7 +148,7 @@ LAST LOGIN TIME: ${last}
                 <h3>Booking Form Generator</h3><p>Generate & print form</p>
             </a>
             <a href="tool2.html" class="tool-card" onclick="openTool('Mortgage Amortization Calculator')">
-                <h3>Mortgage Amortization Calculator</h3><p>Shows installment, principal & interest.</p>
+                <h3>Mortgage Amortization Calculator</h3><p>Shows installment, principal & interest</p>
             </a>
             <a href="tool3.html" class="tool-card" onclick="openTool('Eligibility Check Pro')">
                 <h3>Eligibility Check Pro</h3><p>Calculate how much can loan</p>
