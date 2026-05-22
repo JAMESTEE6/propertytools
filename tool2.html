@@ -231,5 +231,52 @@
             document.getElementById('scheduleArea').innerHTML = '<p class="text-gray-500 text-sm text-center py-10">Click Calculate to generate schedule</p>';
         });
     </script>
+    if(localStorage.getItem("IS_LOGIN") !== "true") {
+            window.location.href = "index.html";
+        }
+
+        const LOG_ENDPOINT = "https://script.google.com/macros/s/AKfycbw5QH0f6FzHnXqYgE7rBkMZ4eD9R0sTfG3hY2xZ/exec";
+        const user = localStorage.getItem("loginAccount");
+
+        function getMYTime() {
+            const now = new Date();
+            const myTime = new Date(now.getTime() + (8 * 60 * 60 * 1000));
+            const y = myTime.getUTCFullYear();
+            const m = String(myTime.getUTCMonth() + 1).padStart(2, '0');
+            const d = String(myTime.getUTCDate()).padStart(2, '0');
+            const h = String(myTime.getUTCHours()).padStart(2, '0');
+            const min = String(myTime.getUTCMinutes()).padStart(2, '0');
+            const sec = String(myTime.getUTCSeconds()).padStart(2, '0');
+            return `${y}-${m}-${d} ${h}:${min}:${sec}`;
+        }
+
+        function saveLog(action) {
+            fetch(LOG_ENDPOINT, {
+                method: "POST",
+                body: JSON.stringify({ time: getMYTime(), user: user, action: action }),
+                headers: { "Content-Type": "application/json" },
+                redirect: "follow"
+            });
+        }
+
+        saveLog("使用 Booking Form Generator");
+
+        function updateDisplay() {
+            document.getElementById("loginDisplay").innerHTML = `
+Welcome: ${user}<br>
+LOGIN TIME: ${getMYTime()}
+            `;
+        }
+
+        updateDisplay();
+        setInterval(updateDisplay, 1000);
+
+        function logout() {
+            saveLog("登出系統");
+            localStorage.removeItem("IS_LOGIN");
+            localStorage.removeItem("loginAccount");
+            window.location.href = "index.html";
+        }
+    </script>
 </body>
 </html>
