@@ -1,1 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Legal Fees Calculator</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .header-bar {
+            background: #bfff00;
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+        .user-info {
+            font-size: 16px;
+            font-weight: 600;
+            color: #000;
+            line-height: 1.8;
+            font-family: Arial, sans-serif;
+        }
+        .logout-btn {
+            background: #dc2626;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .logout-btn:hover { background: #b91c1c; }
+        .page-content { padding: 0 25px 40px; font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; }
+        h1 { color: #1e293b; margin-bottom: 20px; font-size: 26px; }
+        .desc { color: #64748b; margin-bottom: 25px; line-height: 1.6; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 6px; font-weight: 600; color: #334155; }
+        input { width: 100%; padding: 12px 15px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 16px; box-sizing: border-box; }
+        button { background: #2563eb; color: white; border: none; padding: 12px 20px; border-radius: 6px; font-size: 16px; cursor: pointer; width: 100%; margin-top: 10px; }
+        button:hover { background: #1d4ed8; }
+        .result-box { margin-top: 25px; background: #f8fafc; padding: 20px; border-radius: 8px; border: 1px solid #e2e8f0; display: none; }
+        .result-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #e2e8f0; }
+        .result-row.total { font-weight: bold; font-size: 17px; color: #1e293b; border: none; margin-top: 8px; }
+        .note { font-size: 13px; color: #94a3b8; margin-top: 15px; line-height: 1.5; }
+    </style>
+</head>
+<body>
+    <div class="header-bar">
+        <div id="loginDisplay" class="user-info"></div>
+        <button onclick="logout()" class="logout-btn">Logout</button>
+    </div>
 
+    <div class="page-content">
+        <h1>⚖️ Legal Fees Calculator</h1>
+        <p class="desc">Calculation based on Malaysia Standard Scale of Fees (SPA & Loan Agreement), includes 6% SST. Minimum fee RM500 per document.</p>
+
+        <div class="form-group">
+            <label>Property Price (RM)</label>
+            <input type="number" id="price" placeholder="e.g. 500000" min="0">
+        </div>
+        <div class="form-group">
+            <label>Loan Amount (RM) (if applicable)</label>
+            <input type="number" id="loan" placeholder="e.g. 450000" min="0">
+        </div>
+
+        <button onclick="calculateFee()">Calculate Now</button>
+
+        <div class="result-box" id="resultBox">
+            <div class="result-row">
+                <span>SPA Legal Fee:</span>
+                <span id="spaFee">RM 0.00</span>
+            </div>
+            <div class="result-row">
+                <span>Loan Agreement Fee:</span>
+                <span id="loanFee">RM 0.00</span>
+            </div>
+            <div class="result-row">
+                <span>6% SST:</span>
+                <span id="sstFee">RM 0.00</span>
+            </div>
+            <div class="result-row total">
+                <span>Total Payable:</span>
+                <span id="totalFee">RM 0.00</span>
+            </div>
+        </div>
+
+        <p class="note">* Notes: Rate: 1.25% (first RM500k), 1.0% (RM500k – RM7.5mil), negotiable above RM7.5mil. Minimum RM500/document. Excludes disbursements (stamp duty, registration fees, etc.).</p>
+    </div>
+
+    <script>
+        if(localStorage.getItem("IS_LOGIN") !== "true") location.href = "index.html";
+        const 試算表ID = "1tJsY1dX4P2Wsg6EFmHVkbtDUvPwE0EU8jafFHblFLmg";
+        const 記錄工作表 = "記錄";
+        const API_KEY = "AIzaSyB85G85Lq2wKxKt8y0Gq5u8R6n7y0X1z2A";
+        const user = localStorage.getItem("loginAccount");
+
+        function getMYTime() {
+            const d = new Date();
+            return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;
+        }
+
+        async function saveLog(action) {
+            await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${試算表ID}/values/${記錄工作表}!A:C:append?valueInputOption=USER_ENTERED&key=${API_KEY}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ values: [[getMYTime(), user, action]] })
+            });
+        }
+
+        // ✅ 標準律師費計算公式
+        function computeFee(amount) {
+            if (amount <= 0) return 0;
+            let fee = 0;
+            if (amount <= 500000) {
+                fee = amount * 0.0125;
+            } else if (amount <= 7500000) {
+                fee = 500000 * 0.0125 + (amount - 500000) * 0.01;
+            } else {
+                fee = 500000 * 0.0125 + 7000000 * 0.01; // above 7.5mil capped here
+            }
+            return Math.max(fee, 500); // 最低收費RM500
+        }
+
+        function calculateFee() {
+            const price = Number(document.getElementById("price").value) || 0;
+            const loan = Number(document.getElementById("loan").value) || 0;
+
+            const spaFee = computeFee(price);
+            const loanFee = computeFee(loan);
+            const sst = (spaFee + loanFee) * 0.06;
+            const total = spaFee + loanFee + sst;
+
+            document.getElementById("spaFee").textContent = `RM ${spaFee.toFixed(2)}`;
+            document.getElementById("loanFee").textContent = `RM ${loanFee.toFixed(2)}`;
+            document.getElementById("sstFee").textContent = `RM ${sst.toFixed(2)}`;
+            document.getElementById("totalFee").textContent = `RM ${total.toFixed(2)}`;
+            document.getElementById("resultBox").style.display = "block";
+
+            saveLog(`使用 Legal Fees Calculator | 房價:RM${price} | 貸款:RM${loan}`);
+        }
+
+        saveLog("使用 Legal Fees Calculator");
+
+        function updateDisplay() {
+            document.getElementById("loginDisplay").innerHTML = `Welcome: ${user}<br>LOGIN TIME: ${getMYTime()}`;
+        }
+        updateDisplay();
+        setInterval(updateDisplay, 1000);
+
+        function logout() {
+            saveLog("登出系統");
+            localStorage.clear();
+            location.href = "index.html";
+        }
+    </script>
+</body>
+</html>
