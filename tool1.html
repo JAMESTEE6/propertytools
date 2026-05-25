@@ -193,23 +193,21 @@
         .form-preview .amount-row .value-col {
             text-align: right;
         }
+        /* ✅ 條款區：完全依照你最後一張截圖的文字、行距、大小 */
         .form-preview .terms {
             font-size: 11px;
             line-height: 1.5;
             margin: 20px 0;
         }
-        .form-preview .terms b {
-            font-size: 11px;
-            font-weight: bold;
-        }
         .form-preview .terms ol {
             padding-left: 16px;
-            margin: 6px 0 0 0;
+            margin: 0;
         }
         .form-preview .terms li {
             margin-bottom: 3px;
-            font-size: 10.5px;
+            font-size: 11px;
         }
+        /* ✅ 簽名區：完全依照你截圖的格式，底線位置、文字順序完全一致 */
         .form-preview .sign-area {
             display: flex;
             justify-content: space-between;
@@ -221,15 +219,12 @@
             padding-top: 8px;
             font-size: 12px;
         }
-        .form-preview .sign-col .title {
-            font-weight: bold;
-            margin-bottom: 15px;
-            font-size: 12px;
-        }
         .form-preview .sign-col .line {
-            margin: 3px 0;
-            height: 15px;
-            font-size: 11.5px;
+            margin: 4px 0;
+            height: 16px;
+            font-size: 12px;
+            border-bottom: 1px solid #000;
+            width: 100%;
         }
 
         /* ✅ 列印設定：只顯示表單，完美對齊 */
@@ -424,6 +419,7 @@
                         <div class="value-col" id="preDate"></div>
                     </div>
 
+                    <!-- ✅ TERMS & CONDITIONS：完全依照你截圖的文字、順序、內容，逐字對齊 -->
                     <div class="terms">
                         <b>TERMS & CONDITIONS</b>
                         <ol>
@@ -431,22 +427,22 @@
                             <li>The Purchaser agrees to pay the balance of the purchase price according to the payment schedule stated in the Sale & Purchase Agreement.</li>
                             <li>All legal fees, stamp duties, and other related costs shall be borne by the Purchaser, unless otherwise agreed in writing.</li>
                             <li>The Seller reserves the right to sell the property to another party if the Purchaser defaults in any of the terms herein.</li>
-                            <li>This form is subject to the terms and conditions of the Sale & Purchase Agreement to be executed between the parties.</li>
                             <li>Any variation or amendment to this agreement shall only be valid if made in writing and signed by both parties.</li>
                             <li>The Purchaser acknowledges that he/she has inspected and accepted the property in its present condition.</li>
                             <li>This agreement shall be governed by and construed in accordance with the laws of Malaysia.</li>
                         </ol>
                     </div>
 
+                    <!-- ✅ SIGNATURE AREA：完全依照你截圖格式，底線、文字順序、位置一模一樣 -->
                     <div class="sign-area">
                         <div class="sign-col">
-                            <div class="title">PURCHASER SIGNATURE</div>
+                            <div>PURCHASER SIGNATURE</div>
                             <div class="line">Name:</div>
                             <div class="line">IC / Passport No:</div>
                             <div class="line">Date:</div>
                         </div>
                         <div class="sign-col">
-                            <div class="title">SELLER SIGNATURE</div>
+                            <div>SELLER SIGNATURE</div>
                             <div class="line">Name:</div>
                             <div class="line">IC / Passport No:</div>
                             <div class="line">Date:</div>
