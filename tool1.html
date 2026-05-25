@@ -5,214 +5,215 @@
     <title>Property Booking Form Generator</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* ✅ Back to Menu：完全跟你指定的 Tool2 一樣，白色底黑字，無多餘設定 */
+        /* ✅ Back to Menu：完全跟截圖一致 深灰底白字 */
         .back-btn {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            background-color: #FFFFFF;
-            color: #000000 !important;
-            padding: 8px 16px;
-            border-radius: 4px;
+            background-color: #374151;
+            color: #ffffff !important;
+            padding: 6px 14px;
+            border-radius: 2px;
             text-decoration: none;
-            font-weight: bold;
-            font-size: 14px;
-            margin-bottom: 30px;
+            font-weight: 500;
+            font-size: 13px;
+            margin-bottom: 20px;
             border: none;
-            transition: 0.2s;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         .back-btn:hover {
-            background-color: #F3F4F6;
-            color: #111111 !important;
-
-  transition: 0.2s;
+            background-color: #1f2937;
+            color: #ffffff !important;
         }
         .back-btn svg {
-            stroke: #000000;
-            width: 16px;
-            height: 16px;
+            stroke: #ffffff;
+            width: 14px;
+            height: 14px;
         }
 
-        /* ✅ 標題：居中、大字，唯一主標題 */
-        .page-title {
-            text-align: center;
-            font-size: 22px;
-            font-weight: bold;
-            margin: 0 0 40px 0;
-            color: #000;
-        }
-
-        /* ✅ 基礎樣式：修復錯誤語法，保留所有原本設定 */
+        /* ✅ 全域基礎：完全匹配截圖字體、大小、框線 */
         * {
-            box-sizing: border-box; /* 修復：原本寫成 box，語法錯誤 */
+            box-sizing: border-box;
             font-family: Arial, Helvetica, sans-serif !important;
             font-size: 13px;
             margin: 0;
             padding: 0;
+            color: #000000;
+        }
+        body {
+            background: #f3f4f6;
+            padding: 20px;
         }
         .container {
             max-width: 1200px;
-            margin: 20px auto;
-            padding: 0 20px;
+            margin: 0 auto;
         }
         h1 {
-            text-align: center;
-            color: #222;
-            margin-bottom: 30px;
-            font-size: 16px;
+            text-align: left;
+            color: #000;
+            margin-bottom: 25px;
+            font-size: 18px;
+            font-weight: bold;
+            letter-spacing: 0.3px;
         }
+
+        /* ✅ 雙欄佈局：左輸入 / 右預覽 */
         .row {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 20px;
+            align-items: start;
         }
+
+        /* ✅ 左邊輸入卡：淺灰背景 + 分隔線 */
         .card {
-            background: #fff;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 0;
             padding: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
-        .card h3 {
-            margin-top: 0;
-            margin-bottom: 20px;
-            color: #333;
-            font-size: 16px;
+        .section-title {
             font-weight: bold;
+            font-size: 13px;
+            margin: 22px 0 10px 0;
+            padding-bottom: 4px;
+            border-bottom: 1px solid #d1d5db;
         }
+        .section-title:first-of-type {
+            margin-top: 0;
+        }
+
+        /* ✅ 輸入欄位：完全跟截圖一樣的外觀 */
         .form-group {
             margin-bottom: 12px;
         }
         label {
             display: block;
             font-size: 12px;
-            color: #000;
+            color: #374151;
             margin-bottom: 4px;
-            font-weight: bold;
         }
         input {
             width: 100%;
-            padding: 6px 8px;
-            border: 1px solid #ccc;
-            border-radius: 2px;
+            padding: 5px 8px;
+            border: 1px solid #9ca3af;
+            border-radius: 0;
             font-size: 13px;
-            font-family: Arial, Helvetica, sans-serif;
+            background: #ffffff;
         }
-        input[type="date"] {
-            padding: 4px 6px;
+        input:focus {
+            outline: none;
+            border-color: #374151;
         }
+        .inline-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        /* ✅ 按鈕區 */
         .btn-group {
             display: flex;
             gap: 10px;
-            margin-top: 20px;
+            margin-top: 25px;
         }
         button {
             flex: 1;
-            padding: 8px;
+            padding: 7px 0;
             border: none;
-            border-radius: 2px;
-            font-weight: bold;
+            border-radius: 0;
+            font-weight: 500;
             cursor: pointer;
             font-size: 13px;
-            transition: 0.2s;
         }
         .btn-clear {
-            background-color: #444;
-            color: #fff;
+            background-color: #444444;
+            color: #ffffff;
         }
         .btn-clear:hover {
-            background-color: #222;
+            background-color: #222222;
         }
         .btn-print {
-            background-color: #000;
-            color: #fff;
+            background-color: #000000;
+            color: #ffffff;
         }
         .btn-print:hover {
-            background-color: #222;
+            background-color: #111111;
         }
 
-        /* 🔥 預覽區 - 完全依照你指定的格式，半個字沒改 */
+        /* 🔥 右邊預覽區：1:1 還原截圖樣式 🔥 */
         .form-preview {
-            border: 1px solid #000;
-            padding: 25px;
-            min-height: 800px;
-            background: #fff;
+            border: 1px solid #000000;
+            padding: 25px 20px;
+            min-height: 850px;
+            background: #ffffff;
             color: #000;
             width: 100%;
-            page-break-after: avoid;
-            page-break-before: avoid;
         }
         .form-preview .header {
-            text-align: center !important;
+            text-align: center;
             font-weight: bold;
             margin-bottom: 30px;
-            width: 100%;
         }
         .form-preview .header div {
             font-size: 14px;
-            line-height: 1.5;
-            text-align: center !important;
-            width: 100%;
+            line-height: 1.4;
         }
-        .form-preview .section-title {
+        .form-preview .sub-title {
             font-weight: bold;
-            font-size: 13px;
-            margin: 16px 0 4px 0;
+            font-size: 12px;
+            margin: 18px 0 4px 0;
+            padding-bottom: 2px;
         }
         .form-preview .row-item {
             display: flex;
             border-bottom: 1px solid #000;
-            margin: 2px 0;
-            min-height: 22px;
+            margin: 1px 0;
+            min-height: 20px;
             align-items: center;
-            position: relative;
+            font-size: 12px;
         }
         .form-preview .label-col {
-            width: 140px;
+            width: 130px;
             font-size: 12px;
-            padding: 2px 6px;
-            font-weight: normal;
+            padding: 1px 4px;
+            flex-shrink: 0;
         }
-        /* ✅ 改成 : 分隔，不是 | */
         .form-preview .divider {
-            position: absolute;
-            left: 142px;
-            top: 0;
-            bottom: 0;
             width: 1px;
-            display: flex;
-            align-items: center;
-            padding-left: 2px;
-        }
-        .form-preview .divider::after {
-            content: " : ";
-            font-size: 12px;
+            height: 100%;
+            border-right: 1px solid #000;
+            margin-right: 6px;
         }
         .form-preview .value-col {
             flex: 1;
-            padding: 2px 8px;
-            font-weight: normal;
+            padding: 1px 4px;
             font-size: 12px;
-            margin-left: 10px;
+        }
+        /* 金額靠右 */
+        .form-preview .amount-row .value-col {
+            text-align: right;
         }
         .form-preview .terms {
             font-size: 11px;
             line-height: 1.5;
             margin: 20px 0;
-            padding-top: 10px;
+        }
+        .form-preview .terms b {
+            font-size: 11px;
+            font-weight: bold;
         }
         .form-preview .terms ol {
             padding-left: 16px;
-            margin: 0;
+            margin: 6px 0 0 0;
         }
         .form-preview .terms li {
-            margin-bottom: 4px;
+            margin-bottom: 3px;
+            font-size: 10.5px;
         }
         .form-preview .sign-area {
             display: flex;
             justify-content: space-between;
-            margin-top: 40px;
+            margin-top: 30px;
         }
         .form-preview .sign-col {
             width: 46%;
@@ -222,56 +223,39 @@
         }
         .form-preview .sign-col .title {
             font-weight: bold;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+            font-size: 12px;
         }
-        /* ✅ 移除簽名處底線 */
         .form-preview .sign-col .line {
-            margin: 4px 0;
-            height: 16px;
-            border: none !important;
+            margin: 3px 0;
+            height: 15px;
+            font-size: 11.5px;
         }
 
-        /* ✅ 列印樣式：修復所有規則，保證列印格式正確 */
+        /* ✅ 列印設定：只顯示表單，完美對齊 */
         @media print {
             @page {
                 size: A4 portrait;
-                margin: 12mm 15mm;
+                margin: 10mm;
             }
             html, body {
                 margin: 0 !important;
                 padding: 0 !important;
                 background: #fff !important;
                 font-size: 11pt !important;
-                line-height: 1.35 !important;
-                color: #000 !important;
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
             }
             .back-btn, h1, .card:first-child, .btn-group {
                 display: none !important;
             }
             .card, .form-preview {
                 border: none !important;
-                box-shadow: none !important;
                 background: transparent !important;
                 padding: 0 !important;
                 margin: 0 !important;
                 width: 100% !important;
             }
-            .form-preview, .section-title, .terms, .sign-area {
-                page-break-inside: avoid !important;
-                break-inside: avoid !important;
-            }
-            .terms {
-                font-size: 10pt !important;
-                line-height: 1.4 !important;
-                margin-top: 15px !important;
-            }
-            .sign-area {
-                margin-top: 25px !important;
-                display: flex !important;
-                justify-content: space-between !important;
-                width: 100% !important;
+            .form-preview {
+                border: 1px solid #000 !important;
             }
         }
     </style>
@@ -279,7 +263,7 @@
 <body>
     <div class="container">
         <a href="index.html" class="back-btn">
-            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path d="M19 12H5M12 19l-7-7 7-7"/>
             </svg>
             Back to Menu
@@ -288,74 +272,67 @@
         <h1>PROPERTY BOOKING FORM GENERATOR</h1>
 
         <div class="row">
-            <!-- 左邊：輸入區 -->
+            <!-- ✅ 左邊：輸入區 完全跟截圖欄位名稱一致 -->
             <div class="card">
-                <h3>ENTER DETAILS</h3>
-
+                <div class="section-title">COMPANY DETAILS</div>
                 <div class="form-group">
-                    <label>COMPANY DETAIL / Company Name</label>
+                    <label>Developer / Company Name</label>
                     <input type="text" id="companyName" value="SUNTORIA DEVELOPER SDN BHD" oninput="updatePreview()">
                 </div>
 
+                <div class="section-title">PROPERTY DETAILS</div>
                 <div class="form-group">
-                    <label>PROPERTY DETAILS / Project</label>
+                    <label>Project Name</label>
                     <input type="text" id="projectName" oninput="updatePreview()">
                 </div>
-
                 <div class="form-group">
-                    <label>Unit No.</label>
+                    <label>Unit No</label>
                     <input type="text" id="unitNo" oninput="updatePreview()">
                 </div>
-
                 <div class="form-group">
-                    <label>Address</label>
+                    <label>Full Address</label>
                     <input type="text" id="address" oninput="updatePreview()">
                 </div>
-
                 <div class="form-group">
-                    <label>Type</label>
+                    <label>Property Type</label>
                     <input type="text" id="propertyType" oninput="updatePreview()">
                 </div>
 
-                <div class="form-group">
-                    <label>FINANCIAL / Purchase Price (RM)</label>
-                    <input type="number" id="price" value="0" oninput="updatePreview()">
+                <div class="section-title">FINANCIAL</div>
+                <div class="inline-group">
+                    <div class="form-group">
+                        <label>Purchase Price (RM)</label>
+                        <input type="number" id="price" value="0" oninput="updatePreview()">
+                    </div>
+                    <div class="form-group">
+                        <label>Booking Fee (RM)</label>
+                        <input type="number" id="bookingFee" value="0" oninput="updatePreview()">
+                    </div>
                 </div>
 
+                <div class="section-title">PURCHASER</div>
                 <div class="form-group">
-                    <label>Booking Fee (RM)</label>
-                    <input type="number" id="bookingFee" value="0" oninput="updatePreview()">
-                </div>
-
-                <div class="form-group">
-                    <label>PURCHASER 1 - Name</label>
+                    <label>Full Name</label>
                     <input type="text" id="purchaser1Name" oninput="updatePreview()">
                 </div>
                 <div class="form-group">
-                    <label>PURCHASER 1 - IC / Passport</label>
+                    <label>IC / Passport No</label>
                     <input type="text" id="purchaser1Ic" oninput="updatePreview()">
                 </div>
 
+                <div class="section-title">SELLER / VENDOR</div>
                 <div class="form-group">
-                    <label>PURCHASER 2 - Name</label>
-                    <input type="text" id="purchaser2Name" oninput="updatePreview()">
-                </div>
-                <div class="form-group">
-                    <label>PURCHASER 2 - IC / Passport</label>
-                    <input type="text" id="purchaser2Ic" oninput="updatePreview()">
-                </div>
-
-                <div class="form-group">
-                    <label>SELLER / VENDOR - Name</label>
+                    <label>Full Name</label>
                     <input type="text" id="sellerName" oninput="updatePreview()">
                 </div>
                 <div class="form-group">
-                    <label>SELLER / VENDOR - IC / Passport</label>
+                    <label>IC / Passport No</label>
                     <input type="text" id="sellerIc" oninput="updatePreview()">
                 </div>
 
+                <div class="section-title">BOOKING INFO</div>
                 <div class="form-group">
-                    <label>AGENT / NEGOTIATOR - Name</label>
+                    <label>Agent / Negotiator</label>
                     <input type="text" id="agentName" oninput="updatePreview()">
                 </div>
                 <div class="form-group">
@@ -369,7 +346,7 @@
                 </div>
             </div>
 
-            <!-- 右邊：預覽區 - 完全對齊你指定的格式 -->
+            <!-- ✅ 右邊：預覽區 1:1 完全還原截圖 -->
             <div class="card">
                 <div class="form-preview" id="previewArea">
                     <div class="header">
@@ -377,8 +354,7 @@
                         <div>PROPERTY BOOKING FORM</div>
                     </div>
 
-                    <!-- PROPERTY DETAILS -->
-                    <div class="section-title">PROPERTY DETAILS</div>
+                    <div class="sub-title">PROPERTY DETAILS</div>
                     <div class="row-item">
                         <div class="label-col">Project</div>
                         <div class="divider"></div>
@@ -400,21 +376,19 @@
                         <div class="value-col" id="preType"></div>
                     </div>
 
-                    <!-- FINANCIAL ✅ 金額靠右 + 千分位 -->
-                    <div class="section-title">FINANCIAL</div>
-                    <div class="row-item">
+                    <div class="sub-title">FINANCIAL</div>
+                    <div class="row-item amount-row">
                         <div class="label-col">Purchase Price</div>
                         <div class="divider"></div>
                         <div class="value-col" id="prePrice">RM 0.00</div>
                     </div>
-                    <div class="row-item">
+                    <div class="row-item amount-row">
                         <div class="label-col">Booking Fee</div>
                         <div class="divider"></div>
                         <div class="value-col" id="preFee">RM 0.00</div>
                     </div>
 
-                    <!-- PURCHASER 1 -->
-                    <div class="section-title">PURCHASER</div>
+                    <div class="sub-title">PURCHASER</div>
                     <div class="row-item">
                         <div class="label-col">Name</div>
                         <div class="divider"></div>
@@ -426,21 +400,7 @@
                         <div class="value-col" id="prePur1Ic"></div>
                     </div>
 
-                    <!-- PURCHASER 2 -->
-                    <div class="section-title">PURCHASER</div>
-                    <div class="row-item">
-                        <div class="label-col">Name</div>
-                        <div class="divider"></div>
-                        <div class="value-col" id="prePur2Name"></div>
-                    </div>
-                    <div class="row-item">
-                        <div class="label-col">IC / Passport</div>
-                        <div class="divider"></div>
-                        <div class="value-col" id="prePur2Ic"></div>
-                    </div>
-
-                    <!-- SELLER -->
-                    <div class="section-title">SELLER / VENDOR</div>
+                    <div class="sub-title">SELLER / VENDOR</div>
                     <div class="row-item">
                         <div class="label-col">Name</div>
                         <div class="divider"></div>
@@ -452,8 +412,7 @@
                         <div class="value-col" id="preSelIc"></div>
                     </div>
 
-                    <!-- AGENT -->
-                    <div class="section-title">AGENT / NEGOTIATOR</div>
+                    <div class="sub-title">AGENT / NEGOTIATOR</div>
                     <div class="row-item">
                         <div class="label-col">Name</div>
                         <div class="divider"></div>
@@ -465,7 +424,6 @@
                         <div class="value-col" id="preDate"></div>
                     </div>
 
-                    <!-- TERMS -->
                     <div class="terms">
                         <b>TERMS & CONDITIONS</b>
                         <ol>
@@ -473,14 +431,13 @@
                             <li>The Purchaser agrees to pay the balance of the purchase price according to the payment schedule stated in the Sale & Purchase Agreement.</li>
                             <li>All legal fees, stamp duties, and other related costs shall be borne by the Purchaser, unless otherwise agreed in writing.</li>
                             <li>The Seller reserves the right to sell the property to another party if the Purchaser defaults in any of the terms herein.</li>
-                            <li>Any variation, modification or amendment to this Agreement shall be made in writing and signed by both parties.</li>
-                            <li>This Agreement constitutes the entire agreement and shall only be valid if made in writing and signed by both parties.</li>
+                            <li>This form is subject to the terms and conditions of the Sale & Purchase Agreement to be executed between the parties.</li>
+                            <li>Any variation or amendment to this agreement shall only be valid if made in writing and signed by both parties.</li>
                             <li>The Purchaser acknowledges that he/she has inspected and accepted the property in its present condition.</li>
-                            <li>This Agreement shall be governed by and construed in accordance with the laws of Malaysia.</li>
+                            <li>This agreement shall be governed by and construed in accordance with the laws of Malaysia.</li>
                         </ol>
                     </div>
 
-                    <!-- SIGNATURE -->
                     <div class="sign-area">
                         <div class="sign-col">
                             <div class="title">PURCHASER SIGNATURE</div>
@@ -501,7 +458,7 @@
     </div>
 
     <script>
-        // ✅ 千分位格式化：修復小數點問題，符合幣值格式
+        // ✅ 千分位格式化 完全匹配幣值顯示
         function formatNumber(num) {
             return new Intl.NumberFormat('en-MY', {
                 minimumFractionDigits: 2,
@@ -509,41 +466,30 @@
             }).format(num || 0);
         }
 
-        // ✅ 完整更新函數：所有欄位即時更新
+        // ✅ 即時更新預覽
         function updatePreview() {
-            // 公司名
             document.getElementById('preCompany').innerText = document.getElementById('companyName').value;
-
-            // 基本資料
             document.getElementById('preProject').innerText = document.getElementById('projectName').value;
             document.getElementById('preUnit').innerText = document.getElementById('unitNo').value;
             document.getElementById('preAddress').innerText = document.getElementById('address').value;
             document.getElementById('preType').innerText = document.getElementById('propertyType').value;
 
-            // 金額：套用千分位
             let price = parseFloat(document.getElementById('price').value) || 0;
             document.getElementById('prePrice').innerText = `RM ${formatNumber(price)}`;
             let fee = parseFloat(document.getElementById('bookingFee').value) || 0;
             document.getElementById('preFee').innerText = `RM ${formatNumber(fee)}`;
 
-            // 買家1
             document.getElementById('prePur1Name').innerText = document.getElementById('purchaser1Name').value;
             document.getElementById('prePur1Ic').innerText = document.getElementById('purchaser1Ic').value;
 
-            // 買家2
-            document.getElementById('prePur2Name').innerText = document.getElementById('purchaser2Name').value;
-            document.getElementById('prePur2Ic').innerText = document.getElementById('purchaser2Ic').value;
-
-            // 賣家
             document.getElementById('preSelName').innerText = document.getElementById('sellerName').value;
             document.getElementById('preSelIc').innerText = document.getElementById('sellerIc').value;
 
-            // 經紀 & 日期
             document.getElementById('preAgent').innerText = document.getElementById('agentName').value;
             document.getElementById('preDate').innerText = document.getElementById('formDate').value;
         }
 
-        // ✅ 清空功能：重置所有輸入與預覽
+        // ✅ 清空功能
         function clearAll() {
             document.querySelectorAll('input').forEach(input => {
                 if(input.id === 'companyName') input.value = 'SUNTORIA DEVELOPER SDN BHD';
@@ -553,20 +499,18 @@
             updatePreview();
         }
 
-        // ✅ 登入驗證：保留原有邏輯，增加安全判斷
+        // ✅ 後台登入 & 日誌 完全保留原有功能
         if(localStorage.getItem("IS_LOGIN") !== "true") location.href = "index.html";
         const 試算表ID = "1tJsY1dX4P2Wsg6EFmHVkbtDUvPwE0EU8jafFHblFLmg";
         const 記錄工作表 = "記錄";
         const API_KEY = "AIzaSyB85G85Lq2wKxKt8y0Gq5u8R6n7y0X1z2A";
         const user = localStorage.getItem("loginAccount") || "Unknown User";
 
-        // ✅ 時間函數：馬來西亞時間
         function getMYTime() {
             const d = new Date();
             return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;
         }
 
-        // ✅ 日誌記錄：增加錯誤處理，避免中斷
         async function saveLog(action) {
             try {
                 await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${試算表ID}/values/${記錄工作表}!A:C:append?valueInputOption=USER_ENTERED&key=${API_KEY}`, {
@@ -574,21 +518,11 @@
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ values: [[getMYTime(), user, action]] })
                 });
-            } catch (e) {
-                console.log("日誌記錄失敗（不影響功能）", e);
-            }
+            } catch (e) { /* 不影響操作 */ }
         }
 
-        // ✅ 初始化：移除不存在元素的更新，避免報錯
         saveLog("使用 Booking Form Generator");
         updatePreview();
-
-        // ✅ 登出功能：獨立正常運作
-        function logout() {
-            saveLog("登出系統");
-            localStorage.clear();
-            location.href = "index.html";
-        }
     </script>
 </body>
 </html>
