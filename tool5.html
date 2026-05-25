@@ -11,6 +11,9 @@
         .user-info { font-size: 16px; font-weight: 600; color: #fff; line-height: 1.8; }
         .logout-btn { background: #fff; color: #F72585; border: none; padding: 9px 18px; border-radius: 8px; font-size: 15px; font-weight: bold; cursor: pointer; transition: 0.2s; }
         .logout-btn:hover { background: #FFF0F7; transform: scale(1.03); }
+        /* ✅ 新增返回按鈕樣式 */
+        .back-btn { background: #fff; color: #FF6B35; border: none; padding: 9px 18px; border-radius: 8px; font-size: 15px; font-weight: bold; cursor: pointer; transition: 0.2s; margin-right: 8px; }
+        .back-btn:hover { background: #FFF3ED; transform: scale(1.03); }
 
         /* 卡片與容器 */
         .card-input { background: #ffffff; border-radius: 20px; box-shadow: 0 8px 24px rgba(255, 107, 53, 0.15); border: 2px solid #FFE2D3; }
@@ -39,7 +42,11 @@
 <body>
     <div class="header-bar">
         <div id="loginDisplay" class="user-info"></div>
-        <button onclick="logout()" class="logout-btn">Logout</button>
+        <div>
+            <!-- ✅ 新增：Back to Menu 按鈕 -->
+            <button onclick="backToMenu()" class="back-btn">🏠 Back to Menu</button>
+            <button onclick="logout()" class="logout-btn">Logout</button>
+        </div>
     </div>
 
     <div class="max-w-7xl mx-auto px-4 py-6">
@@ -253,6 +260,12 @@
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ values: [[getMYTime(), user, action]] })
             });
+        }
+
+        // ✅ 新增：返回主選單功能
+        function backToMenu() {
+            saveLog("從 Property Cost Estimator 返回主選單");
+            location.href = "index.html";
         }
 
         // 自動計算貸款金額
