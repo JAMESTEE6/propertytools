@@ -6,16 +6,34 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #f0f4ff; font-family: Arial, sans-serif; }
-        .header-bar { background: #bfff00; padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; }
-        .user-info { font-size: 16px; font-weight: 600; color: #000; line-height: 1.8; font-family: Arial, sans-serif; }
-        .logout-btn { background: #dc2626; color: #fff; border: none; padding: 8px 16px; border-radius: 5px; font-size: 15px; font-weight: bold; cursor: pointer; }
-        .logout-btn:hover { background: #b91c1c; }
-        .card-bg { background: #ffffff; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-        .btn-blue { background: #165DFF; color: white; border-radius: 8px; transition: 0.2s; }
-        .btn-blue:hover { background: #0F48C9; }
-        .input-field, .select-field { border: 1px solid #E0E6ED; border-radius: 8px; padding: 12px 14px; font-size: 15px; width: 100%; }
-        .label-text { font-weight: 600; color: #1D2129; margin-bottom: 6px; display: block; }
+        body { background: linear-gradient(135deg, #FFF5F0 0%, #F0F9FF 100%); min-height: 100vh; font-family: 'Arial', sans-serif; }
+        .header-bar { background: linear-gradient(90deg, #FF6B35 0%, #F72585 100%); padding: 16px 28px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; box-shadow: 0 4px 12px rgba(247, 37, 133, 0.2); }
+        .user-info { font-size: 16px; font-weight: 600; color: #fff; line-height: 1.8; }
+        .logout-btn { background: #fff; color: #F72585; border: none; padding: 9px 18px; border-radius: 8px; font-size: 15px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .logout-btn:hover { background: #FFF0F7; transform: scale(1.03); }
+
+        /* 卡片與容器 */
+        .card-input { background: #ffffff; border-radius: 20px; box-shadow: 0 8px 24px rgba(255, 107, 53, 0.15); border: 2px solid #FFE2D3; }
+        .card-result { background: #ffffff; border-radius: 20px; box-shadow: 0 8px 24px rgba(58, 134, 255, 0.15); border: 2px solid #D6E8FF; position: sticky; top: 20px; }
+
+        /* 色彩主題 */
+        .color-primary { color: #FF6B35; }
+        .bg-primary { background: linear-gradient(135deg, #FF6B35 0%, #FF8A4C 100%); }
+        .color-secondary { color: #3A86FF; }
+        .bg-secondary { background: linear-gradient(135deg, #3A86FF 0%, #60A5FA 100%); }
+        .color-accent { color: #F72585; }
+        .bg-accent { background: linear-gradient(135deg, #F72585 0%, #FF4D94 100%); }
+
+        .input-field, .select-field { border: 2px solid #E2E8F0; border-radius: 12px; padding: 13px 16px; font-size: 15px; width: 100%; transition: 0.2s; background: #FAFBFC; }
+        .input-field:focus, .select-field:focus { border-color: #FF6B35; outline: none; box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1); background: #fff; }
+        .label-text { font-weight: 600; color: #334155; margin-bottom: 8px; display: block; font-size: 14px; }
+        .section-box { background: #FFF9F6; border-radius: 14px; padding: 16px; border-left: 4px solid #FF6B35; }
+
+        .btn-calculate { background: linear-gradient(135deg, #F72585 0%, #7209B7 100%); color: white; border-radius: 12px; padding: 14px; font-size: 16px; font-weight: bold; width: 100%; transition: 0.3s; box-shadow: 0 4px 12px rgba(247, 37, 133, 0.25); }
+        .btn-calculate:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(247, 37, 133, 0.35); }
+
+        .result-row { display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px dashed #E0E7FF; font-size: 14px; }
+        .result-total { background: linear-gradient(135deg, #3A86FF 0%, #7209B7 100%); color: white; border-radius: 12px; padding: 14px; text-align: center; font-size: 18px; font-weight: bold; margin-top: 12px; box-shadow: 0 4px 12px rgba(58, 134, 255, 0.2); }
     </style>
 </head>
 <body>
@@ -24,181 +42,196 @@
         <button onclick="logout()" class="logout-btn">Logout</button>
     </div>
 
-    <div class="max-w-lg mx-auto pb-10 px-4">
-        <!-- 標題區 -->
-        <div class="bg-[#165DFF] text-white rounded-2xl p-6 mb-6 text-center">
-            <h1 class="text-[28px] font-bold mb-2">Property Cost Estimator v2</h1>
-            <p class="opacity-90 text-[15px]">Subsale / Refinance Legal Cost + Stamp Duty Quick Estimate</p>
+    <div class="max-w-7xl mx-auto px-4 py-6">
+        <!-- 標題 -->
+        <div class="bg-primary text-white rounded-2xl p-6 mb-8 text-center shadow-lg">
+            <h1 class="text-[30px] font-bold mb-2">🏢 Property Cost Estimator v2</h1>
+            <p class="opacity-95 text-[16px]">Subsale / Refinance Legal Cost + Stamp Duty + Disbursement Calculator</p>
         </div>
 
-        <!-- 輸入區塊 -->
-        <div class="card-bg p-5 mb-5">
-            <h2 class="text-[20px] font-bold text-[#165DFF] mb-4">Input Details</h2>
+        <!-- 主要布局：左輸入 / 右結果 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
 
-            <div class="mb-4">
-                <label class="label-text">Case Type</label>
-                <select id="caseType" class="select-field">
-                    <option value="subsale">Subsale Purchase</option>
-                    <option value="refinance">Refinance</option>
-                </select>
-            </div>
+            <!-- ========== 左邊：輸入區 ========== -->
+            <div class="card-input p-6">
+                <h2 class="text-[22px] font-bold color-primary mb-6 flex items-center">
+                    <span class="bg-primary text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">1</span>
+                    Input Details
+                </h2>
 
-            <div class="bg-[#f5f9ff] p-4 rounded-xl mb-4">
-                <h3 class="text-[17px] font-semibold text-[#165DFF] mb-3">Property / Loan Info</h3>
-                <div class="mb-3">
-                    <label class="label-text">Property Price (RM)</label>
-                    <input type="number" id="propertyPrice" class="input-field" value="0" min="0">
-                </div>
-                <div class="mb-3">
-                    <label class="label-text">Loan Margin (%)</label>
-                    <input type="number" id="loanMargin" class="input-field" value="0" min="0" max="100">
-                </div>
-                <div>
-                    <label class="label-text">Auto Loan Amount (RM)</label>
-                    <input type="number" id="loanAmount" class="input-field" value="0" min="0" readonly>
-                </div>
-            </div>
-
-            <div class="bg-[#f5f9ff] p-4 rounded-xl mb-4">
-                <h3 class="text-[17px] font-semibold text-[#165DFF] mb-3">Property Title Info</h3>
-                <div class="mb-3">
-                    <label class="label-text">Tenure</label>
-                    <select id="tenure" class="select-field">
-                        <option value="freehold">Freehold</option>
-                        <option value="leasehold">Leasehold</option>
+                <div class="mb-5">
+                    <label class="label-text">📋 Case Type</label>
+                    <select id="caseType" class="select-field">
+                        <option value="subsale">Subsale Purchase</option>
+                        <option value="refinance">Refinance</option>
                     </select>
                 </div>
-                <div class="mb-3">
-                    <label class="label-text">Title Status</label>
-                    <select id="titleStatus" class="select-field">
-                        <option value="individual">Individual / Strata Title</option>
-                        <option value="master">Master Title / No Title</option>
-                    </select>
+
+                <div class="section-box mb-5">
+                    <h3 class="text-[17px] font-semibold color-primary mb-4">🏠 Property / Loan Info</h3>
+                    <div class="mb-3">
+                        <label class="label-text">Property Price (RM)</label>
+                        <input type="number" id="propertyPrice" class="input-field" value="0" min="0" placeholder="e.g. 500000">
+                    </div>
+                    <div class="mb-3">
+                        <label class="label-text">Loan Margin (%)</label>
+                        <input type="number" id="loanMargin" class="input-field" value="0" min="0" max="100" placeholder="e.g. 90">
+                    </div>
+                    <div>
+                        <label class="label-text">Auto Loan Amount (RM)</label>
+                        <input type="number" id="loanAmount" class="input-field bg-gray-100" value="0" min="0" readonly>
+                    </div>
                 </div>
-                <div>
-                    <label class="label-text">Consent Needed?</label>
-                    <select id="consent" class="select-field">
-                        <option value="no">No</option>
-                        <option value="yes">Yes</option>
-                    </select>
-                    <p class="text-[12px] text-gray-500 mt-1">Leasehold / master title / consent case usually has extra legal work. System will auto add estimated extra charges.</p>
+
+                <div class="section-box mb-5">
+                    <h3 class="text-[17px] font-semibold color-primary mb-4">📑 Property Title Info</h3>
+                    <div class="mb-3">
+                        <label class="label-text">Tenure</label>
+                        <select id="tenure" class="select-field">
+                            <option value="freehold">✅ Freehold</option>
+                            <option value="leasehold">⏳ Leasehold</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="label-text">Title Status</label>
+                        <select id="titleStatus" class="select-field">
+                            <option value="individual">Individual / Strata Title</option>
+                            <option value="master">Master Title / No Title</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="label-text">Consent Needed?</label>
+                        <select id="consent" class="select-field">
+                            <option value="no">❌ No</option>
+                            <option value="yes">✅ Yes</option>
+                        </select>
+                        <p class="text-[12px] text-orange-600 mt-1">💡 Leasehold / master title usually has extra charges.</p>
+                    </div>
                 </div>
+
+                <div class="section-box mb-5">
+                    <h3 class="text-[17px] font-semibold color-primary mb-4">📝 SPA / MOT Section</h3>
+                    <div class="mb-3">
+                        <label class="label-text">SPA Buyer Count</label>
+                        <select id="buyerCount" class="select-field">
+                            <option value="1">👤 SPA 1 Person</option>
+                            <option value="2">👥 SPA 2 Persons</option>
+                            <option value="3+">👥👥 SPA 3+ Persons</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="label-text">Buyer 1 First Home?</label>
+                        <select id="firstHome" class="select-field">
+                            <option value="yes">🎉 Yes - Waive Eligible</option>
+                            <option value="no">❌ No - Not Eligible</option>
+                        </select>
+                        <p class="text-[12px] text-green-600 mt-1">💡 First Home &lt;RM500k: MOT duty waived.</p>
+                    </div>
+                    <div>
+                        <label class="label-text">Buyer 1 Ownership %</label>
+                        <input type="number" id="ownershipPercent" class="input-field" value="100" min="1" max="100">
+                    </div>
+                </div>
+
+                <div class="section-box mb-5">
+                    <h3 class="text-[17px] font-semibold color-primary mb-4">🏦 Loan Section</h3>
+                    <div class="mb-3">
+                        <label class="label-text">Loan Applicant Count</label>
+                        <select id="applicantCount" class="select-field">
+                            <option value="1">👤 Loan 1 Person</option>
+                            <option value="2">👥 Loan 2 Persons</option>
+                            <option value="3+">👥👥 Loan 3+ Persons</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="label-text">2nd Loan Applicant Add-On (RM)</label>
+                        <input type="number" id="applicantAddon" class="input-field" value="0" min="0">
+                    </div>
+                </div>
+
+                <div class="section-box mb-5">
+                    <h3 class="text-[17px] font-semibold color-primary mb-4">💰 Valuation Fee</h3>
+                    <div class="mb-3">
+                        <label class="label-text">Valuation Mode</label>
+                        <select id="valuationMode" class="select-field">
+                            <option value="auto">⚡ Auto Calculate</option>
+                            <option value="manual">✍️ Manual Entry</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="label-text">Manual Valuation Fee (RM)</label>
+                        <input type="number" id="valuationFee" class="input-field" value="0" min="0">
+                    </div>
+                </div>
+
+                <div class="section-box mb-6">
+                    <h3 class="text-[17px] font-semibold color-primary mb-4">⚙️ Adjustable Fees</h3>
+                    <div class="mb-3">
+                        <label class="label-text">Extra Charges (RM)</label>
+                        <input type="number" id="extraCharges" class="input-field" value="0" min="0">
+                    </div>
+                    <div>
+                        <label class="label-text">Discount (%)</label>
+                        <input type="number" id="discount" class="input-field" value="0" min="0" max="100">
+                    </div>
+                </div>
+
+                <button class="btn-calculate" onclick="calculateAll()">🚀 Calculate & Show Result</button>
             </div>
 
-            <div class="bg-[#f5f9ff] p-4 rounded-xl mb-4">
-                <h3 class="text-[17px] font-semibold text-[#165DFF] mb-3">SPA / MOT Section</h3>
-                <div class="mb-3">
-                    <label class="label-text">SPA Buyer Count</label>
-                    <select id="buyerCount" class="select-field">
-                        <option value="1">SPA 1 Person</option>
-                        <option value="2">SPA 2 Persons</option>
-                        <option value="3+">SPA 3+ Persons</option>
-                    </select>
+            <!-- ========== 右邊：結果區 ========== -->
+            <div class="card-result p-6">
+                <h2 class="text-[22px] font-bold color-secondary mb-6 flex items-center">
+                    <span class="bg-secondary text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">2</span>
+                    Estimated Cost Summary
+                </h2>
+
+                <div class="bg-blue-50 text-secondary text-sm font-medium px-3 py-1 rounded-full inline-block mb-4">📌 Subsale Estimate</div>
+
+                <div id="resultContent" class="space-y-1 text-sm">
+                    <!-- SPA 部分 -->
+                    <div class="font-semibold text-secondary mt-2 mb-1">📄 SPA / Legal Fees</div>
+                    <div class="result-row"><span>SPA Legal Fee</span><span id="resSpaFee">RM 0.00</span></div>
+                    <div class="result-row"><span>SPA Legal Add-On</span><span id="resSpaAddon">RM 0.00</span></div>
+                    <div class="result-row"><span>SPA SST 8%</span><span id="resSpaSST">RM 0.00</span></div>
+                    <div class="result-row"><span>MOT Stamp Duty</span><span id="resMotStamp">RM 0.00</span></div>
+                    <div class="result-row"><span>Nominal Stamping</span><span id="resNominal">RM 50.00</span></div>
+                    <div class="result-row"><span>SPA Disbursement</span><span id="resSpaDisburse">RM 1,100.00</span></div>
+                    <div class="result-row"><span>SPA Other Disbursement</span><span id="resSpaOther">RM 750.00</span></div>
+                    <div class="result-row"><span>SST on Disbursement</span><span id="resSpaOtherSST">RM 60.00</span></div>
+
+                    <!-- Loan 部分 -->
+                    <div class="font-semibold text-secondary mt-4 mb-1">🏦 Loan / Financing</div>
+                    <div class="result-row"><span>Loan Legal Fee</span><span id="resLoanFee">RM 0.00</span></div>
+                    <div class="result-row"><span>Loan Legal Add-On</span><span id="resLoanAddon">RM 1,650.00</span></div>
+                    <div class="result-row"><span>Applicant Add-On</span><span id="resApplicantAddon">RM 0.00</span></div>
+                    <div class="result-row"><span>Loan SST 8%</span><span id="resLoanSST">RM 0.00</span></div>
+                    <div class="result-row"><span>Loan Stamp Duty 0.5%</span><span id="resLoanStamp">RM 0.00</span></div>
+                    <div class="result-row"><span>Loan Nominal Cost</span><span id="resLoanNominal">RM 110.00</span></div>
+                    <div class="result-row"><span>Loan Disbursement</span><span id="resLoanDisburse">RM 1,250.00</span></div>
+                    <div class="result-row"><span>Loan Other Disbursement</span><span id="resLoanOther">RM 750.00</span></div>
+                    <div class="result-row"><span>SST on Disbursement</span><span id="resLoanOtherSST">RM 60.00</span></div>
+
+                    <!-- 其他費用 -->
+                    <div class="font-semibold text-secondary mt-4 mb-1">⚙️ Other Charges</div>
+                    <div class="result-row"><span>Title / Consent Extra</span><span id="resConsentExtra">RM 0.00</span></div>
+                    <div class="result-row"><span>Valuation Fee</span><span id="resValuation">RM 0.00</span></div>
+                    <div class="result-row"><span>Extra Charges</span><span id="resExtra">RM 0.00</span></div>
+                    <div class="result-row text-green-600"><span>Discount Applied</span><span id="resDiscount">- RM 0.00</span></div>
                 </div>
-                <div class="mb-3">
-                    <label class="label-text">Buyer 1 First Home?</label>
-                    <select id="firstHome" class="select-field">
-                        <option value="yes">Yes - Waive Eligible</option>
-                        <option value="no">No - Not Eligible</option>
-                    </select>
-                    <p class="text-[12px] text-gray-500 mt-1">If First Home &lt;RM500k, system waive MOT stamp duty for that portion.</p>
+
+                <!-- 總金額 -->
+                <div class="result-total">
+                    Total Estimate: <span id="grandTotal">RM 0.00</span>
                 </div>
-                <div>
-                    <label class="label-text">Buyer 1 Ownership %</label>
-                    <input type="number" id="ownershipPercent" class="input-field" value="100" min="1" max="100">
-                </div>
+
+                <p class="text-[12px] text-amber-700 bg-amber-50 p-3 rounded-lg mt-5 border border-amber-200">
+                    ⚠️ Note: Estimate only. Final fees depend on lawyer, title, consent & bank policy.
+                </p>
+
+                <button class="bg-accent text-white w-full py-3 mt-5 rounded-xl font-bold hover:shadow-lg transition">🖨️ Print / Save PDF</button>
             </div>
 
-            <div class="bg-[#f5f9ff] p-4 rounded-xl mb-4">
-                <h3 class="text-[17px] font-semibold text-[#165DFF] mb-3">Loan Section</h3>
-                <div class="mb-3">
-                    <label class="label-text">Loan Applicant Count</label>
-                    <select id="applicantCount" class="select-field">
-                        <option value="1">Loan 1 Person</option>
-                        <option value="2">Loan 2 Persons</option>
-                        <option value="3+">Loan 3+ Persons</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="label-text">2nd Loan Applicant Add-On (RM)</label>
-                    <input type="number" id="applicantAddon" class="input-field" value="0" min="0">
-                </div>
-            </div>
-
-            <div class="bg-[#f5f9ff] p-4 rounded-xl mb-4">
-                <h3 class="text-[17px] font-semibold text-[#165DFF] mb-3">Valuation Fee</h3>
-                <div class="mb-3">
-                    <label class="label-text">Valuation Mode</label>
-                    <select id="valuationMode" class="select-field">
-                        <option value="auto">Auto Calculate</option>
-                        <option value="manual">Manual Valuation Fee</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="label-text">Manual Valuation Fee (RM)</label>
-                    <input type="number" id="valuationFee" class="input-field" value="0" min="0">
-                </div>
-            </div>
-
-            <div class="bg-[#f5f9ff] p-4 rounded-xl mb-5">
-                <h3 class="text-[17px] font-semibold text-[#165DFF] mb-3">Adjustable Fees</h3>
-                <div class="mb-3">
-                    <label class="label-text">Extra Charges (RM)</label>
-                    <input type="number" id="extraCharges" class="input-field" value="0" min="0">
-                </div>
-                <div>
-                    <label class="label-text">Discount (%)</label>
-                    <input type="number" id="discount" class="input-field" value="0" min="0" max="100">
-                </div>
-            </div>
-
-            <button class="btn-blue w-full py-3 text-[16px] font-semibold" onclick="calculateAll()">📊 Calculate & Show Estimate</button>
-        </div>
-
-        <!-- 結果區塊 -->
-        <div id="resultArea" class="hidden card-bg p-5 mt-6">
-            <div class="bg-blue-50 text-[#165DFF] text-[13px] font-medium px-3 py-1 rounded-full inline-block mb-3">Subsale Estimate</div>
-            <h2 class="text-[20px] font-bold mb-4">Estimated Cost Summary</h2>
-
-            <div class="space-y-2 text-[15px] mb-5">
-                <div class="flex justify-between py-1 border-b border-dashed border-gray-200"><span>SPA Legal Fee</span><span id="resSpaFee">RM0.00</span></div>
-                <div class="flex justify-between py-1 border-b border-dashed border-gray-200"><span>SPA Legal Add-On</span><span id="resSpaAddon">RM0.00</span></div>
-                <div class="flex justify-between py-1 border-b border-dashed border-gray-200"><span>SPA SST 8%</span><span id="resSpaSST">RM0.00</span></div>
-                <div class="flex justify-between py-1 border-b border-dashed border-gray-200"><span>MOT Stamp Duty</span><span id="resMotStamp">RM0.00</span></div>
-                <div class="flex justify-between py-1 border-b border-dashed border-gray-200"><span>Nominal Stamping / Adjudication</span><span id="resNominal">RM50.00</span></div>
-                <div class="flex justify-between py-1 border-b border-dashed border-gray-200"><span>SPA Disbursement</span><span id="resSpaDisburse">RM0.00</span></div>
-                <div class="flex justify-between py-1 border-b border-dashed border-gray-200"><span>SPA Other Disbursement</span><span id="resSpaOther">RM750.00</span></div>
-                <div class="flex justify-between py-1 border-b border-dashed border-gray-200"><span>SST on Other Disbursement</span><span id="resSpaOtherSST">RM60.00</span></div>
-
-                <div class="mt-4"></div>
-
-                <div class="flex justify-between py-1 border-b border-dashed border-gray-200"><span>Loan Legal Fee</span><span id="resLoanFee">RM0.00</span></div>
-                <div class="flex justify-between py-1 border-b border-dashed border-gray-200"><span>Loan Legal Add-On</span><span id="resLoanAddon">RM0.00</span></div>
-                <div class="flex justify-between py-1 border-b border-dashed border-gray-200"><span>Loan Applicant Add-On</span><span id="resApplicantAddon">RM0.00</span></div>
-                <div class="flex justify-between py-1 border-b border-dashed border-gray-200"><span>Loan SST 8%</span><span id="resLoanSST">RM0.00</span></div>
-                <div class="flex justify-between py-1 border-b border-dashed border-gray-200"><span>Loan Stamp Duty 0.5%</span><span id="resLoanStamp">RM0.00</span></div>
-                <div class="flex justify-between py-1 border-b border-dashed border-gray-200"><span>Loan Stamping / Nominal Cost</span><span id="resLoanNominal">RM110.00</span></div>
-                <div class="flex justify-between py-1 border-b border-dashed border-gray-200"><span>Loan Disbursement</span><span id="resLoanDisburse">RM0.00</span></div>
-                <div class="flex justify-between py-1 border-b border-dashed border-gray-200"><span>Loan Other Disbursement</span><span id="resLoanOther">RM750.00</span></div>
-                <div class="flex justify-between py-1 border-b border-dashed border-gray-200"><span>SST on Other Disbursement</span><span id="resLoanOtherSST">RM60.00</span></div>
-
-                <div class="mt-4"></div>
-
-                <div class="flex justify-between py-1 border-b border-dashed border-gray-200"><span>Title / Consent Extra Estimate</span><span id="resConsentExtra">RM0.00</span></div>
-                <div class="flex justify-between py-1 border-b border-dashed border-gray-200"><span>Valuation Fee</span><span id="resValuation">RM0.00</span></div>
-                <div class="flex justify-between py-1 border-b border-dashed border-gray-200"><span>Extra Charges</span><span id="resExtra">RM0.00</span></div>
-                <div class="flex justify-between py-1 border-b border-dashed border-gray-200"><span>Discount</span><span id="resDiscount">- RM0.00</span></div>
-            </div>
-
-            <div class="bg-[#165DFF] text-white rounded-xl py-4 px-5 text-center text-[18px] font-bold mt-4">
-                Total Estimate <span id="grandTotal">RM0.00</span>
-            </div>
-
-            <p class="text-[12px] text-amber-700 bg-amber-50 p-3 rounded-lg mt-4">
-                ⚠️ Subsale mode: First Home will waive eligible MOT stamp duty portion only. Nominal stamping and lawyer disbursement remain. Estimate only. Final fee still depends on lawyer quotation, title, consent, bank and stamp office assessment.
-            </p>
-
-            <button class="btn-blue w-full py-3 mt-4 text-[16px] font-semibold">🖨️ Print / Save PDF</button>
         </div>
     </div>
 
@@ -232,14 +265,14 @@
             document.getElementById('loanAmount').value = loan.toFixed(2);
         }
 
-        // 核心計算邏輯
+        // 核心公式
         function computeLegalFee(amount) {
             if (amount <= 0) return 0;
             let fee = 0;
             if (amount <= 500000) fee = amount * 0.0125;
             else if (amount <= 7500000) fee = 500000*0.0125 + (amount-500000)*0.01;
             else fee = 500000*0.0125 + 7000000*0.01;
-            return Math.max(fee, 500); // 最低RM500
+            return Math.max(fee, 500);
         }
 
         function computeStampDuty(price, isFirstHome, ownership) {
@@ -249,23 +282,21 @@
             else if (price <= 1000000) duty = 1000 + 8000 + (price-500000)*0.03;
             else duty = 1000 + 8000 + 15000 + (price-1000000)*0.04;
 
-            // 首次置業免稅
             if (isFirstHome === 'yes' && price <= 500000) {
                 duty = duty * (100 - ownership) / 100;
             }
             return duty;
         }
 
+        // 計算全部
         function calculateAll() {
             const price = Number(document.getElementById('propertyPrice').value) || 0;
             const loan = Number(document.getElementById('loanAmount').value) || 0;
             const tenure = document.getElementById('tenure').value;
             const title = document.getElementById('titleStatus').value;
             const consent = document.getElementById('consent').value;
-            const buyerCnt = document.getElementById('buyerCount').value;
             const firstHome = document.getElementById('firstHome').value;
             const ownership = Number(document.getElementById('ownershipPercent').value) || 100;
-            const applicantCnt = document.getElementById('applicantCount').value;
             const applicantAddon = Number(document.getElementById('applicantAddon').value) || 0;
             const valMode = document.getElementById('valuationMode').value;
             const valFee = Number(document.getElementById('valuationFee').value) || 0;
@@ -299,14 +330,14 @@
                 else valuation = 800;
             }
 
-            // --- TOTAL ---
+            // --- 總計 ---
             let subtotal = spaFee + spaAddon + spaSST + motStamp + 50 + spaDisburse + spaOther + spaOtherSST +
                            loanFee + loanAddon + applicantAddon + loanSST + loanStamp + 110 + loanDisburse + loanOther + loanOtherSST +
-                           (spaAddon>0?spaAddon:0) + valuation + extra;
+                           spaAddon + valuation + extra;
             const discountAmt = subtotal * discount / 100;
             const grandTotal = subtotal - discountAmt;
 
-            // --- 顯示結果 ---
+            // --- 顯示 ---
             document.getElementById('resSpaFee').textContent = `RM ${spaFee.toFixed(2)}`;
             document.getElementById('resSpaAddon').textContent = `RM ${spaAddon.toFixed(2)}`;
             document.getElementById('resSpaSST').textContent = `RM ${spaSST.toFixed(2)}`;
@@ -330,10 +361,7 @@
             document.getElementById('resDiscount').textContent = `- RM ${discountAmt.toFixed(2)}`;
             document.getElementById('grandTotal').textContent = `RM ${grandTotal.toFixed(2)}`;
 
-            document.getElementById('resultArea').classList.remove('hidden');
-
-            // 記錄到試算表
-            saveLog(`使用 Property Cost Estimator | 房價:RM${price} | 貸款:RM${loan} | 總費用:RM${grandTotal.toFixed(2)}`);
+            saveLog(`使用 Property Cost Estimator | 房價:RM${price} | 貸款:RM${loan} | 總額:RM${grandTotal.toFixed(2)}`);
         }
 
         saveLog("使用 Property Cost Estimator v2");
