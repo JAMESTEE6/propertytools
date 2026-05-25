@@ -352,14 +352,16 @@
             document.getElementById('costMiscDisp').textContent = "RM " + costMisc.toFixed(2);
             document.getElementById('totalCostDisp').textContent = "RM " + totalCost.toFixed(2);
 
-            saveLog(`Refinance Compare | Old:RM${oldAmt}@${oldRate}% | New:RM${newAmt}@${newRate}% | Save:RM${saveMonthly.toFixed(2)}/mth`);
-        }
+     saveLog("使用 Refinance Calculator - 貸款對比省錢版");
 
-        saveLog("使用 Refinance Calculator - 貸款對比省錢版");
+        // ✅ 時間更新：功能正常
+        function updateDisplay() {
+            document.getElementById('loginDisplay').innerHTML = `Welcome: ${user}<br>LOGIN TIME: ${getMYTime()}`;
         }
         updateDisplay();
         setInterval(updateDisplay, 1000);
 
+        // ✅ 登出功能：功能正常
         function logout() {
             saveLog("登出系統");
             localStorage.clear();
