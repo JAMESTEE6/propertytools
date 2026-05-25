@@ -137,11 +137,11 @@
             background-color: #111111;
         }
 
-        /* 🔥 右邊預覽區：僅標題居中 + 全部靠左 + 無任何邊框 🔥 */
+        /* 🔥 右邊預覽區：僅移除最外框、保留所有內容線條 🔥 */
         .form-preview {
             width: 210mm;
             min-height: 297mm;
-            /* ❌ 移除所有外框 */
+            /* ❌ 只移除最外層大邊框 */
             border: none;
             padding: 30mm 18mm 20mm 18mm; /* ✅ 整體下移2cm + 左右留白 */
             background: #ffffff;
@@ -171,8 +171,8 @@
         }
         .form-preview .row-item {
             display: flex;
-            /* ❌ 移除欄位底線 */
-            border-bottom: none;
+            /* ✅ 保留欄位底線 */
+            border-bottom: 1px solid #000;
             margin: 0;
             min-height: 20px;
             align-items: center;
@@ -200,7 +200,7 @@
             border-left: none;
         }
 
-        /* ✅ 條款區：全部靠左、無邊框 */
+        /* ✅ 條款區：靠左、格式正常 */
         .form-preview .terms {
             font-size: 11px;
             line-height: 1.5;
@@ -219,7 +219,7 @@
             text-align: left;
         }
 
-        /* ✅ 簽名區：靠左排版、移除上框線 */
+        /* ✅ 簽名區：保留上框線、靠左排版 */
         .form-preview .sign-area {
             display: flex;
             justify-content: space-between;
@@ -228,8 +228,8 @@
         }
         .form-preview .sign-col {
             width: 48%;
-            /* ❌ 移除簽名區上框線 */
-            border-top: none;
+            /* ✅ 保留簽名區上框線 */
+            border-top: 1px solid #000;
             padding-top: 8px;
             font-size: 12px;
             /* ✅ 簽名區靠左 */
@@ -244,7 +244,7 @@
             text-align: left;
         }
 
-        /* ✅ 列印設定：無邊框、僅標題居中、全部靠左 */
+        /* ✅ 列印設定：僅無外框、其餘線條全保留 */
         @page {
             size: A4 portrait;
             margin: 0;
@@ -275,7 +275,7 @@
                 max-width: 210mm !important;
             }
             .form-preview {
-                /* ❌ 列印也無外框 */
+                /* ❌ 列印也僅無最外框 */
                 border: none !important;
                 width: 210mm !important;
                 min-height: 297mm !important;
@@ -293,12 +293,12 @@
                 text-align: center !important;
             }
             .form-preview .row-item {
-                /* ❌ 列印也無欄位底線 */
-                border-bottom: none !important;
+                /* ✅ 列印保留欄位底線 */
+                border-bottom: 1px solid #000 !important;
             }
             .form-preview .sign-col {
-                /* ❌ 列印也無簽名區上框線 */
-                border-top: none !important;
+                /* ✅ 列印保留簽名區上框線 */
+                border-top: 1px solid #000 !important;
             }
             * {
                 /* ✅ 其餘全部靠左 */
@@ -396,7 +396,7 @@
                 </div>
             </div>
 
-            <!-- ✅ 右邊：預覽區 完全符合你的要求 -->
+            <!-- ✅ 右邊：預覽區 完全符合要求 -->
             <div class="card">
                 <div class="form-preview" id="previewArea">
                     <div class="header">
@@ -462,7 +462,7 @@
                         <div class="value-col" id="preDate"></div>
                     </div>
 
-                    <!-- ✅ TERMS & CONDITIONS：靠左、無邊框 -->
+                    <!-- ✅ TERMS & CONDITIONS：靠左、格式完整 -->
                     <div class="terms">
                         <b>TERMS & CONDITIONS</b>
                         <ol>
@@ -476,7 +476,7 @@
                         </ol>
                     </div>
 
-                    <!-- ✅ SIGNATURE AREA：靠左、無上框線 -->
+                    <!-- ✅ SIGNATURE AREA：保留上框線、靠左 -->
                     <div class="sign-area">
                         <div class="sign-col">
                             <div>PURCHASER SIGNATURE</div>
