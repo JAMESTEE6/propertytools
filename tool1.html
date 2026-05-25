@@ -137,7 +137,7 @@
             background-color: #111111;
         }
 
-        /* 🔥 右邊預覽區：徹底修正外框+字體位置 🔥 */
+        /* 🔥 右邊預覽區：全部靠左 + 完整外框 + 正式格式 🔥 */
         .form-preview {
             width: 210mm;
             min-height: 297mm;
@@ -149,7 +149,7 @@
             position: relative;
         }
         .form-preview .header {
-            text-align: center; /* ✅ 標題置中，不靠左 */
+            text-align: left; /* ✅ 標題全部靠左，不居中 */
             font-weight: bold;
             margin-bottom: 22px;
         }
@@ -160,7 +160,7 @@
         .form-preview .sub-title {
             font-weight: bold;
             font-size: 12px;
-            text-align: center; /* ✅ 小標題置中 */
+            text-align: left; /* ✅ 小標題全部靠左，不居中 */
             margin: 14px 0 2px 0;
         }
         .form-preview .sub-title:first-of-type {
@@ -181,20 +181,20 @@
             font-size: 12px;
             padding: 1px 4px;
             flex-shrink: 0;
-            text-align: left; /* ✅ 標籤文字正常左對齊，不跑位 */
+            text-align: left; /* ✅ 標籤文字靠左 */
         }
         .form-preview .value-col {
             flex: 1;
             padding: 1px 4px;
             font-size: 12px;
-            text-align: left !important;
+            text-align: left !important; /* ✅ 內容文字靠左 */
             min-height: 20px;
             display: flex;
             align-items: center;
             border-left: none;
         }
 
-        /* ✅ 條款區：格式正確、換行正常 */
+        /* ✅ 條款區：全部靠左，正式格式 */
         .form-preview .terms {
             font-size: 11px;
             line-height: 1.5;
@@ -209,10 +209,10 @@
             font-size: 11px;
             list-style: decimal;
             white-space: normal;
-            text-align: left;
+            text-align: left; /* ✅ 條款文字靠左 */
         }
 
-        /* ✅ 簽名區：位置正確、空間足夠 */
+        /* ✅ 簽名區：靠左排版、位置正確、空間足夠 */
         .form-preview .sign-area {
             display: flex;
             justify-content: space-between;
@@ -224,6 +224,7 @@
             border-top: 1px solid #000 !important; /* ✅ 簽名區上框線 */
             padding-top: 8px;
             font-size: 12px;
+            text-align: left; /* ✅ 簽名區文字靠左 */
         }
         .form-preview .sign-col .line {
             margin: 6px 0;
@@ -231,9 +232,10 @@
             font-size: 12px;
             border: none;
             padding-left: 4px;
+            text-align: left;
         }
 
-        /* ✅ 列印設定：保證列印時外框完整、位置正確 */
+        /* ✅ 列印設定：保證列印時外框完整、靠左不變 */
         @page {
             size: A4 portrait;
             margin: 0;
@@ -247,7 +249,7 @@
                 padding: 0 !important;
                 background: #fff !important;
                 font-size: 11pt !important;
-                text-align: center;
+                text-align: left !important; /* ✅ 列印強制靠左 */
                 height: 100%;
                 overflow: hidden;
             }
@@ -282,6 +284,7 @@
                 border-top: 1px solid #000 !important;
             }
             * {
+                text-align: left !important; /* ✅ 所有內容列印強制靠左 */
                 page-break-after: avoid !important;
                 page-break-before: avoid !important;
                 page-break-inside: avoid !important;
@@ -375,7 +378,7 @@
                 </div>
             </div>
 
-            <!-- ✅ 右邊：預覽區 完全修正版 -->
+            <!-- ✅ 右邊：預覽區 全部靠左 + 完整外框 + 正式格式 -->
             <div class="card">
                 <div class="form-preview" id="previewArea">
                     <div class="header">
@@ -441,7 +444,7 @@
                         <div class="value-col" id="preDate"></div>
                     </div>
 
-                    <!-- ✅ TERMS & CONDITIONS -->
+                    <!-- ✅ TERMS & CONDITIONS：全部靠左，正式格式 -->
                     <div class="terms">
                         <b>TERMS & CONDITIONS</b>
                         <ol>
@@ -455,7 +458,7 @@
                         </ol>
                     </div>
 
-                    <!-- ✅ SIGNATURE AREA -->
+                    <!-- ✅ SIGNATURE AREA：靠左排版、空間足夠 -->
                     <div class="sign-area">
                         <div class="sign-col">
                             <div>PURCHASER SIGNATURE</div>
