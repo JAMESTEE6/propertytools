@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Refinance Cost Calculator</title>
+    <title>Refinance Calculator - Savings Comparison</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -60,7 +60,10 @@
 
         /* 卡片與容器 */
         .card-input { background: #ffffff; border-radius: 20px; box-shadow: 0 8px 24px rgba(255, 107, 53, 0.15); border: 2px solid #FFE2D3; }
-        .card-result { background: #ffffff; border-radius: 20px; box-shadow: 0 8px 24px rgba(58, 134, 255, 0.15); border: 2px solid #D6E8FF; position: sticky; top: 20px; }
+        .card-result { background: #ffffff; border-radius: 20px; box-shadow: 0 8px 24px rgba(58, 134, 255, 0.15); border: 2px solid #D6E8FF; }
+        .card-old { background: #FFF9F6; border-radius: 16px; border-left: 5px solid #EF4444; padding: 16px; }
+        .card-new { background: #F0FDF4; border-radius: 16px; border-left: 5px solid #10B981; padding: 16px; }
+        .card-save { background: #FEF3C7; border-radius: 16px; padding: 16px; text-align: center; }
 
         /* 色彩主題 */
         .color-primary { color: #FF6B35; }
@@ -69,6 +72,9 @@
         .bg-secondary { background: linear-gradient(135deg, #3A86FF 0%, #60A5FA 100%); }
         .color-accent { color: #F72585; }
         .bg-accent { background: linear-gradient(135deg, #F72585 0%, #FF4D94 100%); }
+        .color-red { color: #EF4444; }
+        .color-green { color: #10B981; }
+        .color-amber { color: #D97706; font-weight: bold; }
 
         .input-field, .select-field { border: 2px solid #E2E8F0; border-radius: 12px; padding: 13px 16px; font-size: 15px; width: 100%; transition: 0.2s; background: #FAFBFC; }
         .input-field:focus, .select-field:focus { border-color: #FF6B35; outline: none; box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1); background: #fff; }
@@ -78,8 +84,8 @@
         .btn-calculate { background: linear-gradient(135deg, #F72585 0%, #7209B7 100%); color: white; border-radius: 12px; padding: 14px; font-size: 16px; font-weight: bold; width: 100%; transition: 0.3s; box-shadow: 0 4px 12px rgba(247, 37, 133, 0.25); }
         .btn-calculate:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(247, 37, 133, 0.35); }
 
-        .result-row { display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px dashed #E0E7FF; font-size: 14px; }
-        .result-total { background: linear-gradient(135deg, #3A86FF 0%, #7209B7 100%); color: white; border-radius: 12px; padding: 14px; text-align: center; font-size: 18px; font-weight: bold; margin-top: 12px; box-shadow: 0 4px 12px rgba(58, 134, 255, 0.2); }
+        .result-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 14px; }
+        .divider { border-bottom: 1px dashed #CBD5E1; margin: 8px 0; }
     </style>
 </head>
 <body>
@@ -97,156 +103,150 @@
     <div class="max-w-7xl mx-auto px-4 py-6">
         <!-- 標題區 -->
         <div class="bg-primary text-white rounded-2xl p-6 mb-8 text-center shadow-lg">
-            <h1 class="text-[30px] font-bold mb-2">🔄 Refinance Cost Calculator</h1>
-            <p class="opacity-95 text-[16px]">Refinance Legal Fee + Stamp Duty + Valuation + Disbursement Estimator</p>
+            <h1 class="text-[30px] font-bold mb-2">🔄 Refinance Calculator <span class="text-yellow-300">(Savings Comparison)</span></h1>
+            <p class="opacity-95 text-[16px]">Compare Old Loan vs New Loan • See Exact Savings Per Month & Total</p>
         </div>
 
-        <!-- 主要布局：左輸入 / 右結果 -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+        <!-- 主要布局：上輸入 / 下對比結果 -->
+        <div class="space-y-8">
 
-            <!-- ========== 左邊：輸入區 ========== -->
+            <!-- ========== 上半部：輸入區 ========== -->
             <div class="card-input p-6">
                 <h2 class="text-[22px] font-bold color-primary mb-6 flex items-center">
                     <span class="bg-primary text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">1</span>
                     Input Details
                 </h2>
 
-                <div class="section-box mb-5">
-                    <h3 class="text-[17px] font-semibold color-primary mb-4">🏠 Property & Loan Info</h3>
-                    <div class="mb-3">
-                        <label class="label-text">Current Property Value (RM)</label>
-                        <input type="number" id="propertyValue" class="input-field" value="0" min="0" placeholder="e.g. 600000">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    
+                    <!-- 左邊：舊貸款資料 -->
+                    <div class="section-box">
+                        <h3 class="text-[18px] font-bold color-red mb-4">📌 CURRENT / OLD LOAN</h3>
+                        <div class="mb-4">
+                            <label class="label-text">Remaining Loan Amount (RM)</label>
+                            <input type="number" id="oldLoanAmount" class="input-field" value="0" min="0" placeholder="e.g. 350000">
+                        </div>
+                        <div class="mb-4">
+                            <label class="label-text">Current Interest Rate (% p.a.)</label>
+                            <input type="number" id="oldRate" class="input-field" value="4.5" min="0" max="20" step="0.01" placeholder="e.g. 4.50">
+                        </div>
+                        <div class="mb-2">
+                            <label class="label-text">Remaining Tenure (Years)</label>
+                            <input type="number" id="oldTenure" class="input-field" value="25" min="1" max="40" placeholder="e.g. 25">
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label class="label-text">Existing Loan Balance (RM)</label>
-                        <input type="number" id="existingLoan" class="input-field" value="0" min="0" placeholder="e.g. 350000">
+
+                    <!-- 右邊：新貸款資料 -->
+                    <div class="section-box">
+                        <h3 class="text-[18px] font-bold color-green mb-4">✨ NEW LOAN (After Refinance)</h3>
+                        <div class="mb-4">
+                            <label class="label-text">New Loan Amount (RM) <small class="text-gray-500">(Can be higher: Cash Out)</small></label>
+                            <input type="number" id="newLoanAmount" class="input-field" value="0" min="0" placeholder="e.g. 480000">
+                        </div>
+                        <div class="mb-4">
+                            <label class="label-text">New Interest Rate (% p.a.)</label>
+                            <input type="number" id="newRate" class="input-field" value="3.8" min="0" max="20" step="0.01" placeholder="e.g. 3.80">
+                        </div>
+                        <div class="mb-2">
+                            <label class="label-text">New Tenure (Years)</label>
+                            <input type="number" id="newTenure" class="input-field" value="30" min="1" max="40" placeholder="e.g. 30">
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label class="label-text">New Loan Margin (%)</label>
-                        <input type="number" id="newLoanMargin" class="input-field" value="0" min="0" max="100" placeholder="e.g. 80">
-                    </div>
-                    <div>
-                        <label class="label-text">New Loan Amount (Auto) (RM)</label>
-                        <input type="number" id="newLoanAmount" class="input-field bg-gray-100" value="0" min="0" readonly>
-                    </div>
+
                 </div>
 
-                <div class="section-box mb-5">
-                    <h3 class="text-[17px] font-semibold color-primary mb-4">📑 Title & Tenure</h3>
-                    <div class="mb-3">
-                        <label class="label-text">Tenure</label>
-                        <select id="tenure" class="select-field">
-                            <option value="freehold">✅ Freehold</option>
-                            <option value="leasehold">⏳ Leasehold</option>
-                        </select>
+                <div class="mt-6 pt-4 border-t border-gray-200">
+                    <h3 class="text-[17px] font-semibold color-primary mb-4">💸 One-Off Cost (Legal + Stamp Duty + Valuation)</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="label-text">Legal Fee + SST (RM)</label>
+                            <input type="number" id="costLegal" class="input-field" value="0" min="0">
+                        </div>
+                        <div>
+                            <label class="label-text">Stamp Duty (RM)</label>
+                            <input type="number" id="costStamp" class="input-field" value="0" min="0">
+                        </div>
+                        <div>
+                            <label class="label-text">Valuation + Misc (RM)</label>
+                            <input type="number" id="costMisc" class="input-field" value="0" min="0">
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label class="label-text">Title Status</label>
-                        <select id="titleStatus" class="select-field">
-                            <option value="individual">Individual / Strata Title</option>
-                            <option value="master">Master Title / No Title</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="label-text">Consent / Authority Letter Needed?</label>
-                        <select id="consent" class="select-field">
-                            <option value="no">❌ No</option>
-                            <option value="yes">✅ Yes (Extra Fee Applicable)</option>
-                        </select>
-                    </div>
+                    <p class="text-sm text-gray-600 mt-2">💡 Total Cost will be auto-deducted from cash-out amount</p>
                 </div>
 
-                <div class="section-box mb-5">
-                    <h3 class="text-[17px] font-semibold color-primary mb-4">👤 Applicant Info</h3>
-                    <div class="mb-3">
-                        <label class="label-text">Number of Applicants</label>
-                        <select id="applicantCount" class="select-field">
-                            <option value="1">👤 1 Person</option>
-                            <option value="2">👥 2 Persons</option>
-                            <option value="3+">👥👥 3+ Persons</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="label-text">Extra Fee per Additional Applicant (RM)</label>
-                        <input type="number" id="applicantAddon" class="input-field" value="300" min="0">
-                    </div>
-                </div>
-
-                <div class="section-box mb-5">
-                    <h3 class="text-[17px] font-semibold color-primary mb-4">💰 Valuation Fee</h3>
-                    <div class="mb-3">
-                        <label class="label-text">Valuation Mode</label>
-                        <select id="valuationMode" class="select-field">
-                            <option value="auto">⚡ Auto Calculate (Scale Based)</option>
-                            <option value="manual">✍️ Manual Entry</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="label-text">Manual Valuation Fee (RM)</label>
-                        <input type="number" id="valuationFee" class="input-field" value="0" min="0">
-                    </div>
-                </div>
-
-                <div class="section-box mb-6">
-                    <h3 class="text-[17px] font-semibold color-primary mb-4">⚙️ Adjustments</h3>
-                    <div class="mb-3">
-                        <label class="label-text">Legal / Admin Extra Charges (RM)</label>
-                        <input type="number" id="extraCharges" class="input-field" value="0" min="0">
-                    </div>
-                    <div>
-                        <label class="label-text">Discount / Rebate (%)</label>
-                        <input type="number" id="discount" class="input-field" value="0" min="0" max="100">
-                    </div>
-                </div>
-
-                <button class="btn-calculate" onclick="calculateAll()">🚀 Calculate Refinance Cost</button>
+                <button class="btn-calculate mt-8" onclick="calculateAll()">🚀 Calculate & Compare Savings</button>
             </div>
 
-            <!-- ========== 右邊：結果區 ========== -->
+            <!-- ========== 下半部：對比結果區 ========== -->
             <div class="card-result p-6">
                 <h2 class="text-[22px] font-bold color-secondary mb-6 flex items-center">
                     <span class="bg-secondary text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">2</span>
-                    Cost Summary
+                    Comparison Result
                 </h2>
 
-                <div class="bg-blue-50 text-secondary text-sm font-medium px-3 py-1 rounded-full inline-block mb-4">🔄 Refinance Estimate</div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    
+                    <!-- 舊貸款 -->
+                    <div class="card-old">
+                        <h3 class="text-lg font-bold color-red text-center mb-3">📌 CURRENT LOAN</h3>
+                        <div class="result-row"><span>Loan Amount:</span><span class="font-medium">RM <span id="oldAmt">0.00</span></span></div>
+                        <div class="result-row"><span>Interest Rate:</span><span class="font-medium" id="oldRateDisp">4.50 %</span></div>
+                        <div class="result-row"><span>Tenure:</span><span class="font-medium" id="oldTenureDisp">25 Years</span></div>
+                        <div class="divider"></div>
+                        <div class="result-row font-bold text-lg"><span>Monthly Instalment:</span><span class="color-red" id="oldMonthly">RM 0.00</span></div>
+                        <div class="result-row"><span>Total Interest Payable:</span><span class="font-medium" id="oldTotalInterest">RM 0.00</span></div>
+                        <div class="result-row"><span>Total Payment:</span><span class="font-medium" id="oldTotalPay">RM 0.00</span></div>
+                    </div>
 
-                <div id="resultContent" class="space-y-1 text-sm">
-                    <!-- Legal Fees -->
-                    <div class="font-semibold text-secondary mt-2 mb-1">📄 Legal Fees (New Loan)</div>
-                    <div class="result-row"><span>Legal Fee (Scale)</span><span id="resLegalFee">RM 0.00</span></div>
-                    <div class="result-row"><span>Additional Applicant Fee</span><span id="resApplicantAddon">RM 0.00</span></div>
-                    <div class="result-row"><span>Consent / Title Processing Fee</span><span id="resConsentFee">RM 0.00</span></div>
-                    <div class="result-row"><span>Legal SST 8%</span><span id="resLegalSST">RM 0.00</span></div>
+                    <!-- 新貸款 -->
+                    <div class="card-new">
+                        <h3 class="text-lg font-bold color-green text-center mb-3">✨ NEW LOAN</h3>
+                        <div class="result-row"><span>Loan Amount:</span><span class="font-medium">RM <span id="newAmt">0.00</span></span></div>
+                        <div class="result-row"><span>Interest Rate:</span><span class="font-medium" id="newRateDisp">3.80 %</span></div>
+                        <div class="result-row"><span>Tenure:</span><span class="font-medium" id="newTenureDisp">30 Years</span></div>
+                        <div class="divider"></div>
+                        <div class="result-row font-bold text-lg"><span>Monthly Instalment:</span><span class="color-green" id="newMonthly">RM 0.00</span></div>
+                        <div class="result-row"><span>Total Interest Payable:</span><span class="font-medium" id="newTotalInterest">RM 0.00</span></div>
+                        <div class="result-row"><span>Total Payment:</span><span class="font-medium" id="newTotalPay">RM 0.00</span></div>
+                    </div>
 
-                    <!-- Stamp Duty -->
-                    <div class="font-semibold text-secondary mt-4 mb-1">💴 Stamp Duty</div>
-                    <div class="result-row"><span>Loan Stamp Duty (0.5%)</span><span id="resStampDuty">RM 0.00</span></div>
-                    <div class="result-row"><span>Nominal Stamping Fee</span><span id="resNominal">RM 100.00</span></div>
+                    <!-- 省錢重點 -->
+                    <div class="card-save">
+                        <h3 class="text-lg font-bold color-amber text-center mb-3">💰 YOUR SAVINGS</h3>
+                        <div class="text-2xl font-bold text-green-600 my-2">
+                            <div>PER MONTH</div>
+                            <div id="saveMonthly">RM 0.00</div>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="my-2">
+                            <div class="text-sm">Total Interest Save:</div>
+                            <div class="font-bold text-green-600 text-lg" id="saveInterest">RM 0.00</div>
+                        </div>
+                        <div class="my-2">
+                            <div class="text-sm">Net Cash Out:</div>
+                            <div class="font-bold text-blue-700 text-lg" id="cashOut">RM 0.00</div>
+                            <div class="text-xs text-gray-600">(After all cost)</div>
+                        </div>
+                    </div>
 
-                    <!-- Disbursement -->
-                    <div class="font-semibold text-secondary mt-4 mb-1">📦 Disbursement & Other</div>
-                    <div class="result-row"><span>Registration / Search Fees</span><span id="resRegFee">RM 1,200.00</span></div>
-                    <div class="result-row"><span>Document / Courier / Misc</span><span id="resMisc">RM 800.00</span></div>
-                    <div class="result-row"><span>SST on Disbursement</span><span id="resDisburseSST">RM 64.00</span></div>
-                    <div class="result-row"><span>Valuation Fee</span><span id="resValuation">RM 0.00</span></div>
-
-                    <!-- Adjustments -->
-                    <div class="font-semibold text-secondary mt-4 mb-1">⚙️ Adjustments</div>
-                    <div class="result-row"><span>Extra Charges</span><span id="resExtra">RM 0.00</span></div>
-                    <div class="result-row text-green-600"><span>Discount Applied</span><span id="resDiscount">- RM 0.00</span></div>
                 </div>
 
-                <!-- 總金額 -->
-                <div class="result-total">
-                    Total Estimated Cost: <span id="grandTotal">RM 0.00</span>
+                <!-- 費用明細 -->
+                <div class="bg-gray-50 rounded-xl p-4 text-sm">
+                    <h4 class="font-semibold mb-2">📋 Cost Breakdown</h4>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                        <div>Legal: <span id="costLegalDisp">0.00</span></div>
+                        <div>Stamp: <span id="costStampDisp">0.00</span></div>
+                        <div>Misc: <span id="costMiscDisp">0.00</span></div>
+                        <div class="font-bold text-red-600">Total Cost: <span id="totalCostDisp">0.00</span></div>
+                    </div>
                 </div>
 
                 <p class="text-[12px] text-amber-700 bg-amber-50 p-3 rounded-lg mt-5 border border-amber-200">
-                    ⚠️ Note: Estimate only. Actual fees vary by law firm, bank policy and title complexity.
+                    ⚠️ Note: Calculation based on amortization formula. Actual bank schedule may vary slightly.
                 </p>
 
-                <button class="bg-accent text-white w-full py-3 mt-5 rounded-xl font-bold hover:shadow-lg transition">🖨️ Print / Save PDF</button>
+                <button class="bg-accent text-white w-full py-3 mt-5 rounded-xl font-bold hover:shadow-lg transition">🖨️ Print / Save Comparison</button>
             </div>
 
         </div>
@@ -265,11 +265,13 @@
         }
 
         async function saveLog(action) {
-            await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${試算表ID}/values/${記錄工作表}!A:C:append?valueInputOption=USER_ENTERED&key=${API_KEY}`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ values: [[getMYTime(), user, action]] })
-            });
+            try {
+                await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${試算表ID}/values/${記錄工作表}!A:C:append?valueInputOption=USER_ENTERED&key=${API_KEY}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ values: [[getMYTime(), user, action]] })
+                });
+            } catch (e) {}
         }
 
         // 返回主選單
@@ -278,112 +280,79 @@
             location.href = "index.html";
         }
 
-        // 自動計算新貸款金額
-        document.getElementById('propertyValue').addEventListener('input', updateLoan);
-        document.getElementById('newLoanMargin').addEventListener('input', updateLoan);
-        function updateLoan() {
-            const value = Number(document.getElementById('propertyValue').value) || 0;
-            const margin = Number(document.getElementById('newLoanMargin').value) || 0;
-            const loan = value * margin / 100;
-            document.getElementById('newLoanAmount').value = loan.toFixed(2);
+        // ✅ 核心公式：按月等額攤還 (EMI)
+        function calculateEMI(principal, ratePerAnnum, years) {
+            const P = parseFloat(principal) || 0;
+            const r = (parseFloat(ratePerAnnum) || 0) / 100 / 12; // 月利率
+            const n = (parseFloat(years) || 0) * 12; // 總月數
+
+            if (P <= 0 || r <= 0 || n <= 0) return { emi: 0, totalPay: 0, totalInterest: 0 };
+            
+            // EMI = P × r × (1+r)^n / [(1+r)^n - 1]
+            const emi = P * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
+            const totalPay = emi * n;
+            const totalInterest = totalPay - P;
+
+            return { emi, totalPay, totalInterest };
         }
 
-        // 律師費計算公式（馬來西亞標準收費）
-        function computeLegalFee(amount) {
-            if (amount <= 0) return 0;
-            let fee = 0;
-            if (amount <= 500000) {
-                fee = amount * 0.0125;
-            } else if (amount <= 7500000) {
-                fee = 500000 * 0.0125 + (amount - 500000) * 0.01;
-            } else {
-                fee = 500000 * 0.0125 + 7000000 * 0.01;
-            }
-            return Math.max(fee, 500); // 最低收費RM500
-        }
-
-        // 核心計算
+        // 計算全部 & 顯示對比
         function calculateAll() {
-            const propertyValue = Number(document.getElementById('propertyValue').value) || 0;
-            const existingLoan = Number(document.getElementById('existingLoan').value) || 0;
-            const newLoan = Number(document.getElementById('newLoanAmount').value) || 0;
-            const tenure = document.getElementById('tenure').value;
-            const titleStatus = document.getElementById('titleStatus').value;
-            const consent = document.getElementById('consent').value;
-            const applicantCount = document.getElementById('applicantCount').value;
-            const applicantAddon = Number(document.getElementById('applicantAddon').value) || 0;
-            const valMode = document.getElementById('valuationMode').value;
-            const valFee = Number(document.getElementById('valuationFee').value) || 0;
-            const extraCharges = Number(document.getElementById('extraCharges').value) || 0;
-            const discount = Number(document.getElementById('discount').value) || 0;
+            // --- 讀取舊貸款 ---
+            const oldAmt = parseFloat(document.getElementById('oldLoanAmount').value) || 0;
+            const oldRate = parseFloat(document.getElementById('oldRate').value) || 0;
+            const oldTenure = parseFloat(document.getElementById('oldTenure').value) || 0;
+            const old = calculateEMI(oldAmt, oldRate, oldTenure);
 
-            // --- 1. 律師費相關 ---
-            const baseLegalFee = computeLegalFee(newLoan);
-            const extraApplicantFee = (applicantCount === '2') ? applicantAddon : (applicantCount === '3+') ? applicantAddon * 2 : 0;
-            const consentFee = (tenure === 'leasehold' || titleStatus === 'master' || consent === 'yes') ? 1200 : 0;
-            const legalSST = (baseLegalFee + extraApplicantFee + consentFee) * 0.08;
+            // --- 讀取新貸款 ---
+            const newAmt = parseFloat(document.getElementById('newLoanAmount').value) || 0;
+            const newRate = parseFloat(document.getElementById('newRate').value) || 0;
+            const newTenure = parseFloat(document.getElementById('newTenure').value) || 0;
+            const newLoan = calculateEMI(newAmt, newRate, newTenure);
 
-            // --- 2. 印花稅 ---
-            const stampDuty = newLoan * 0.005; // 貸款額0.5%
-            const nominalFee = 100;
+            // --- 一次性費用 ---
+            const costLegal = parseFloat(document.getElementById('costLegal').value) || 0;
+            const costStamp = parseFloat(document.getElementById('costStamp').value) || 0;
+            const costMisc = parseFloat(document.getElementById('costMisc').value) || 0;
+            const totalCost = costLegal + costStamp + costMisc;
 
-            // --- 3. 雜費/代墊費用 ---
-            const regFee = 1200;
-            const miscFee = 800;
-            const disburseSST = (regFee + miscFee) * 0.08;
+            // --- 計算省錢 & 套現 ---
+            const saveMonthly = old.emi - newLoan.emi;
+            const saveInterest = old.totalInterest - newLoan.totalInterest;
+            const cashOut = (newAmt - oldAmt) - totalCost; // 套現 = 新貸 - 舊貸 - 所有費用
 
-            // --- 4. 估價費 ---
-            let valuation = valFee;
-            if (valMode === 'auto') {
-                if (propertyValue <= 300000) valuation = 350;
-                else if (propertyValue <= 500000) valuation = 500;
-                else if (propertyValue <= 1000000) valuation = 700;
-                else valuation = 900;
-            }
+            // --- 顯示：舊貸款 ---
+            document.getElementById('oldAmt').textContent = oldAmt.toFixed(2);
+            document.getElementById('oldRateDisp').textContent = oldRate.toFixed(2) + " %";
+            document.getElementById('oldTenureDisp').textContent = oldTenure + " Years";
+            document.getElementById('oldMonthly').textContent = "RM " + old.emi.toFixed(2);
+            document.getElementById('oldTotalInterest').textContent = "RM " + old.totalInterest.toFixed(2);
+            document.getElementById('oldTotalPay').textContent = "RM " + old.totalPay.toFixed(2);
 
-            // --- 總金額計算 ---
-            let subtotal = baseLegalFee + extraApplicantFee + consentFee + legalSST +
-                           stampDuty + nominalFee +
-                           regFee + miscFee + disburseSST +
-                           valuation + extraCharges;
+            // --- 顯示：新貸款 ---
+            document.getElementById('newAmt').textContent = newAmt.toFixed(2);
+            document.getElementById('newRateDisp').textContent = newRate.toFixed(2) + " %";
+            document.getElementById('newTenureDisp').textContent = newTenure + " Years";
+            document.getElementById('newMonthly').textContent = "RM " + newLoan.emi.toFixed(2);
+            document.getElementById('newTotalInterest').textContent = "RM " + newLoan.totalInterest.toFixed(2);
+            document.getElementById('newTotalPay').textContent = "RM " + newLoan.totalPay.toFixed(2);
 
-            const discountAmt = subtotal * discount / 100;
-            const grandTotal = subtotal - discountAmt;
+            // --- 顯示：省錢亮點 ---
+            document.getElementById('saveMonthly').textContent = "RM " + saveMonthly.toFixed(2);
+            document.getElementById('saveInterest').textContent = "RM " + saveInterest.toFixed(2);
+            document.getElementById('cashOut').textContent = "RM " + cashOut.toFixed(2);
 
-            // --- 顯示結果 ---
-            document.getElementById('resLegalFee').textContent = `RM ${baseLegalFee.toFixed(2)}`;
-            document.getElementById('resApplicantAddon').textContent = `RM ${extraApplicantFee.toFixed(2)}`;
-            document.getElementById('resConsentFee').textContent = `RM ${consentFee.toFixed(2)}`;
-            document.getElementById('resLegalSST').textContent = `RM ${legalSST.toFixed(2)}`;
+            // --- 顯示：費用明細 ---
+            document.getElementById('costLegalDisp').textContent = "RM " + costLegal.toFixed(2);
+            document.getElementById('costStampDisp').textContent = "RM " + costStamp.toFixed(2);
+            document.getElementById('costMiscDisp').textContent = "RM " + costMisc.toFixed(2);
+            document.getElementById('totalCostDisp').textContent = "RM " + totalCost.toFixed(2);
 
-            document.getElementById('resStampDuty').textContent = `RM ${stampDuty.toFixed(2)}`;
-            document.getElementById('resNominal').textContent = `RM ${nominalFee.toFixed(2)}`;
-
-            document.getElementById('resRegFee').textContent = `RM ${regFee.toFixed(2)}`;
-            document.getElementById('resMisc').textContent = `RM ${miscFee.toFixed(2)}`;
-            document.getElementById('resDisburseSST').textContent = `RM ${disburseSST.toFixed(2)}`;
-            document.getElementById('resValuation').textContent = `RM ${valuation.toFixed(2)}`;
-
-            document.getElementById('resExtra').textContent = `RM ${extraCharges.toFixed(2)}`;
-            document.getElementById('resDiscount').textContent = `- RM ${discountAmt.toFixed(2)}`;
-            document.getElementById('grandTotal').textContent = `RM ${grandTotal.toFixed(2)}`;
-
-            saveLog(`使用 Refinance Calculator | 房價:RM${propertyValue} | 新貸款:RM${newLoan} | 總額:RM${grandTotal.toFixed(2)}`);
+            saveLog(`Refinance Compare | Old:RM${oldAmt}@${oldRate}% | New:RM${newAmt}@${newRate}% | Save:RM${saveMonthly.toFixed(2)}/mth`);
         }
 
-        saveLog("使用 Refinance Calculator - Tool 6");
+        saveLog("使用 Refinance Calculator - 貸款對比省錢版");
 
-        function updateDisplay() {
-            document.getElementById('loginDisplay').innerHTML = `Welcome: ${user}<br>LOGIN TIME: ${getMYTime()}`;
-        }
-        updateDisplay();
-        setInterval(updateDisplay, 1000);
-
-        function logout() {
-            saveLog("登出系統");
-            localStorage.clear();
-            location.href = "index.html";
-        }
     </script>
 </body>
 </html>
