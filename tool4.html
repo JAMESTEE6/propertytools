@@ -87,6 +87,121 @@
             opacity: 0.9;
         }
 
+        /* ========== 🔥 重點修改：項目改成「上下排列」 ========== */
+        .policy-list {
+            padding: 20px;
+        }
+
+        .policy-item {
+            /* 原本是 flex 左右排，改成區塊式上下排 */
+            display: block;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        /* 左邊：項目名稱 */
+        .policy-label {
+            font-weight: 600;
+            font-size: 14px;
+            color: #333333;
+            margin-bottom: 4px; /* 和下方內容拉開距離 */
+        }
+
+        /* 右邊：內容，改成自動換行，完整顯示 */
+        .policy-value {
+            font-size: 14px;
+            color: #8c6d1a; /* 保留你原本的金色/棕色字體 */
+            word-wrap: break-word; /* 強制換行 */
+            white-space: normal;   /* 允許換行，不強制單行 */
+            line-height: 1.5;
+        }
+
+        /* 最後一個項目移除底線 */
+        .policy-item:last-child {
+            border-bottom: none;
+        }
+
+        /* ========== 底部更新時間 ========== */
+        .last-updated {
+            padding: 12px 20px;
+            font-size: 12px;
+            color: #777;
+            text-align: right;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-section">
+        <a href="#" class="back-btn">← Back</a>
+        <div class="page-title">
+            <h1>Bank Policy Database</h1>
+            <p>Updated Policy Guidelines</p>
+        </div>
+    </div>
+
+    <div class="banks-container">
+        <!-- ✅ CIMB 範例（對應你提供的截圖） -->
+        <div class="bank-card">
+            <div class="bank-header" style="background-color: #0a2463;">
+                <div class="bank-name">CIMB</div>
+                <div class="bank-subtitle">Bank Policy</div>
+            </div>
+
+            <div class="policy-list">
+                <div class="policy-item">
+                    <div class="policy-label">PTPTN LATE PAYMENT</div>
+                    <div class="policy-value">Need Restructure</div>
+                </div>
+                <div class="policy-item">
+                    <div class="policy-label">CLEAN CCRIS</div>
+                    <div class="policy-value">Can proceed, Depends Scoring</div>
+                </div>
+                <div class="policy-item">
+                    <div class="policy-label">FIRST HOME 100% LOAN PACKAGE</div>
+                    <div class="policy-value">Yes, Up to 1 Million</div>
+                </div>
+                <div class="policy-item">
+                    <div class="policy-label">CTOS ISSUE</div>
+                    <div class="policy-value">Can Proceed, No Issue</div>
+                </div>
+                <div class="policy-item">
+                    <div class="policy-label">REFERRAL FEES</div>
+                    <div class="policy-value">No Retention</div>
+                </div>
+                <div class="policy-item">
+                    <div class="policy-label">SECOND HOME 100% LOAN PACKAGE</div>
+                    <div class="policy-value">-</div>
+                </div>
+                <div class="policy-item">
+                    <div class="policy-label">LA FINANCE</div>
+                    <div class="policy-value">Can Finance</div>
+                </div>
+                <div class="policy-item">
+                    <div class="policy-label">ZERO MOVING COST</div>
+                    <div class="policy-value">NO</div>
+                </div>
+                <div class="policy-item">
+                    <div class="policy-label">RENOVATION LOAN</div>
+                    <div class="policy-value">-</div>
+                </div>
+                <div class="policy-item">
+                    <div class="policy-label">MINIMUM INCOME</div>
+                    <div class="policy-value">-</div>
+                </div>
+            </div>
+
+            <div class="last-updated">
+                Last Updated: 2026-05-21 21:32 by Admin
+            </div>
+        </div>
+
+        <!-- 其他銀行卡片... 你可以直接複製上面結構新增 -->
+
+    </div>
+</body>
+</html>
+
         /* ========== 21家銀行專屬顏色 ========== */
         .color-cimb       { background-color: #002b5c; }   /* 深藍 */
         .color-public     { background-color: #004a99; }   /* 正確深綠 之前錯了！ */
