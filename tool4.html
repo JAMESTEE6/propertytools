@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bank Policy Database</title>
     <style>
-        /* ========== 全局基礎設定 - 參考Tool5色系 ========== */
+        /* ========== 全局基礎設定 - 參考Tool5色系 + 字體優化 ========== */
         * {
             margin: 0;
             padding: 0;
@@ -14,18 +14,17 @@
         }
 
         body {
-            background-color: #f8f9fa; /* 淺灰背景，更柔和 */
-            line-height: 1.6;
+            background-color: #f8f9fa;
+            line-height: 1.5;
         }
 
-        /* ========== 頂部區塊 - 改成Tool5風格：深藍+亮綠 ========== */
+        /* ========== 頂部區塊 - Tool5風格：深藍+亮綠 ========== */
         .top-section {
-            background: linear-gradient(135deg, #0a2463 0%, #165DFF 100%); /* 深藍漸層 */
+            background: linear-gradient(135deg, #0a2463 0%, #165DFF 100%);
             padding: 40px 20px 50px;
             position: relative;
             overflow: hidden;
         }
-        /* 加入亮綠點綴，和Tool5一致 */
         .top-section::after {
             content: '';
             position: absolute;
@@ -88,11 +87,11 @@
             z-index: 10;
         }
 
-        /* ========== 銀行卡片樣式 - 完全升級，參考Tool5質感 ========== */
+        /* ========== 銀行卡片樣式 - 美化外框 + 圓角陰影 ========== */
         .bank-card {
             background-color: #ffffff;
-            border-radius: 16px; /* 更圓角，更現代 */
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08); /* 更柔和陰影 */
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
             overflow: hidden;
             width: 100%;
             border: 1px solid rgba(0,0,0,0.05);
@@ -111,67 +110,60 @@
             position: relative;
         }
         .bank-name {
-            font-size: 22px;
+            font-size: 20px;
             margin-bottom: 3px;
             letter-spacing: 0.3px;
         }
         .bank-subtitle {
-            font-size: 14px;
+            font-size: 13px;
             opacity: 0.9;
             font-weight: 400;
         }
 
-        /* ========== ✅ 強制上下排列 - 絕對分開，不會跑版 ========== */
+        /* ========== ✅ 上下排列 + 字體優化（對齊截圖） ========== */
         .policy-list {
             padding: 24px 28px;
             background-color: #ffffff;
         }
 
         .policy-item {
-            /* 關鍵：區塊模式，強制上下 */
             display: block !important;
-            padding: 14px 0;
-            border-bottom: 1px solid #f0f2f5; /* 淺灰分隔線，更美觀 */
+            padding: 8px 0; /* 縮小間距，更緊緻 */
+            border-bottom: none; /* 移除分隔線，和截圖一致 */
             margin: 0;
         }
 
         .policy-label {
-            display: block !important; /* 單獨一行 */
+            display: block !important;
             font-weight: 600;
-            font-size: 14px;
-            color: #4e5969; /* Tool5 中性字色 */
-            margin-bottom: 6px; /* 和內容拉開距離 */
+            font-size: 14px; /* 對齊截圖大小 */
+            color: #4a5568; /* 深灰，和截圖標籤色一致 */
+            margin-bottom: 2px; /* 極小間距，更自然 */
             line-height: 1.4;
         }
 
         .policy-value {
-            display: block !important; /* 單獨一行 */
-            font-size: 15px;
-            color: #926600; /* 保留你的金色強調 */
+            display: block !important;
+            font-size: 14px; /* 和標籤同大小，視覺和諧 */
+            color: #926600; /* 金棕色，和截圖強調色一致 */
             font-weight: 500;
             word-wrap: break-word;
             white-space: normal !important;
-            line-height: 1.6;
-            padding-left: 2px;
+            line-height: 1.5;
+            padding-left: 0;
         }
 
-        /* 最後一項移除底線 */
-        .policy-item:last-child {
-            border-bottom: none;
-        }
-
-        /* ========== 底部更新時間 - 優化位置與樣式 ========== */
+        /* ========== 底部更新時間 - 對齊截圖樣式 ========== */
         .last-updated {
             padding: 16px 28px 20px;
             font-size: 12px;
-            color: #86909c;
-            text-align: right;
-            border-top: 1px solid #f0f2f5;
+            color: #718096; /* 淺灰，和截圖一致 */
+            text-align: left; /* 靠左，對齊截圖 */
+            border-top: 1px solid #e2e8f0;
             background-color: #fcfcfd;
-            font-style: italic;
         }
 
-        /* ========== 21家銀行專屬顏色 - 微調更協調 ========== */
+        /* ========== 21家銀行專屬顏色 ========== */
         .color-cimb       { background-color: #002b5c; }
         .color-public     { background-color: #004a99; }
         .color-rhb        { background-color: #e21b23; }
