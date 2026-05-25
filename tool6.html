@@ -359,17 +359,6 @@
 
         saveLog("使用 Refinance Calculator - 貸款對比省錢版");
 
-        function updateDisplay() {
-            document.getElementById('loginDisplay').innerHTML = `Welcome: ${user}<br>LOGIN TIME: ${getMYTime()}`;
-        }
-        updateDisplay();
-        setInterval(updateDisplay, 1000);
-
-        function logout() {
-            saveLog("登出系統");
-            localStorage.clear();
-            location.href = "index.html";
-        }
     </script>
 </body>
 </html>
