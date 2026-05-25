@@ -6,24 +6,26 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background: linear-gradient(135deg, #FFF5F0 0%, #F0F9FF 100%); min-height: 100vh; font-family: 'Arial', sans-serif; }
-        /* 頂部欄 - 亮粉紅背景，清晰按鈕 */
+        /* ✅ 整體背景：清新淺藍漸層，和其他工具區分 */
+        body { background: linear-gradient(135deg, #F0F7FF 0%, #EFF6FF 100%); min-height: 100vh; font-family: 'Arial', sans-serif; }
+        
+        /* ✅ 頂部欄：深藍色，取代原本粉紅色，辨識度高 */
         .header-bar { 
-            background: #FF1E62; 
+            background: #165DFF; 
             padding: 16px 28px; 
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
             flex-wrap: wrap; 
             gap: 12px; 
-            box-shadow: 0 4px 12px rgba(255, 30, 98, 0.25); 
+            box-shadow: 0 4px 12px rgba(22, 93, 255, 0.2); 
         }
         .user-info { font-size: 16px; font-weight: 600; color: #fff; line-height: 1.8; }
         
-        /* Back to Menu - 左側清晰樣式 */
+        /* ✅ Back to Menu：淺藍底 + 深藍字，清晰不變 */
         .back-btn { 
-            background: #FFF1F5; 
-            color: #C50044; 
+            background: #E8F3FF; 
+            color: #165DFF; 
             border: none; 
             padding: 10px 20px; 
             border-radius: 10px; 
@@ -31,18 +33,18 @@
             font-weight: bold; 
             cursor: pointer; 
             transition: 0.2s; 
-            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            box-shadow: 0 2px 6px rgba(22, 93, 255, 0.15);
         }
         .back-btn:hover { 
-            background: #FFE0EA; 
+            background: #D1E7FF; 
             transform: scale(1.03); 
-            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+            box-shadow: 0 3px 8px rgba(22, 93, 255, 0.25);
         }
 
-        /* Logout - 右側樣式 */
+        /* ✅ Logout：淺色底配深藍字，和頂欄呼應 */
         .logout-btn { 
             background: #FFFFFF; 
-            color: #C50044; 
+            color: #165DFF; 
             border: none; 
             padding: 10px 20px; 
             border-radius: 10px; 
@@ -50,39 +52,41 @@
             font-weight: bold; 
             cursor: pointer; 
             transition: 0.2s; 
-            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            box-shadow: 0 2px 6px rgba(22, 93, 255, 0.15);
         }
         .logout-btn:hover { 
-            background: #FFF0F7; 
+            background: #F0F7FF; 
             transform: scale(1.03); 
-            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+            box-shadow: 0 3px 8px rgba(22, 93, 255, 0.25);
         }
 
-        /* 卡片與容器 */
-        .card-input { background: #ffffff; border-radius: 20px; box-shadow: 0 8px 24px rgba(255, 107, 53, 0.15); border: 2px solid #FFE2D3; }
-        .card-result { background: #ffffff; border-radius: 20px; box-shadow: 0 8px 24px rgba(58, 134, 255, 0.15); border: 2px solid #D6E8FF; }
-        .card-old { background: #FFF9F6; border-radius: 16px; border-left: 5px solid #EF4444; padding: 16px; }
-        .card-new { background: #F0FDF4; border-radius: 16px; border-left: 5px solid #10B981; padding: 16px; }
-        .card-save { background: #FEF3C7; border-radius: 16px; padding: 16px; text-align: center; }
+        /* ✅ 卡片色彩：改用藍色系為主，對比更舒服 */
+        .card-input { background: #ffffff; border-radius: 20px; box-shadow: 0 8px 24px rgba(22, 93, 255, 0.12); border: 2px solid #D1E7FF; }
+        .card-result { background: #ffffff; border-radius: 20px; box-shadow: 0 8px 24px rgba(14, 165, 233, 0.12); border: 2px solid #BFDBFE; }
+        
+        /* ✅ 舊貸/新貸：保留紅綠對比（給客戶看的重點不動），但加深層次 */
+        .card-old { background: #FFF5F5; border-radius: 16px; border-left: 5px solid #DC2626; padding: 16px; }
+        .card-new { background: #F0FDF4; border-radius: 16px; border-left: 5px solid #16A34A; padding: 16px; }
+        .card-save { background: #FFFBEB; border-radius: 16px; padding: 16px; text-align: center; }
 
-        /* 色彩主題 */
-        .color-primary { color: #FF6B35; }
-        .bg-primary { background: linear-gradient(135deg, #FF6B35 0%, #FF8A4C 100%); }
-        .color-secondary { color: #3A86FF; }
-        .bg-secondary { background: linear-gradient(135deg, #3A86FF 0%, #60A5FA 100%); }
-        .color-accent { color: #F72585; }
-        .bg-accent { background: linear-gradient(135deg, #F72585 0%, #FF4D94 100%); }
-        .color-red { color: #EF4444; }
-        .color-green { color: #10B981; }
+        /* ✅ 主題色：全部換成藍色調，和其他工具的橘/粉紅完全不同 */
+        .color-primary { color: #165DFF; }
+        .bg-primary { background: linear-gradient(135deg, #165DFF 0%, #3B82F6 100%); }
+        .color-secondary { color: #0EA5E9; }
+        .bg-secondary { background: linear-gradient(135deg, #0EA5E9 0%, #38BDF8 100%); }
+        .color-accent { color: #8B5CF6; }
+        .bg-accent { background: linear-gradient(135deg, #8B5CF6 0%, #A78BFA 100%); }
+        .color-red { color: #DC2626; }
+        .color-green { color: #16A34A; }
         .color-amber { color: #D97706; font-weight: bold; }
 
         .input-field, .select-field { border: 2px solid #E2E8F0; border-radius: 12px; padding: 13px 16px; font-size: 15px; width: 100%; transition: 0.2s; background: #FAFBFC; }
-        .input-field:focus, .select-field:focus { border-color: #FF6B35; outline: none; box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1); background: #fff; }
+        .input-field:focus, .select-field:focus { border-color: #165DFF; outline: none; box-shadow: 0 0 0 3px rgba(22, 93, 255, 0.1); background: #fff; }
         .label-text { font-weight: 600; color: #334155; margin-bottom: 8px; display: block; font-size: 14px; }
-        .section-box { background: #FFF9F6; border-radius: 14px; padding: 16px; border-left: 4px solid #FF6B35; }
+        .section-box { background: #F5F9FF; border-radius: 14px; padding: 16px; border-left: 4px solid #165DFF; }
 
-        .btn-calculate { background: linear-gradient(135deg, #F72585 0%, #7209B7 100%); color: white; border-radius: 12px; padding: 14px; font-size: 16px; font-weight: bold; width: 100%; transition: 0.3s; box-shadow: 0 4px 12px rgba(247, 37, 133, 0.25); }
-        .btn-calculate:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(247, 37, 133, 0.35); }
+        .btn-calculate { background: linear-gradient(135deg, #165DFF 0%, #0EA5E9 100%); color: white; border-radius: 12px; padding: 14px; font-size: 16px; font-weight: bold; width: 100%; transition: 0.3s; box-shadow: 0 4px 12px rgba(22, 93, 255, 0.2); }
+        .btn-calculate:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(22, 93, 255, 0.28); }
 
         .result-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 14px; }
         .divider { border-bottom: 1px dashed #CBD5E1; margin: 8px 0; }
@@ -353,6 +357,17 @@
 
         saveLog("使用 Refinance Calculator - 貸款對比省錢版");
 
+        function updateDisplay() {
+            document.getElementById('loginDisplay').innerHTML = `Welcome: ${user}<br>LOGIN TIME: ${getMYTime()}`;
+        }
+        updateDisplay();
+        setInterval(updateDisplay, 1000);
+
+        function logout() {
+            saveLog("登出系統");
+            localStorage.clear();
+            location.href = "index.html";
+        }
     </script>
 </body>
 </html>
