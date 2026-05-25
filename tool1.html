@@ -141,13 +141,14 @@
             background-color: #111111;
         }
 
-        /* 🔥 右邊預覽區：A4尺寸 + 完整邊框 + 舒適排版 🔥 */
+        /* 🔥 右邊預覽區：A4尺寸 + 完整邊框 + 整體下移2cm 🔥 */
         .form-preview {
             /* ✅ 固定A4尺寸：寬210mm、高297mm，符合國際標準 */
             width: 210mm;
             min-height: 297mm;
-            border: 1px solid #000000; /* ✅ 恢復完整外框 */
-            padding: 20mm 15mm; /* ✅ 內邊距模擬列印留白，避免內容貼邊 */
+            border: 1px solid #000000; /* ✅ 保留完整外框 */
+            /* ✅ 內邊距：上30mm(原本10mm+下移20mm=2cm)、左右15mm、下20mm，精準下移2cm */
+            padding: 30mm 15mm 20mm 15mm;
             background: #ffffff;
             color: #000;
             margin: 0 auto;
@@ -205,7 +206,7 @@
             white-space: normal; /* ✅ 正常換行，不強制單行 */
         }
 
-        /* ✅ 簽名區：寬度均分、上框線、間距舒適 */
+        /* ✅ 簽名區：完全對齊你提供的截圖格式 */
         .form-preview .sign-area {
             display: flex;
             justify-content: space-between;
@@ -213,7 +214,7 @@
         }
         .form-preview .sign-col {
             width: 48%;
-            border-top: 1px solid #000;
+            border-top: 1px solid #000; /* ✅ 上方底線 */
             padding-top: 10px;
             font-size: 12px;
         }
@@ -221,10 +222,10 @@
             margin: 6px 0;
             height: auto;
             font-size: 12px;
-            border: none;
+            border: none; /* ✅ 文字下方無底線 */
         }
 
-        /* ✅ 列印設定：精準A4、強制一頁、置中、保留邊框 */
+        /* ✅ 列印設定：完全依照預覽樣式，尺寸/邊框/位置完全一致 */
         @page {
             size: A4 portrait;
             margin: 0; /* ✅ 由表單內邊距控制留白，精準對齊 */
@@ -258,7 +259,8 @@
                 width: 210mm !important;
                 min-height: 297mm !important;
                 background: transparent !important;
-                padding: 20mm 15mm !important;
+                /* ✅ 列印時同樣下移2cm，跟預覽完全一致 */
+                padding: 30mm 15mm 20mm 15mm !important;
                 margin: 0 auto !important;
                 page-break-after: avoid;
                 page-break-before: avoid;
@@ -358,7 +360,7 @@
                 </div>
             </div>
 
-            <!-- ✅ 右邊：預覽區 → A4尺寸 + 邊框 + 舒適排版 -->
+            <!-- ✅ 右邊：預覽區 → 下移2cm + 完全對齊截圖簽名格式 -->
             <div class="card">
                 <div class="form-preview" id="previewArea">
                     <div class="header">
@@ -424,7 +426,7 @@
                         <div class="value-col" id="preDate"></div>
                     </div>
 
-                    <!-- ✅ TERMS & CONDITIONS：行距舒適、自動換行、不擠壓 -->
+                    <!-- ✅ TERMS & CONDITIONS：格式不變 -->
                     <div class="terms">
                         <b>TERMS & CONDITIONS</b>
                         <ol>
@@ -438,7 +440,7 @@
                         </ol>
                     </div>
 
-                    <!-- ✅ SIGNATURE AREA：間距足夠、格式對齊 -->
+                    <!-- ✅ SIGNATURE AREA：完全對齊你提供的截圖樣式 -->
                     <div class="sign-area">
                         <div class="sign-col">
                             <div>PURCHASER SIGNATURE</div>
