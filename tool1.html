@@ -193,21 +193,22 @@
         .form-preview .amount-row .value-col {
             text-align: right;
         }
-        /* ✅ 條款區：完全依照你最後一張截圖的文字、行距、大小 */
+        /* ✅ 條款區：保留編號，格式整齊 */
         .form-preview .terms {
             font-size: 11px;
-            line-height: 1.5;
+            line-height: 1.6;
             margin: 20px 0;
         }
         .form-preview .terms ol {
-            padding-left: 16px;
+            padding-left: 20px;
             margin: 0;
         }
         .form-preview .terms li {
-            margin-bottom: 3px;
+            margin-bottom: 4px;
             font-size: 11px;
+            list-style: decimal;
         }
-        /* ✅ 簽名區：完全依照你截圖的格式，底線位置、文字順序完全一致 */
+        /* ✅ 簽名區：移除所有底線，只留文字 */
         .form-preview .sign-area {
             display: flex;
             justify-content: space-between;
@@ -221,10 +222,9 @@
         }
         .form-preview .sign-col .line {
             margin: 4px 0;
-            height: 16px;
+            height: auto;
             font-size: 12px;
-            border-bottom: 1px solid #000;
-            width: 100%;
+            border: none;
         }
 
         /* ✅ 列印設定：只顯示表單，完美對齊 */
@@ -419,7 +419,7 @@
                         <div class="value-col" id="preDate"></div>
                     </div>
 
-                    <!-- ✅ TERMS & CONDITIONS：完全依照你截圖的文字、順序、內容，逐字對齊 -->
+                    <!-- ✅ TERMS & CONDITIONS：保留自動編號 1.2.3. 格式 -->
                     <div class="terms">
                         <b>TERMS & CONDITIONS</b>
                         <ol>
@@ -433,7 +433,7 @@
                         </ol>
                     </div>
 
-                    <!-- ✅ SIGNATURE AREA：完全依照你截圖格式，底線、文字順序、位置一模一樣 -->
+                    <!-- ✅ SIGNATURE AREA：完全移除底線，只剩文字 -->
                     <div class="sign-area">
                         <div class="sign-col">
                             <div>PURCHASER SIGNATURE</div>
