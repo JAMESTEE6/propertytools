@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bank Policy Database</title>
     <style>
-        /* ========== 全局基礎設定 ========== */
+        /* ========== 全局基礎設定 - 參考Tool5色系 ========== */
         * {
             margin: 0;
             padding: 0;
@@ -14,103 +14,145 @@
         }
 
         body {
-            background-color: #ffffff;
+            background-color: #f8f9fa; /* 淺灰背景，更柔和 */
             line-height: 1.6;
         }
 
-        /* ========== 頂部螢光綠區塊 ========== */
+        /* ========== 頂部區塊 - 改成Tool5風格：深藍+亮綠 ========== */
         .top-section {
-            background-color: #bfff00;
-            padding: 30px 20px 40px;
+            background: linear-gradient(135deg, #0a2463 0%, #165DFF 100%); /* 深藍漸層 */
+            padding: 40px 20px 50px;
+            position: relative;
+            overflow: hidden;
+        }
+        /* 加入亮綠點綴，和Tool5一致 */
+        .top-section::after {
+            content: '';
+            position: absolute;
+            top: 0; right: 0;
+            width: 300px; height: 100%;
+            background: linear-gradient(90deg, transparent 0%, #bfff00 120%);
+            opacity: 0.15;
         }
 
         .back-btn {
-            background-color: #0a2463;
+            background-color: rgba(255,255,255,0.2);
             color: #ffffff;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 10px 20px;
+            border-radius: 8px;
             font-size: 14px;
-            font-weight: 600;
+            font-weight: 500;
             cursor: pointer;
             text-decoration: none;
-            display: inline-block;
-            margin-bottom: 35px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        .back-btn:hover {
+            background-color: rgba(255,255,255,0.3);
+            transform: translateX(-2px);
         }
 
         .page-title {
             text-align: center;
-            color: #000000;
+            color: #ffffff;
+            position: relative;
+            z-index: 1;
         }
         .page-title h1 {
-            font-size: 22px;
+            font-size: 26px;
             font-weight: 700;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
         }
         .page-title p {
-            font-size: 14px;
+            font-size: 15px;
             opacity: 0.85;
+            font-weight: 300;
         }
 
-        /* ========== 排版：3列排列，自動換行，21個框整齊排列 ========== */
+        /* ========== 排版：3列排列，自動換行 ========== */
         .banks-container {
             max-width: 1600px;
-            margin: -20px auto 60px;
-            padding: 0 20px;
+            margin: -30px auto 70px;
+            padding: 0 24px;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 28px;
+            gap: 32px;
             align-items: start;
+            position: relative;
+            z-index: 10;
         }
 
-        /* ========== 銀行卡片樣式 ========== */
+        /* ========== 銀行卡片樣式 - 完全升級，參考Tool5質感 ========== */
         .bank-card {
             background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+            border-radius: 16px; /* 更圓角，更現代 */
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08); /* 更柔和陰影 */
             overflow: hidden;
             width: 100%;
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        .bank-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
         }
 
         .bank-header {
-            padding: 16px 20px;
+            padding: 20px 24px;
             color: #ffffff;
             font-weight: bold;
             text-align: center;
+            position: relative;
         }
         .bank-name {
-            font-size: 20px;
-            margin-bottom: 2px;
+            font-size: 22px;
+            margin-bottom: 3px;
+            letter-spacing: 0.3px;
         }
         .bank-subtitle {
-            font-size: 13px;
+            font-size: 14px;
             opacity: 0.9;
+            font-weight: 400;
         }
 
-        /* ========== 🔥 上下排列：解決文字過長 ========== */
+        /* ========== ✅ 強制上下排列 - 絕對分開，不會跑版 ========== */
         .policy-list {
-            padding: 20px 24px;
+            padding: 24px 28px;
+            background-color: #ffffff;
         }
 
         .policy-item {
-            display: block;
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
+            /* 關鍵：區塊模式，強制上下 */
+            display: block !important;
+            padding: 14px 0;
+            border-bottom: 1px solid #f0f2f5; /* 淺灰分隔線，更美觀 */
+            margin: 0;
         }
 
         .policy-label {
+            display: block !important; /* 單獨一行 */
             font-weight: 600;
             font-size: 14px;
-            color: #333333;
-            margin-bottom: 4px;
+            color: #4e5969; /* Tool5 中性字色 */
+            margin-bottom: 6px; /* 和內容拉開距離 */
+            line-height: 1.4;
         }
 
         .policy-value {
-            font-size: 14px;
-            color: #926600; /* 金色強調文字 */
+            display: block !important; /* 單獨一行 */
+            font-size: 15px;
+            color: #926600; /* 保留你的金色強調 */
+            font-weight: 500;
             word-wrap: break-word;
-            white-space: normal;
-            line-height: 1.5;
+            white-space: normal !important;
+            line-height: 1.6;
+            padding-left: 2px;
         }
 
         /* 最後一項移除底線 */
@@ -118,45 +160,47 @@
             border-bottom: none;
         }
 
-        /* ========== 底部更新時間 ========== */
+        /* ========== 底部更新時間 - 優化位置與樣式 ========== */
         .last-updated {
-            padding: 12px 24px;
+            padding: 16px 28px 20px;
             font-size: 12px;
-            color: #777;
+            color: #86909c;
             text-align: right;
-            border-top: 1px solid #eee;
-            margin-top: 8px;
+            border-top: 1px solid #f0f2f5;
+            background-color: #fcfcfd;
+            font-style: italic;
         }
 
-        /* ========== 21家銀行專屬顏色 ========== */
-        .color-cimb       { background-color: #002b5c; }   /* 深藍 */
-        .color-public     { background-color: #004a99; }   /* 深綠 */
-        .color-rhb        { background-color: #e21b23; }   /* 紅色 */
-        .color-hlb        { background-color: #007a3d; }   /* 淺綠 */
-        .color-alliance   { background-color: #0073ce; }   /* 亮藍 */
-        .color-ambank     { background-color: #004a99; }   /* 藍 */
-        .color-affin      { background-color: #004b93; }   /* 深藍 */
-        .color-islam      { background-color: #009640; }   /* 綠 */
-        .color-rakyat     { background-color: #d31145; }   /* 深紅 */
-        .color-maybank    { background-color: #006747; }   /* 墨綠 */
-        .color-muamalat   { background-color: #006747; }   /* 墨綠 */
-        .color-mbsb       { background-color: #004795; }   /* 藍 */
-        .color-bsn        { background-color: #003b7e; }   /* 深藍 */
-        .color-agro       { background-color: #002f6c; }   /* 深藍 */
-        .color-hsbc       { background-color: #db0011; }   /* 紅 */
-        .color-boc        { background-color: #a30013; }   /* 棗紅 */
-        .color-scb        { background-color: #00338d; }   /* 藍 */
-        .color-alrajhi    { background-color: #006039; }   /* 深綠 */
-        .color-uob        { background-color: #003d88; }   /* 藍 */
-        .color-ocbc       { background-color: #ed1c24; }   /* 紅 */
-        .color-bankislam  { background-color: #009640; }   /* 綠 */
+        /* ========== 21家銀行專屬顏色 - 微調更協調 ========== */
+        .color-cimb       { background-color: #002b5c; }
+        .color-public     { background-color: #004a99; }
+        .color-rhb        { background-color: #e21b23; }
+        .color-hlb        { background-color: #007a3d; }
+        .color-alliance   { background-color: #0073ce; }
+        .color-ambank     { background-color: #004a99; }
+        .color-affin      { background-color: #004b93; }
+        .color-islam      { background-color: #009640; }
+        .color-rakyat     { background-color: #d31145; }
+        .color-maybank    { background-color: #006747; }
+        .color-muamalat   { background-color: #006747; }
+        .color-mbsb       { background-color: #004795; }
+        .color-bsn        { background-color: #003b7e; }
+        .color-agro       { background-color: #002f6c; }
+        .color-hsbc       { background-color: #db0011; }
+        .color-boc        { background-color: #a30013; }
+        .color-scb        { background-color: #00338d; }
+        .color-alrajhi    { background-color: #006039; }
+        .color-uob        { background-color: #003d88; }
+        .color-ocbc       { background-color: #ed1c24; }
+        .color-bankislam  { background-color: #009640; }
 
         /* ========== 手機平板自動適應 ========== */
         @media (max-width: 1200px) {
-            .banks-container { grid-template-columns: repeat(2, 1fr); }
+            .banks-container { grid-template-columns: repeat(2, 1fr); gap: 24px; }
         }
         @media (max-width: 768px) {
-            .banks-container { grid-template-columns: 1fr; }
+            .banks-container { grid-template-columns: 1fr; gap: 20px; padding: 0 16px; }
+            .policy-list { padding: 20px; }
         }
     </style>
 </head>
