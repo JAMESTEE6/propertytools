@@ -289,6 +289,14 @@
         const API_KEY = "AIzaSyB85G85Lq2wKxKt8y0Gq5u8R6n7y0X1z2A";
         const user = localStorage.getItem("loginAccount");
 
+        // ✅ 千分位格式化函數 (10000 → "10,000.00")
+        function formatNumber(num) {
+            return new Intl.NumberFormat('en-MY', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(num || 0);
+        }
+
         // ✅ 時間函數
         function getMYTime() {
             const d = new Date();
@@ -328,7 +336,7 @@
             return { emi, totalPay, totalInterest };
         }
 
-        // ✅ 計算全部 & 顯示對比（修復語法錯誤）
+        // ✅ 計算全部 & 顯示對比（加上千分位）
         function calculateAll() {
             // --- 讀取舊貸款 ---
             const oldAmt = parseFloat(document.getElementById('oldLoanAmount').value) || 0;
@@ -353,32 +361,32 @@
             const saveInterest = old.totalInterest - newLoan.totalInterest;
             const cashOut = (newAmt - oldAmt) - totalCost; // 套現 = 新貸 - 舊貸 - 所有費用
 
-            // --- 顯示：舊貸款 ---
-            document.getElementById('oldAmt').textContent = oldAmt.toFixed(2);
+            // --- 顯示：舊貸款（套用千分位）---
+            document.getElementById('oldAmt').textContent = formatNumber(oldAmt);
             document.getElementById('oldRateDisp').textContent = oldRate.toFixed(2) + " %";
             document.getElementById('oldTenureDisp').textContent = oldTenure + " Years";
-            document.getElementById('oldMonthly').textContent = "RM " + old.emi.toFixed(2);
-            document.getElementById('oldTotalInterest').textContent = "RM " + old.totalInterest.toFixed(2);
-            document.getElementById('oldTotalPay').textContent = "RM " + old.totalPay.toFixed(2);
+            document.getElementById('oldMonthly').textContent = "RM " + formatNumber(old.emi);
+            document.getElementById('oldTotalInterest').textContent = "RM " + formatNumber(old.totalInterest);
+            document.getElementById('oldTotalPay').textContent = "RM " + formatNumber(old.totalPay);
 
-            // --- 顯示：新貸款 ---
-            document.getElementById('newAmt').textContent = newAmt.toFixed(2);
+            // --- 顯示：新貸款（套用千分位）---
+            document.getElementById('newAmt').textContent = formatNumber(newAmt);
             document.getElementById('newRateDisp').textContent = newRate.toFixed(2) + " %";
             document.getElementById('newTenureDisp').textContent = newTenure + " Years";
-            document.getElementById('newMonthly').textContent = "RM " + newLoan.emi.toFixed(2);
-            document.getElementById('newTotalInterest').textContent = "RM " + newLoan.totalInterest.toFixed(2);
-            document.getElementById('newTotalPay').textContent = "RM " + newLoan.totalPay.toFixed(2);
+            document.getElementById('newMonthly').textContent = "RM " + formatNumber(newLoan.emi);
+            document.getElementById('newTotalInterest').textContent = "RM " + formatNumber(newLoan.totalInterest);
+            document.getElementById('newTotalPay').textContent = "RM " + formatNumber(newLoan.totalPay);
 
-            // --- 顯示：省錢亮點 ---
-            document.getElementById('saveMonthly').textContent = "RM " + saveMonthly.toFixed(2);
-            document.getElementById('saveInterest').textContent = "RM " + saveInterest.toFixed(2);
-            document.getElementById('cashOut').textContent = "RM " + cashOut.toFixed(2);
+            // --- 顯示：省錢亮點（套用千分位）---
+            document.getElementById('saveMonthly').textContent = "RM " + formatNumber(saveMonthly);
+            document.getElementById('saveInterest').textContent = "RM " + formatNumber(saveInterest);
+            document.getElementById('cashOut').textContent = "RM " + formatNumber(cashOut);
 
-            // --- 顯示：費用明細 ---
-            document.getElementById('costLegalDisp').textContent = "RM " + costLegal.toFixed(2);
-            document.getElementById('costStampDisp').textContent = "RM " + costStamp.toFixed(2);
-            document.getElementById('costMiscDisp').textContent = "RM " + costMisc.toFixed(2);
-            document.getElementById('totalCostDisp').textContent = "RM " + totalCost.toFixed(2);
+            // --- 顯示：費用明細（套用千分位）---
+            document.getElementById('costLegalDisp').textContent = formatNumber(costLegal);
+            document.getElementById('costStampDisp').textContent = formatNumber(costStamp);
+            document.getElementById('costMiscDisp').textContent = formatNumber(costMisc);
+            document.getElementById('totalCostDisp').textContent = formatNumber(totalCost);
 
             saveLog(`Refinance Compare | Old:RM${oldAmt}@${oldRate}% | New:RM${newAmt}@${newRate}% | Save:RM${saveMonthly.toFixed(2)}/mth`);
         }
