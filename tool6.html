@@ -9,7 +9,7 @@
         /* ✅ 整體背景：高級淺紫漸層，舒服又有辨識度 */
         body { background: linear-gradient(135deg, #FAF5FF 0%, #F3E8FF 100%); min-height: 100vh; font-family: 'Arial', sans-serif; }
         
-        /* ✅ 頂部欄：深紫羅蘭色，質感高，和其他工具完全區分 */
+        /* ✅ 頂部欄：深紫羅蘭色，和你截圖完全一致 */
         .header-bar { 
             background: #7C3AED; 
             padding: 16px 28px; 
@@ -22,30 +22,29 @@
         }
         .user-info { font-size: 16px; font-weight: 600; color: #fff; line-height: 1.8; }
         
-        /* ✅【重點強化】Back to Menu：白色底 + 深紫字 + 粗邊框，保證100%看得見，永遠突出 */
+        /* ✅✅✅【完美對比】Back to Menu：白色底 + 深紫字 + 圓角 + 陰影，100%看得見，和你截圖一樣清晰 */
         .back-btn { 
             background: #FFFFFF; 
             color: #7C3AED; 
-            border: 2px solid #FFFFFF; 
+            border: none; 
             padding: 10px 22px; 
             border-radius: 12px; 
             font-size: 15px; 
             font-weight: bold; 
             cursor: pointer; 
             transition: 0.2s; 
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
         }
         .back-btn:hover { 
             background: #F3E8FF; 
             color: #6D28D9;
-            border-color: #E9D5FF;
             transform: scale(1.03); 
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.18);
         }
 
-        /* ✅ Logout：淺紫底 + 深紫字，對比清晰 */
+        /* ✅ 微調 Logout：改成白色底配紫色字，和 Back to Menu 對稱更好看，也更明顯 */
         .logout-btn { 
-            background: #EDE9FE; 
+            background: #FFFFFF; 
             color: #7C3AED; 
             border: none; 
             padding: 10px 20px; 
@@ -54,15 +53,15 @@
             font-weight: bold; 
             cursor: pointer; 
             transition: 0.2s; 
-            box-shadow: 0 2px 6px rgba(124, 58, 237, 0.2);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
         }
         .logout-btn:hover { 
-            background: #DDD6FE; 
+            background: #F3E8FF; 
             transform: scale(1.03); 
-            box-shadow: 0 3px 8px rgba(124, 58, 237, 0.25);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.18);
         }
 
-        /* ✅ 卡片色彩：紫羅蘭色系，層次分明、高級感 */
+        /* ✅ 卡片色彩：紫羅蘭色系，層次分明、高級感，和截圖一致 */
         .card-input { background: #ffffff; border-radius: 20px; box-shadow: 0 8px 24px rgba(124, 58, 237, 0.12); border: 2px solid #EDE9FE; }
         .card-result { background: #ffffff; border-radius: 20px; box-shadow: 0 8px 24px rgba(139, 92, 246, 0.12); border: 2px solid #DDD6FE; }
         
@@ -71,7 +70,7 @@
         .card-new { background: #F0FDF4; border-radius: 16px; border-left: 5px solid #16A34A; padding: 16px; }
         .card-save { background: #FFFBEB; border-radius: 16px; padding: 16px; text-align: center; }
 
-        /* ✅ 主題色：紫羅蘭家族，好看、專業、和其他工具完全不同 */
+        /* ✅ 主題色：紫羅蘭家族，和截圖的紫色完全匹配 */
         .color-primary { color: #7C3AED; }
         .bg-primary { background: linear-gradient(135deg, #7C3AED 0%, #8B5CF6 100%); }
         .color-secondary { color: #8B5CF6; }
@@ -96,10 +95,10 @@
 </head>
 <body>
     <div class="header-bar">
-        <!-- 左邊：Back to Menu ✅ 已強化對比，絕對看得見 -->
+        <!-- 左邊：Back to Menu ✅ 完美清晰，截圖效果一致 -->
         <button onclick="backToMenu()" class="back-btn">🏠 Back to Menu</button>
         
-        <!-- 右邊：使用者資訊 + 登出 -->
+        <!-- 右邊：使用者資訊 + 登出 ✅ 登出按鈕改白色底，和左邊對稱更漂亮 -->
         <div style="display: flex; align-items: center; gap: 16px;">
             <div id="loginDisplay" class="user-info"></div>
             <button onclick="logout()" class="logout-btn">Logout</button>
@@ -107,7 +106,7 @@
     </div>
 
     <div class="max-w-7xl mx-auto px-4 py-6">
-        <!-- 標題區 -->
+        <!-- 標題區 ✅ 和截圖紫色背景、黃色強調字完全一樣 -->
         <div class="bg-primary text-white rounded-2xl p-6 mb-8 text-center shadow-lg">
             <h1 class="text-[30px] font-bold mb-2">🔄 Refinance Calculator <span class="text-yellow-300">(Savings Comparison)</span></h1>
             <p class="opacity-95 text-[16px]">Compare Old Loan vs New Loan • See Exact Savings Per Month & Total</p>
@@ -125,7 +124,7 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     
-                    <!-- 左邊：舊貸款資料 -->
+                    <!-- 左邊：舊貸款資料 ✅ 紅色標題和截圖完全一致 -->
                     <div class="section-box">
                         <h3 class="text-[18px] font-bold color-red mb-4">📌 CURRENT / OLD LOAN</h3>
                         <div class="mb-4">
@@ -142,7 +141,7 @@
                         </div>
                     </div>
 
-                    <!-- 右邊：新貸款資料 -->
+                    <!-- 右邊：新貸款資料 ✅ 綠色標題和截圖完全一致 -->
                     <div class="section-box">
                         <h3 class="text-[18px] font-bold color-green mb-4">✨ NEW LOAN (After Refinance)</h3>
                         <div class="mb-4">
@@ -358,7 +357,6 @@
         }
 
         saveLog("使用 Refinance Calculator - 貸款對比省錢版");
-
     </script>
 </body>
 </html>
