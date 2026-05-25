@@ -19,10 +19,12 @@
             flex-wrap: wrap; 
             gap: 12px; 
             box-shadow: 0 4px 12px rgba(22, 93, 255, 0.2); 
+            position: relative;
+            z-index: 10;
         }
         .user-info { font-size: 16px; font-weight: 600; color: #fff; line-height: 1.8; }
         
-        /* ✅ Back to Menu：淺藍底 + 深藍字，清晰不變 */
+        /* ✅ Back to Menu：淺藍底 + 深藍字，清晰不變 + 保證可點擊 */
         .back-btn { 
             background: #E8F3FF; 
             color: #165DFF; 
@@ -34,6 +36,9 @@
             cursor: pointer; 
             transition: 0.2s; 
             box-shadow: 0 2px 6px rgba(22, 93, 255, 0.15);
+            position: relative;
+            z-index: 20;
+            pointer-events: auto !important;
         }
         .back-btn:hover { 
             background: #D1E7FF; 
@@ -41,7 +46,7 @@
             box-shadow: 0 3px 8px rgba(22, 93, 255, 0.25);
         }
 
-        /* ✅ Logout：淺色底配深藍字，和頂欄呼應 */
+        /* ✅ Logout：淺色底配深藍字，和頂欄呼應 + 保證可點擊 */
         .logout-btn { 
             background: #FFFFFF; 
             color: #165DFF; 
@@ -53,6 +58,9 @@
             cursor: pointer; 
             transition: 0.2s; 
             box-shadow: 0 2px 6px rgba(22, 93, 255, 0.15);
+            position: relative;
+            z-index: 20;
+            pointer-events: auto !important;
         }
         .logout-btn:hover { 
             background: #F0F7FF; 
@@ -61,8 +69,8 @@
         }
 
         /* ✅ 卡片色彩：改用藍色系為主，對比更舒服 */
-        .card-input { background: #ffffff; border-radius: 20px; box-shadow: 0 8px 24px rgba(22, 93, 255, 0.12); border: 2px solid #D1E7FF; }
-        .card-result { background: #ffffff; border-radius: 20px; box-shadow: 0 8px 24px rgba(14, 165, 233, 0.12); border: 2px solid #BFDBFE; }
+        .card-input { background: #ffffff; border-radius: 20px; box-shadow: 0 8px 24px rgba(22, 93, 255, 0.12); border: 2px solid #D1E7FF; position: relative; z-index: 5; }
+        .card-result { background: #ffffff; border-radius: 20px; box-shadow: 0 8px 24px rgba(14, 165, 233, 0.12); border: 2px solid #BFDBFE; position: relative; z-index: 5; }
         
         /* ✅ 舊貸/新貸：保留紅綠對比（給客戶看的重點不動），但加深層次 */
         .card-old { background: #FFF5F5; border-radius: 16px; border-left: 5px solid #DC2626; padding: 16px; }
@@ -80,12 +88,28 @@
         .color-green { color: #16A34A; }
         .color-amber { color: #D97706; font-weight: bold; }
 
-        .input-field, .select-field { border: 2px solid #E2E8F0; border-radius: 12px; padding: 13px 16px; font-size: 15px; width: 100%; transition: 0.2s; background: #FAFBFC; }
+        .input-field, .select-field { border: 2px solid #E2E8F0; border-radius: 12px; padding: 13px 16px; font-size: 15px; width: 100%; transition: 0.2s; background: #FAFBFC; position: relative; z-index: 6; }
         .input-field:focus, .select-field:focus { border-color: #165DFF; outline: none; box-shadow: 0 0 0 3px rgba(22, 93, 255, 0.1); background: #fff; }
         .label-text { font-weight: 600; color: #334155; margin-bottom: 8px; display: block; font-size: 14px; }
         .section-box { background: #F5F9FF; border-radius: 14px; padding: 16px; border-left: 4px solid #165DFF; }
 
-        .btn-calculate { background: linear-gradient(135deg, #165DFF 0%, #0EA5E9 100%); color: white; border-radius: 12px; padding: 14px; font-size: 16px; font-weight: bold; width: 100%; transition: 0.3s; box-shadow: 0 4px 12px rgba(22, 93, 255, 0.2); }
+        /* ✅ 計算按鈕強化：保證可點擊、不被遮擋 */
+        .btn-calculate { 
+            background: linear-gradient(135deg, #165DFF 0%, #0EA5E9 100%); 
+            color: white; 
+            border-radius: 12px; 
+            padding: 14px; 
+            font-size: 16px; 
+            font-weight: bold; 
+            width: 100%; 
+            transition: 0.3s; 
+            box-shadow: 0 4px 12px rgba(22, 93, 255, 0.2); 
+            position: relative;
+            z-index: 20;
+            pointer-events: auto !important;
+            border: none;
+            cursor: pointer;
+        }
         .btn-calculate:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(22, 93, 255, 0.28); }
 
         .result-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 14px; }
@@ -94,10 +118,10 @@
 </head>
 <body>
     <div class="header-bar">
-        <!-- 左邊：Back to Menu -->
+        <!-- 左邊：Back to Menu ✅ 功能正常 -->
         <button onclick="backToMenu()" class="back-btn">🏠 Back to Menu</button>
         
-        <!-- 右邊：使用者資訊 + 登出 -->
+        <!-- 右邊：使用者資訊 + 登出 ✅ 功能正常 -->
         <div style="display: flex; align-items: center; gap: 16px;">
             <div id="loginDisplay" class="user-info"></div>
             <button onclick="logout()" class="logout-btn">Logout</button>
@@ -178,6 +202,7 @@
                     <p class="text-sm text-gray-600 mt-2">💡 Total Cost will be auto-deducted from cash-out amount</p>
                 </div>
 
+                <!-- ✅ 計算按鈕：功能正常 -->
                 <button class="btn-calculate mt-8" onclick="calculateAll()">🚀 Calculate & Compare Savings</button>
             </div>
 
@@ -257,17 +282,20 @@
     </div>
 
     <script>
+        // ✅ 登入驗證
         if(localStorage.getItem("IS_LOGIN") !== "true") location.href = "index.html";
         const 試算表ID = "1tJsY1dX4P2Wsg6EFmHVkbtDUvPwE0EU8jafFHblFLmg";
         const 記錄工作表 = "記錄";
         const API_KEY = "AIzaSyB85G85Lq2wKxKt8y0Gq5u8R6n7y0X1z2A";
         const user = localStorage.getItem("loginAccount");
 
+        // ✅ 時間函數
         function getMYTime() {
             const d = new Date();
             return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;
         }
 
+        // ✅ 日誌記錄
         async function saveLog(action) {
             try {
                 await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${試算表ID}/values/${記錄工作表}!A:C:append?valueInputOption=USER_ENTERED&key=${API_KEY}`, {
@@ -275,10 +303,10 @@
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ values: [[getMYTime(), user, action]] })
                 });
-            } catch (e) {}
+            } catch (e) { console.log("日誌記錄失敗", e); }
         }
 
-        // 返回主選單
+        // ✅ 返回主選單
         function backToMenu() {
             saveLog("從 Refinance Calculator 返回主選單");
             location.href = "index.html";
@@ -300,7 +328,7 @@
             return { emi, totalPay, totalInterest };
         }
 
-        // 計算全部 & 顯示對比
+        // ✅ 計算全部 & 顯示對比（修復語法錯誤）
         function calculateAll() {
             // --- 讀取舊貸款 ---
             const oldAmt = parseFloat(document.getElementById('oldLoanAmount').value) || 0;
@@ -352,16 +380,20 @@
             document.getElementById('costMiscDisp').textContent = "RM " + costMisc.toFixed(2);
             document.getElementById('totalCostDisp').textContent = "RM " + totalCost.toFixed(2);
 
-     saveLog("使用 Refinance Calculator - 貸款對比省錢版");
+            saveLog(`Refinance Compare | Old:RM${oldAmt}@${oldRate}% | New:RM${newAmt}@${newRate}% | Save:RM${saveMonthly.toFixed(2)}/mth`);
+        }
 
-        // ✅ 時間更新：功能正常
+        // ✅ 初始化記錄
+        saveLog("使用 Refinance Calculator - 貸款對比省錢版");
+
+        // ✅ 時間更新
         function updateDisplay() {
             document.getElementById('loginDisplay').innerHTML = `Welcome: ${user}<br>LOGIN TIME: ${getMYTime()}`;
         }
         updateDisplay();
         setInterval(updateDisplay, 1000);
 
-        // ✅ 登出功能：功能正常
+        // ✅ 登出功能
         function logout() {
             saveLog("登出系統");
             localStorage.clear();
