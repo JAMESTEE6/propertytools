@@ -7,13 +7,56 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { background: linear-gradient(135deg, #FFF5F0 0%, #F0F9FF 100%); min-height: 100vh; font-family: 'Arial', sans-serif; }
-        .header-bar { background: linear-gradient(90deg, #FF6B35 0%, #F72585 100%); padding: 16px 28px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; box-shadow: 0 4px 12px rgba(247, 37, 133, 0.2); }
+        /* ✅ 調整後：背景亮粉紅，按鈕淺色底+深色字，絕對清晰可見 */
+        .header-bar { 
+            background: #FF1E62; 
+            padding: 16px 28px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            flex-wrap: wrap; 
+            gap: 12px; 
+            box-shadow: 0 4px 12px rgba(255, 30, 98, 0.25); 
+        }
         .user-info { font-size: 16px; font-weight: 600; color: #fff; line-height: 1.8; }
-        .logout-btn { background: #fff; color: #F72585; border: none; padding: 9px 18px; border-radius: 8px; font-size: 15px; font-weight: bold; cursor: pointer; transition: 0.2s; }
-        .logout-btn:hover { background: #FFF0F7; transform: scale(1.03); }
-        /* ✅ 新增返回按鈕樣式 */
-        .back-btn { background: #fff; color: #FF6B35; border: none; padding: 9px 18px; border-radius: 8px; font-size: 15px; font-weight: bold; cursor: pointer; transition: 0.2s; margin-right: 8px; }
-        .back-btn:hover { background: #FFF3ED; transform: scale(1.03); }
+        
+        /* ✅ Back to Menu：左側專用樣式 - 淺米白底 + 深粉紅字，強烈對比 */
+        .back-btn { 
+            background: #FFF1F5; 
+            color: #C50044; 
+            border: none; 
+            padding: 10px 20px; 
+            border-radius: 10px; 
+            font-size: 15px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            transition: 0.2s; 
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+        .back-btn:hover { 
+            background: #FFE0EA; 
+            transform: scale(1.03); 
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+        }
+
+        /* ✅ Logout：右側樣式 - 白色底 + 深粉紅字，同樣清晰 */
+        .logout-btn { 
+            background: #FFFFFF; 
+            color: #C50044; 
+            border: none; 
+            padding: 10px 20px; 
+            border-radius: 10px; 
+            font-size: 15px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            transition: 0.2s; 
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+        .logout-btn:hover { 
+            background: #FFF0F7; 
+            transform: scale(1.03); 
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+        }
 
         /* 卡片與容器 */
         .card-input { background: #ffffff; border-radius: 20px; box-shadow: 0 8px 24px rgba(255, 107, 53, 0.15); border: 2px solid #FFE2D3; }
@@ -41,10 +84,12 @@
 </head>
 <body>
     <div class="header-bar">
-        <div id="loginDisplay" class="user-info"></div>
-        <div>
-            <!-- ✅ 新增：Back to Menu 按鈕 -->
-            <button onclick="backToMenu()" class="back-btn">🏠 Back to Menu</button>
+        <!-- ✅ 已移到左邊：Back to Menu 按鈕 -->
+        <button onclick="backToMenu()" class="back-btn">🏠 Back to Menu</button>
+        
+        <!-- ✅ 右邊：使用者資訊 + 登出按鈕 -->
+        <div style="display: flex; align-items: center; gap: 16px;">
+            <div id="loginDisplay" class="user-info"></div>
             <button onclick="logout()" class="logout-btn">Logout</button>
         </div>
     </div>
@@ -262,7 +307,7 @@
             });
         }
 
-        // ✅ 新增：返回主選單功能
+        // ✅ 返回主選單功能
         function backToMenu() {
             saveLog("從 Property Cost Estimator 返回主選單");
             location.href = "index.html";
@@ -378,6 +423,17 @@
         }
 
         saveLog("使用 Property Cost Estimator v2");
+
+        function updateDisplay() {
+            document.getElementById('loginDisplay').innerHTML = `Welcome: ${user}<br>LOGIN TIME: ${getMYTime()}`;
+        }
+        updateDisplay();
+        setInterval(updateDisplay, 1000);
+
+        function logout() {
+            saveLog("登出系統");
+            localStorage.clear();
+            location.href = "index.html";
         }
     </script>
 </body>
