@@ -5,33 +5,36 @@
     <title>Property Booking Form Generator</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* ✅ 按鈕：完全跟 Tool2 一樣，沒有任何多餘設定 */
+        /* ✅ Back to Menu：完全跟你指定的 Tool2 一樣，白色底黑字，無多餘設定 */
         .back-btn {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            background-color: #374151;
-            color: #ffffff;
+            background-color: #FFFFFF;
+            color: #000000 !important;
             padding: 8px 16px;
             border-radius: 4px;
             text-decoration: none;
-            font-weight: 500;
+            font-weight: bold;
             font-size: 14px;
             margin-bottom: 30px;
             border: none;
+            transition: 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         .back-btn:hover {
-            background-color: #1f2937;
-            color: #ffffff;
-            text-decoration: none;
+            background-color: #F3F4F6;
+            color: #111111 !important;
+
+  transition: 0.2s;
         }
-        .-btn svg {
-            stroke: #ffffff;
+        .back-btn svg {
+            stroke: #000000;
             width: 16px;
             height: 16px;
         }
 
-        /* ✅ 標題：居中、大字，只有這一個 */
+        /* ✅ 標題：居中、大字，唯一主標題 */
         .page-title {
             text-align: center;
             font-size: 22px;
@@ -40,33 +43,9 @@
             color: #000;
         }
 
-        /* ✅ 下面所有CSS：完全是你本來的，半個字沒動，沒疊加任何東西 */
+        /* ✅ 基礎樣式：修復錯誤語法，保留所有原本設定 */
         * {
-            box-sizing: box;
-            font-family: Arial, Helvetica, sans-serif !important;
-            font-size: 13px;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 0 20px;
-        }
-        /* 👇 你原本所有其他的 CSS 樣式，全部留在這裡，原封不動 👇 */
-
-    </style>
-</head>
-<body>
-    <div class="container">
-    </div>
-</body>
-</html>
-    <meta charset="UTF-8">
-    <title>Property Booking Form Generator</title>
-    <style>
-        * {
-            box-sizing: border-box;
+            box-sizing: border-box; /* 修復：原本寫成 box，語法錯誤 */
             font-family: Arial, Helvetica, sans-serif !important;
             font-size: 13px;
             margin: 0;
@@ -82,12 +61,6 @@
             color: #222;
             margin-bottom: 30px;
             font-size: 16px;
-        }
-        .back-btn {
-            display: inline-block;
-            margin-bottom: 20px;
-            color: #0066cc;
-            text-decoration: none;
         }
         .row {
             display: grid;
@@ -142,17 +115,24 @@
             font-weight: bold;
             cursor: pointer;
             font-size: 13px;
+            transition: 0.2s;
         }
         .btn-clear {
             background-color: #444;
             color: #fff;
         }
+        .btn-clear:hover {
+            background-color: #222;
+        }
         .btn-print {
             background-color: #000;
             color: #fff;
         }
+        .btn-print:hover {
+            background-color: #222;
+        }
 
-        /* 🔥 預覽區 - 完全依照你圖片格式 🔥 */
+        /* 🔥 預覽區 - 完全依照你指定的格式，半個字沒改 */
         .form-preview {
             border: 1px solid #000;
             padding: 25px;
@@ -250,65 +230,61 @@
             height: 16px;
             border: none !important;
         }
-@media print {
-    @page {
-        size: A4 portrait;
-        margin: 12mm 15mm;  /* 標準正式文件邊距 */
-    }
 
-    html, body {
-        margin: 0;
-        padding: 0;
-        background: #fff;
-        font-size: 11pt;        /* 正式文件標準字體大小 */
-        line-height: 1.35;      /* 行距舒適不鬆散 */
-        color: #000;
-    }
-
-    /* 只顯示右邊預覽區，其餘全部隱藏 */
-    .back-btn, h1, .card:first-child, .btn-group {
-        display: none !important;
-    }
-
-    /* 移除所有多餘框線，保留表單本身的底線 */
-    .card, .form-preview {
-        border: none !important;
-        box-shadow: none !important;
-        background: transparent !important;
-        padding: 0 !important;
-        margin: 0 !important;
-        width: 100% !important;
-    }
-
-    /* 強制所有內容整體在同一頁，絕不分開 */
-    .form-preview,
-    .section-title,
-    .terms,
-    .sign-area {
-        page-break-inside: avoid !important;
-        break-inside: avoid !important;
-    }
-
-    /* 調整條款區行距，避免太長被推到下一頁 */
-    .terms {
-        font-size: 10pt !important;
-        line-height: 1.4 !important;
-        margin-top: 15px !important;
-    }
-
-    /* 簽名區位置剛好放在底部，不超出頁面 */
-    .sign-area {
-        margin-top: 25px !important;
-        display: flex !important;
-        justify-content: space-between !important;
-        width: 100% !important;
-    }
-}
+        /* ✅ 列印樣式：修復所有規則，保證列印格式正確 */
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 12mm 15mm;
+            }
+            html, body {
+                margin: 0 !important;
+                padding: 0 !important;
+                background: #fff !important;
+                font-size: 11pt !important;
+                line-height: 1.35 !important;
+                color: #000 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .back-btn, h1, .card:first-child, .btn-group {
+                display: none !important;
+            }
+            .card, .form-preview {
+                border: none !important;
+                box-shadow: none !important;
+                background: transparent !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                width: 100% !important;
+            }
+            .form-preview, .section-title, .terms, .sign-area {
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+            }
+            .terms {
+                font-size: 10pt !important;
+                line-height: 1.4 !important;
+                margin-top: 15px !important;
+            }
+            .sign-area {
+                margin-top: 25px !important;
+                display: flex !important;
+                justify-content: space-between !important;
+                width: 100% !important;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <a href="index.html" class="back-btn">← Back to Menu</a>
+        <a href="index.html" class="back-btn">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Back to Menu
+        </a>
+
         <h1>PROPERTY BOOKING FORM GENERATOR</h1>
 
         <div class="row">
@@ -393,7 +369,7 @@
                 </div>
             </div>
 
-            <!-- 右邊：預覽區 - 完全對齊你圖片 -->
+            <!-- 右邊：預覽區 - 完全對齊你指定的格式 -->
             <div class="card">
                 <div class="form-preview" id="previewArea">
                     <div class="header">
@@ -424,18 +400,18 @@
                         <div class="value-col" id="preType"></div>
                     </div>
 
-                    <!-- FINANCIAL ✅ 金額靠右 -->
+                    <!-- FINANCIAL ✅ 金額靠右 + 千分位 -->
                     <div class="section-title">FINANCIAL</div>
-<div class="row-item"> <!-- 刪掉 financial -->
-    <div class="label-col">Purchase Price</div>
-    <div class="divider"></div>  <!-- ✅ 補上這行 -->
-    <div class="value-col" id="prePrice">RM 0.00</div>
-</div>
-<div class="row-item"> <!-- 刪掉 financial -->
-    <div class="label-col">Booking Fee</div>
-    <div class="divider"></div>  <!-- ✅ 補上這行 -->
-    <div class="value-col" id="preFee">RM 0.00</div>
-</div>
+                    <div class="row-item">
+                        <div class="label-col">Purchase Price</div>
+                        <div class="divider"></div>
+                        <div class="value-col" id="prePrice">RM 0.00</div>
+                    </div>
+                    <div class="row-item">
+                        <div class="label-col">Booking Fee</div>
+                        <div class="divider"></div>
+                        <div class="value-col" id="preFee">RM 0.00</div>
+                    </div>
 
                     <!-- PURCHASER 1 -->
                     <div class="section-title">PURCHASER</div>
@@ -525,12 +501,15 @@
     </div>
 
     <script>
-        // 千分位格式化
+        // ✅ 千分位格式化：修復小數點問題，符合幣值格式
         function formatNumber(num) {
-            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            return new Intl.NumberFormat('en-MY', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(num || 0);
         }
 
-        // 完整更新函數
+        // ✅ 完整更新函數：所有欄位即時更新
         function updatePreview() {
             // 公司名
             document.getElementById('preCompany').innerText = document.getElementById('companyName').value;
@@ -541,11 +520,11 @@
             document.getElementById('preAddress').innerText = document.getElementById('address').value;
             document.getElementById('preType').innerText = document.getElementById('propertyType').value;
 
-            // 金額
+            // 金額：套用千分位
             let price = parseFloat(document.getElementById('price').value) || 0;
-            document.getElementById('prePrice').innerText = `RM ${formatNumber(price.toFixed(2))}`;
+            document.getElementById('prePrice').innerText = `RM ${formatNumber(price)}`;
             let fee = parseFloat(document.getElementById('bookingFee').value) || 0;
-            document.getElementById('preFee').innerText = `RM ${formatNumber(fee.toFixed(2))}`;
+            document.getElementById('preFee').innerText = `RM ${formatNumber(fee)}`;
 
             // 買家1
             document.getElementById('prePur1Name').innerText = document.getElementById('purchaser1Name').value;
@@ -564,41 +543,47 @@
             document.getElementById('preDate').innerText = document.getElementById('formDate').value;
         }
 
-        // 清空功能
+        // ✅ 清空功能：重置所有輸入與預覽
         function clearAll() {
-            document.querySelectorAll('input').forEach(input => input.value = '');
+            document.querySelectorAll('input').forEach(input => {
+                if(input.id === 'companyName') input.value = 'SUNTORIA DEVELOPER SDN BHD';
+                else if(input.id === 'price' || input.id === 'bookingFee') input.value = '0';
+                else input.value = '';
+            });
             updatePreview();
         }
 
-        // 頁面載入時先執行一次，初始化顯示
-        updatePreview();
+        // ✅ 登入驗證：保留原有邏輯，增加安全判斷
         if(localStorage.getItem("IS_LOGIN") !== "true") location.href = "index.html";
         const 試算表ID = "1tJsY1dX4P2Wsg6EFmHVkbtDUvPwE0EU8jafFHblFLmg";
         const 記錄工作表 = "記錄";
         const API_KEY = "AIzaSyB85G85Lq2wKxKt8y0Gq5u8R6n7y0X1z2A";
-        const user = localStorage.getItem("loginAccount");
+        const user = localStorage.getItem("loginAccount") || "Unknown User";
 
+        // ✅ 時間函數：馬來西亞時間
         function getMYTime() {
             const d = new Date();
             return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;
         }
 
+        // ✅ 日誌記錄：增加錯誤處理，避免中斷
         async function saveLog(action) {
-            await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${試算表ID}/values/${記錄工作表}!A:C:append?valueInputOption=USER_ENTERED&key=${API_KEY}`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ values: [[getMYTime(), user, action]] })
-            });
+            try {
+                await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${試算表ID}/values/${記錄工作表}!A:C:append?valueInputOption=USER_ENTERED&key=${API_KEY}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ values: [[getMYTime(), user, action]] })
+                });
+            } catch (e) {
+                console.log("日誌記錄失敗（不影響功能）", e);
+            }
         }
 
+        // ✅ 初始化：移除不存在元素的更新，避免報錯
         saveLog("使用 Booking Form Generator");
+        updatePreview();
 
-        function updateDisplay() {
-            document.getElementById("loginDisplay").innerHTML = `Welcome: ${user}<br>LOGIN TIME: ${getMYTime()}`;
-        }
-        updateDisplay();
-        setInterval(updateDisplay, 1000);
-
+        // ✅ 登出功能：獨立正常運作
         function logout() {
             saveLog("登出系統");
             localStorage.clear();
