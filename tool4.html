@@ -87,63 +87,93 @@
             opacity: 0.9;
         }
 
-        /* ========== 🔥 重點修改：項目改成「上下排列」 ========== */
+        /* ========== 🔥 上下排列：解決文字過長 ========== */
         .policy-list {
-            padding: 20px;
+            padding: 20px 24px;
         }
 
         .policy-item {
-            /* 原本是 flex 左右排，改成區塊式上下排 */
             display: block;
             padding: 10px 0;
             border-bottom: 1px solid #eee;
         }
 
-        /* 左邊：項目名稱 */
         .policy-label {
             font-weight: 600;
             font-size: 14px;
             color: #333333;
-            margin-bottom: 4px; /* 和下方內容拉開距離 */
+            margin-bottom: 4px;
         }
 
-        /* 右邊：內容，改成自動換行，完整顯示 */
         .policy-value {
             font-size: 14px;
-            color: #8c6d1a; /* 保留你原本的金色/棕色字體 */
-            word-wrap: break-word; /* 強制換行 */
-            white-space: normal;   /* 允許換行，不強制單行 */
+            color: #926600; /* 金色強調文字 */
+            word-wrap: break-word;
+            white-space: normal;
             line-height: 1.5;
         }
 
-        /* 最後一個項目移除底線 */
+        /* 最後一項移除底線 */
         .policy-item:last-child {
             border-bottom: none;
         }
 
         /* ========== 底部更新時間 ========== */
         .last-updated {
-            padding: 12px 20px;
+            padding: 12px 24px;
             font-size: 12px;
             color: #777;
             text-align: right;
             border-top: 1px solid #eee;
+            margin-top: 8px;
+        }
+
+        /* ========== 21家銀行專屬顏色 ========== */
+        .color-cimb       { background-color: #002b5c; }   /* 深藍 */
+        .color-public     { background-color: #004a99; }   /* 深綠 */
+        .color-rhb        { background-color: #e21b23; }   /* 紅色 */
+        .color-hlb        { background-color: #007a3d; }   /* 淺綠 */
+        .color-alliance   { background-color: #0073ce; }   /* 亮藍 */
+        .color-ambank     { background-color: #004a99; }   /* 藍 */
+        .color-affin      { background-color: #004b93; }   /* 深藍 */
+        .color-islam      { background-color: #009640; }   /* 綠 */
+        .color-rakyat     { background-color: #d31145; }   /* 深紅 */
+        .color-maybank    { background-color: #006747; }   /* 墨綠 */
+        .color-muamalat   { background-color: #006747; }   /* 墨綠 */
+        .color-mbsb       { background-color: #004795; }   /* 藍 */
+        .color-bsn        { background-color: #003b7e; }   /* 深藍 */
+        .color-agro       { background-color: #002f6c; }   /* 深藍 */
+        .color-hsbc       { background-color: #db0011; }   /* 紅 */
+        .color-boc        { background-color: #a30013; }   /* 棗紅 */
+        .color-scb        { background-color: #00338d; }   /* 藍 */
+        .color-alrajhi    { background-color: #006039; }   /* 深綠 */
+        .color-uob        { background-color: #003d88; }   /* 藍 */
+        .color-ocbc       { background-color: #ed1c24; }   /* 紅 */
+        .color-bankislam  { background-color: #009640; }   /* 綠 */
+
+        /* ========== 手機平板自動適應 ========== */
+        @media (max-width: 1200px) {
+            .banks-container { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .banks-container { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
+    <!-- 頂部 -->
     <div class="top-section">
-        <a href="#" class="back-btn">← Back</a>
+        <a href="index.html" class="back-btn">← Back to Menu</a>
         <div class="page-title">
-            <h1>Bank Policy Database</h1>
-            <p>Updated Policy Guidelines</p>
+            <h1>BANK POLICY DATABASE</h1>
+            <p>Latest Financing Guidelines & Requirements</p>
         </div>
     </div>
 
     <div class="banks-container">
-        <!-- ✅ CIMB 範例（對應你提供的截圖） -->
+        <!-- ✅ CIMB 範例（已套用專屬顏色 color-cimb） -->
         <div class="bank-card">
-            <div class="bank-header" style="background-color: #0a2463;">
+            <div class="bank-header color-cimb">
                 <div class="bank-name">CIMB</div>
                 <div class="bank-subtitle">Bank Policy</div>
             </div>
@@ -196,91 +226,12 @@
             </div>
         </div>
 
-        <!-- 其他銀行卡片... 你可以直接複製上面結構新增 -->
+        <!-- 其他銀行範例：直接複製上面結構，替換 class、名稱、內容即可 -->
+        <!-- 例如 Public Bank：<div class="bank-header color-public"> -->
 
     </div>
 </body>
 </html>
-
-        /* ========== 21家銀行專屬顏色 ========== */
-        .color-cimb       { background-color: #002b5c; }   /* 深藍 */
-        .color-public     { background-color: #004a99; }   /* 正確深綠 之前錯了！ */
-        .color-rhb        { background-color: #e21b23; }   /* 紅色 */
-        .color-hlb        { background-color: #007a3d; }   /* 淺綠 */
-        .color-alliance   { background-color: #0073ce; }   /* 亮藍 */
-        .color-ambank     { background-color: #004a99; }   /* 藍 */
-        .color-affin      { background-color: #004b93; }   /* 深藍 */
-        .color-islam      { background-color: #009640; }   /* 綠 */
-        .color-rakyat     { background-color: #d31145; }   /* 深紅 */
-        .color-maybank    { background-color: #006747; }   /* 墨綠 */
-        .color-muamalat   { background-color: #006747; }   /* 墨綠 */
-        .color-mbsb       { background-color: #004795; }   /* 藍 */
-        .color-bsn        { background-color: #003b7e; }   /* 深藍 */
-        .color-agro       { background-color: #002f6c; }   /* 深藍 */
-        .color-hsbc       { background-color: #db0011; }   /* 紅 */
-        .color-boc        { background-color: #a30013; }   /* 棗紅 */
-        .color-scb        { background-color: #00338d; }   /* 藍 */
-        .color-alrajhi    { background-color: #006039; }   /* 深綠 */
-        .color-uob        { background-color: #003d88; }   /* 藍 */
-        .color-ocbc       { background-color: #ed1c24; }   /* 紅 */
-        .color-bankislam  { background-color: #009640; }   /* 綠 */
-
-        /* ========== 內容欄位 ========== */
-        .policy-body {
-            padding: 22px 24px;
-        }
-
-        .policy-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 9px 0;
-            border-bottom: 1px solid #f0f2f5;
-            font-size: 15px;
-            white-space: nowrap;
-        }
-
-        .policy-label {
-            color: #222222;
-            font-weight: 500;
-        }
-
-        .policy-value {
-            color: #926600;
-            font-weight: 600;
-            text-align: right;
-        }
-
-        .update-text {
-            margin-top: 18px;
-            padding-top: 12px;
-            font-size: 12px;
-            color: #777777;
-            text-align: right;
-        }
-
-        /* ========== 手機平板自動適應 ========== */
-        @media (max-width: 1200px) {
-            .banks-container { grid-template-columns: repeat(2, 1fr); }
-        }
-        @media (max-width: 768px) {
-            .banks-container { grid-template-columns: 1fr; }
-        }
-    </style>
-</head>
-<body>
-     <!-- 頂部 -->
-    <div class="top-section">
-        <!-- ✅ 這裡加上你的選單頁面路徑，預設先幫你填好範例 -->
-        <a href="index.html" class="back-btn">← Back to Menu</a>
-        <div class="page-title">
-            <h1>BANK POLICY DATABASE</h1>
-            <p>Latest Financing Guidelines & Requirements</p>
-        </div>
-    </div>
-    </style>
-</head>
-<body>  
     
     <!-- 銀行卡片區 3個一排 -->
     <div class="banks-container">
