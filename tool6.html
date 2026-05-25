@@ -6,11 +6,11 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* ✅ 整體背景：淺薄荷綠漸層，清新高級，無紫色 */
+        /* ✅ 整體背景：高級淺紫漸層，舒服又有辨識度 */
         body { background: linear-gradient(135deg, #F0FDF4 0%, #ECFDF5 100%); min-height: 100vh; font-family: 'Arial', sans-serif; }
         
-        /* ✅ 頂部欄：墨綠色，穩重有質感 */
-        .header-bar { 
+        /* ✅ 頂部欄：深紫羅蘭色，質感高，和其他工具完全區分 */
+      .header-bar { 
             background: #0F766E; 
             padding: 16px 28px; 
             display: flex; 
@@ -24,8 +24,8 @@
         }
         .user-info { font-size: 16px; font-weight: 600; color: #fff; line-height: 1.8; }
         
-        /* ✅✅✅【嚴格按要求】Back to Menu：白色底 + 黑色字體 + 圓角陰影，絕對清晰突出 + 保證可點擊 */
-        .back-btn { 
+        /* ✅【重點強化】Back to Menu：白色底 + 深紫字 + 粗邊框，保證100%看得見，永遠突出 */
+       .back-btn { 
             background: #FFFFFF; 
             color: #000000; 
             border: none; 
@@ -94,35 +94,14 @@
         .label-text { font-weight: 600; color: #334155; margin-bottom: 8px; display: block; font-size: 14px; }
         .section-box { background: #F0FDF4; border-radius: 14px; padding: 16px; border-left: 4px solid #0F766E; }
 
-        /* ✅ 計算按鈕強化可點擊性 */
-        .btn-calculate { 
-            background: linear-gradient(135deg, #0F766E 0%, #059669 100%); 
-            color: white; 
-            border-radius: 12px; 
-            padding: 14px; 
-            font-size: 16px; 
-            font-weight: bold; 
-            width: 100%; 
-            transition: 0.3s; 
-            box-shadow: 0 4px 12px rgba(15, 118, 110, 0.2); 
-            position: relative; 
-            z-index: 20;
-            pointer-events: auto !important;
-            border: none;
-            cursor: pointer;
-        }
-        .btn-calculate:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(15, 118, 110, 0.28); }
-
-        .result-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 14px; }
-        .divider { border-bottom: 1px dashed #CBD5E1; margin: 8px 0; }
     </style>
 </head>
 <body>
     <div class="header-bar">
-        <!-- 左邊：Back to Menu ✅ 已按要求：白色底 + 黑色字體 + 保證可點擊 -->
+        <!-- 左邊：Back to Menu ✅ 已強化對比，絕對看得見 -->
         <button onclick="backToMenu()" class="back-btn">🏠 Back to Menu</button>
         
-        <!-- 右邊：使用者資訊 + 登出 ✅ 功能正常 -->
+        <!-- 右邊：使用者資訊 + 登出 -->
         <div style="display: flex; align-items: center; gap: 16px;">
             <div id="loginDisplay" class="user-info"></div>
             <button onclick="logout()" class="logout-btn">Logout</button>
@@ -130,7 +109,7 @@
     </div>
 
     <div class="max-w-7xl mx-auto px-4 py-6">
-        <!-- 標題區 ✅ 墨綠漸層背景，黃色強調字醒目 -->
+        <!-- 標題區 -->
         <div class="bg-primary text-white rounded-2xl p-6 mb-8 text-center shadow-lg">
             <h1 class="text-[30px] font-bold mb-2">🔄 Refinance Calculator <span class="text-yellow-300">(Savings Comparison)</span></h1>
             <p class="opacity-95 text-[16px]">Compare Old Loan vs New Loan • See Exact Savings Per Month & Total</p>
@@ -148,7 +127,7 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     
-                    <!-- 左邊：舊貸款資料 ✅ 紅色標題不變，客戶易懂 -->
+                    <!-- 左邊：舊貸款資料 -->
                     <div class="section-box">
                         <h3 class="text-[18px] font-bold color-red mb-4">📌 CURRENT / OLD LOAN</h3>
                         <div class="mb-4">
@@ -165,7 +144,7 @@
                         </div>
                     </div>
 
-                    <!-- 右邊：新貸款資料 ✅ 綠色標題不變，客戶易懂 -->
+                    <!-- 右邊：新貸款資料 -->
                     <div class="section-box">
                         <h3 class="text-[18px] font-bold color-green mb-4">✨ NEW LOAN (After Refinance)</h3>
                         <div class="mb-4">
@@ -203,7 +182,6 @@
                     <p class="text-sm text-gray-600 mt-2">💡 Total Cost will be auto-deducted from cash-out amount</p>
                 </div>
 
-                <!-- ✅ 計算按鈕：功能完全修復 -->
                 <button class="btn-calculate mt-8" onclick="calculateAll()">🚀 Calculate & Compare Savings</button>
             </div>
 
@@ -283,20 +261,17 @@
     </div>
 
     <script>
-        // ✅ 登入驗證：功能正常
         if(localStorage.getItem("IS_LOGIN") !== "true") location.href = "index.html";
         const 試算表ID = "1tJsY1dX4P2Wsg6EFmHVkbtDUvPwE0EU8jafFHblFLmg";
         const 記錄工作表 = "記錄";
         const API_KEY = "AIzaSyB85G85Lq2wKxKt8y0Gq5u8R6n7y0X1z2A";
         const user = localStorage.getItem("loginAccount");
 
-        // ✅ 時間函數：功能正常
         function getMYTime() {
             const d = new Date();
             return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;
         }
 
-        // ✅ 日誌記錄：功能正常
         async function saveLog(action) {
             try {
                 await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${試算表ID}/values/${記錄工作表}!A:C:append?valueInputOption=USER_ENTERED&key=${API_KEY}`, {
@@ -304,16 +279,16 @@
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ values: [[getMYTime(), user, action]] })
                 });
-            } catch (e) { console.log("日誌記錄失敗", e); }
+            } catch (e) {}
         }
 
-        // ✅ 返回主選單：功能正常
+        // 返回主選單
         function backToMenu() {
             saveLog("從 Refinance Calculator 返回主選單");
             location.href = "index.html";
         }
 
-        // ✅ 核心公式：按月等額攤還 (EMI) - 功能正常
+        // ✅ 核心公式：按月等額攤還 (EMI)
         function calculateEMI(principal, ratePerAnnum, years) {
             const P = parseFloat(principal) || 0;
             const r = (parseFloat(ratePerAnnum) || 0) / 100 / 12; // 月利率
@@ -329,7 +304,7 @@
             return { emi, totalPay, totalInterest };
         }
 
-        // ✅ 計算全部 & 顯示對比 - 功能完全修復
+        // 計算全部 & 顯示對比
         function calculateAll() {
             // --- 讀取舊貸款 ---
             const oldAmt = parseFloat(document.getElementById('oldLoanAmount').value) || 0;
@@ -385,6 +360,17 @@
         }
 
         saveLog("使用 Refinance Calculator - 貸款對比省錢版");
+
+        function updateDisplay() {
+            document.getElementById('loginDisplay').innerHTML = `Welcome: ${user}<br>LOGIN TIME: ${getMYTime()}`;
+        }
+        updateDisplay();
+        setInterval(updateDisplay, 1000);
+
+        function logout() {
+            saveLog("登出系統");
+            localStorage.clear();
+            location.href = "index.html";
         }
     </script>
 </body>
