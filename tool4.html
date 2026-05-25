@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bank Policy Database</title>
     <style>
-        /* ========== 全局基礎設定 - 參考Tool5色系 + 字體優化 ========== */
+        /* ========== 全局基礎設定 ========== */
         * {
             margin: 0;
             padding: 0;
@@ -14,11 +14,11 @@
         }
 
         body {
-            background-color: #f8f9fa;
-            line-height: 1.5;
+            background-color: #f5f7fa;
+            line-height: 1.6;
         }
 
-        /* ========== 頂部區塊 - Tool5風格：深藍+亮綠 ========== */
+        /* ========== 頂部區塊 - 保留Tool5風格 ========== */
         .top-section {
             background: linear-gradient(135deg, #0a2463 0%, #165DFF 100%);
             padding: 40px 20px 50px;
@@ -74,96 +74,108 @@
             font-weight: 300;
         }
 
-        /* ========== 排版：3列排列，自動換行 ========== */
+        /* ========== 排版：3列排列 ========== */
         .banks-container {
-            max-width: 1600px;
-            margin: -30px auto 70px;
-            padding: 0 24px;
+            max-width: 1200px;
+            margin: -30px auto 60px;
+            padding: 0 20px;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 32px;
+            gap: 24px;
             align-items: start;
             position: relative;
             z-index: 10;
         }
 
-        /* ========== 銀行卡片樣式 - 美化外框 + 圓角陰影 ========== */
+        /* ========== 銀行卡片：完全匹配參考圖樣式 ========== */
         .bank-card {
             background-color: #ffffff;
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
             overflow: hidden;
             width: 100%;
-            border: 1px solid rgba(0,0,0,0.05);
-            transition: all 0.3s ease;
-        }
-        .bank-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+            border: 1px solid #e5e7eb;
         }
 
+        /* 卡片頂部：套用你指定的銀行專屬顏色 + 左側圓圈 + 右側名稱 */
         .bank-header {
-            padding: 20px 24px;
-            color: #ffffff;
-            font-weight: bold;
-            text-align: center;
-            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 20px;
+            color: #ffffff; /* 文字白色，對比鮮明 */
+        }
+        /* 圓圈：白色底 + 銀行色字，醒目 */
+        .bank-badge {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background-color: #ffffff;
+            font-weight: 700;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .bank-info {
+            line-height: 1.3;
         }
         .bank-name {
-            font-size: 20px;
-            margin-bottom: 3px;
-            letter-spacing: 0.3px;
+            font-size: 16px;
+            font-weight: 700;
         }
         .bank-subtitle {
-            font-size: 13px;
+            font-size: 12px;
             opacity: 0.9;
-            font-weight: 400;
+            font-weight: 500;
         }
 
-        /* ========== ✅ 上下排列 + 字體優化（對齊截圖） ========== */
+        /* ========== 內容區：顏色+排版完全對齊參考圖 ========== */
         .policy-list {
-            padding: 24px 28px;
+            padding: 16px 20px;
             background-color: #ffffff;
         }
 
         .policy-item {
-            display: block !important;
-            padding: 8px 0; /* 縮小間距，更緊緻 */
-            border-bottom: none; /* 移除分隔線，和截圖一致 */
-            margin: 0;
+            padding: 9px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        /* 最後一項移除底線 */
+        .policy-item:last-child {
+            border-bottom: none;
         }
 
+        /* 標籤：深灰色、粗體 */
         .policy-label {
-            display: block !important;
+            display: block;
+            font-size: 13px;
+            color: #4b5563;
             font-weight: 600;
-            font-size: 14px; /* 對齊截圖大小 */
-            color: #4a5568; /* 深灰，和截圖標籤色一致 */
-            margin-bottom: 2px; /* 極小間距，更自然 */
+            margin-bottom: 2px;
             line-height: 1.4;
         }
 
+        /* 內容：鮮艷藍色、清晰醒目 */
         .policy-value {
-            display: block !important;
-            font-size: 14px; /* 和標籤同大小，視覺和諧 */
-            color: #926600; /* 金棕色，和截圖強調色一致 */
-            font-weight: 500;
+            display: block;
+            font-size: 13px;
+            color: #165DFF;
+            font-weight: 600;
+            line-height: 1.4;
             word-wrap: break-word;
-            white-space: normal !important;
-            line-height: 1.5;
-            padding-left: 0;
         }
 
-        /* ========== 底部更新時間 - 對齊截圖樣式 ========== */
+        /* ========== 底部更新區塊 ========== */
         .last-updated {
-            padding: 16px 28px 20px;
+            padding: 8px 20px 16px;
             font-size: 12px;
-            color: #718096; /* 淺灰，和截圖一致 */
-            text-align: left; /* 靠左，對齊截圖 */
-            border-top: 1px solid #e2e8f0;
-            background-color: #fcfcfd;
+            color: #6b7280;
+            font-weight: 500;
+            line-height: 1.5;
         }
 
-        /* ========== 21家銀行專屬顏色 ========== */
+        /* ========== ✅ 21家銀行專屬顏色 - 完全採用你提供的色值 ========== */
         .color-cimb       { background-color: #002b5c; }
         .color-public     { background-color: #004a99; }
         .color-rhb        { background-color: #e21b23; }
@@ -186,13 +198,12 @@
         .color-ocbc       { background-color: #ed1c24; }
         .color-bankislam  { background-color: #009640; }
 
-        /* ========== 手機平板自動適應 ========== */
-        @media (max-width: 1200px) {
-            .banks-container { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+        /* ========== 自適應 ========== */
+        @media (max-width: 992px) {
+            .banks-container { grid-template-columns: repeat(2, 1fr); }
         }
-        @media (max-width: 768px) {
-            .banks-container { grid-template-columns: 1fr; gap: 20px; padding: 0 16px; }
-            .policy-list { padding: 20px; }
+        @media (max-width: 576px) {
+            .banks-container { grid-template-columns: 1fr; }
         }
     </style>
 </head>
