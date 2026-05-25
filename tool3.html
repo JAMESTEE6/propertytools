@@ -11,10 +11,12 @@
             margin: 0;
             padding: 0;
         }
+        /* ✅ 整體背景：墨綠色系深淺搭配，和之前工具一致 */
         body {
-            background: #121a2b;
+            background: #064E3B;
             color: #ffffff;
             padding: 20px;
+            min-height: 100vh;
         }
         .container {
             max-width: 1200px;
@@ -24,13 +26,13 @@
             text-align: center;
             font-size: 32px;
             font-weight: bold;
-            color: #fcd34d;
+            color: #D1FAE5; /* 淺綠強調字，醒目不刺眼 */
             margin-bottom: 8px;
         }
         .subtitle {
             text-align: center;
             font-size: 15px;
-            color: #cbd5e1;
+            color: #A7F3D0; /* 淺灰綠副標題 */
             margin-bottom: 32px;
         }
         .grid-layout {
@@ -39,15 +41,17 @@
             gap: 30px;
             align-items: start;
         }
+        /* ✅ 區塊背景：深墨綠層次，區分明顯 */
         .section {
-            background: #1e293b;
+            background: #0F766E;
             border-radius: 6px;
             padding: 18px;
             margin-bottom: 20px;
-            border: 1px solid #334155;
+            border: 1px solid #14B8A6; /* 亮綠邊框點綴 */
+            box-shadow: 0 4px 12px rgba(15, 118, 110, 0.15);
         }
         .section h2 {
-            color: #fbbf24;
+            color: #ECFDF5; /* 最淺綠標題，突出層次 */
             font-size: 18px;
             font-weight: bold;
             margin-bottom: 16px;
@@ -58,109 +62,132 @@
         label {
             display: block;
             font-size: 14px;
-            color: #e2e8f0;
+            color: #CCFBF1; /* 淺綠標籤文字 */
             margin-bottom: 6px;
         }
+        /* ✅ 輸入框：更深綠底 + 淺綠文字，對比清晰 */
         input, select {
             width: 100%;
             padding: 10px 12px;
-            background: #0f172a;
-            border: 1px solid #475569;
+            background: #042F2E;
+            border: 1px solid #2DD4BF;
             border-radius: 4px;
-            color: #ffffff;
+            color: #F0FDF4;
             font-size: 14px;
         }
-        /* ✅ 所有輸入框透明提示文字 */
+        /* ✅ 輸入框透明提示文字：淺綠半透明 */
         input::placeholder {
-            color: #64748b !important;
-            opacity: 0.7 !important;
+            color: #5EEAD4 !important;
+            opacity: 0.6 !important;
         }
+        /* ✅ 聚焦狀態：亮綠邊框，和主題呼應 */
         input:focus, select:focus {
             outline: none;
-            border-color: #fbbf24;
+            border-color: #99F6E4;
+            box-shadow: 0 0 0 2px rgba(45, 212, 191, 0.2);
         }
         .month-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
         }
-        /* ✅ 按鈕樣式對應截圖 */
+        /* ✅ 計算按鈕：綠色漸層，和你之前工具按鈕風格一致 */
         .btn-calculate {
             width: 100%;
-            background: linear-gradient(90deg, #fbbf24, #d97706);
+            background: linear-gradient(90deg, #10B981, #059669);
             border: none;
             padding: 14px;
             border-radius: 4px;
-            color: #000000;
+            color: #ffffff;
             font-weight: bold;
             font-size: 17px;
             cursor: pointer;
             margin-bottom: 12px;
+            transition: 0.2s;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
         }
+        .btn-calculate:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+        /* ✅ 重置按鈕：淺綠底 + 深綠字，層次分明 */
         .btn-reset {
             width: 100%;
-            background: #334155;
+            background: #CCFBF1;
             border: none;
             padding: 12px;
             border-radius: 4px;
-            color: #ffffff;
+            color: #065F46;
             font-size: 16px;
+            font-weight: 500;
             cursor: pointer;
             margin-bottom: 10px;
+            transition: 0.2s;
+        }
+        .btn-reset:hover {
+            background: #99F6E4;
         }
         .formula {
             font-size: 12px;
-            color: #94a3b8;
+            color: #5EEAD4;
             text-align: center;
             margin-top: 12px;
         }
-        /* 結果區 */
+        /* ✅ 結果區：深綠底 + 亮綠邊框，重點突出 */
         .result-main {
             text-align: center;
-            background: #27272a;
-            border: 1px solid #fbbf24;
+            background: #042F2E;
+            border: 2px solid #34D399;
             border-radius: 6px;
             padding: 24px;
             margin-bottom: 20px;
+            box-shadow: 0 4px 16px rgba(52, 211, 153, 0.12);
         }
         .result-main .label {
             font-size: 15px;
-            color: #cbd5e1;
+            color: #A7F3D0;
         }
         .result-main .value {
             font-size: 34px;
             font-weight: bold;
-            color: #fcd34d;
+            color: #86EFAC; /* 最亮綠顯示金額，超醒目 */
             margin-top: 8px;
         }
         .result-row {
             display: flex;
             justify-content: space-between;
             padding: 12px 0;
-            border-bottom: 1px solid #273549;
+            border-bottom: 1px solid #134E4A;
             font-size: 14px;
         }
         .result-row .right {
             font-weight: 500;
-            color: #fcd34d;
+            color: #D1FAE5; /* 右側數值淺綠，清晰可見 */
         }
         .breakdown h3 {
-            color: #fbbf24;
+            color: #ECFDF5;
             margin: 20px 0 12px;
             font-size: 16px;
         }
+        /* ✅ Back to Menu：嚴格按你要求 — 白色底 + 黑色字體，和之前工具完全一致 */
         .back-btn {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            background: #374151;
-            color: #ffffff !important;
+            background: #FFFFFF;
+            color: #000000 !important;
             padding: 8px 16px;
             border-radius: 4px;
             text-decoration: none;
-            font-weight: 500;
+            font-weight: bold;
             font-size: 14px;
             margin-bottom: 24px;
+            transition: 0.2s;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+        .back-btn:hover {
+            background: #F0FDF4;
+            transform: translateX(-2px);
         }
     </style>
 </head>
@@ -284,7 +311,7 @@
         </div>
     </div>
 
-    <!-- ✅ 完整正確的 JavaScript 無任何語法錯誤 -->
+    <!-- ✅ 完整正確的 JavaScript 無任何語法錯誤，所有功能100%保留 -->
     <script>
         function formatRM(num) {
             return 'RM ' + Math.max(num, 0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -340,7 +367,8 @@
             document.getElementById('age').value = '';
             document.getElementById('dsr').value = '70';
             document.getElementById('ndi').value = '1098';
-            document.getElementById('commitment').value = '0';            document.getElementById('rate').value = '4.00';
+            document.getElementById('commitment').value = '0';
+            document.getElementById('rate').value = '4.00';
             document.getElementById('tenure').value = '35';
             document.getElementById('incomeType').value = 'salary';
             document.getElementById('m1').value = '';
