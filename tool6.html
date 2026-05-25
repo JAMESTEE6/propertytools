@@ -6,23 +6,23 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* ✅ 整體背景：高級淺灰藍，舒服專業，完全沒有紫色 */
-        body { background: linear-gradient(135deg, #F8FAFC 0%, #EFF6FF 100%); min-height: 100vh; font-family: 'Arial', sans-serif; }
+        /* ✅ 整體背景：淺薄荷綠漸層，清新高級，無紫色 */
+        body { background: linear-gradient(135deg, #F0FDF4 0%, #ECFDF5 100%); min-height: 100vh; font-family: 'Arial', sans-serif; }
         
-        /* ✅ 頂部欄：深藍灰色，穩重專業，和其他工具顏色完全不同 */
+        /* ✅ 頂部欄：墨綠色，穩重有質感 */
         .header-bar { 
-            background: #334155; 
+            background: #0F766E; 
             padding: 16px 28px; 
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
             flex-wrap: wrap; 
             gap: 12px; 
-            box-shadow: 0 4px 12px rgba(51, 65, 85, 0.2); 
+            box-shadow: 0 4px 12px rgba(15, 118, 110, 0.25); 
         }
         .user-info { font-size: 16px; font-weight: 600; color: #fff; line-height: 1.8; }
         
-        /* ✅✅✅【嚴格按要求】Back to Menu：白色底 + 黑色字體 + 圓角陰影，絕對清晰，100%符合需求 */
+        /* ✅✅✅【嚴格按要求】Back to Menu：白色底 + 黑色字體 + 圓角陰影，絕對清晰突出 */
         .back-btn { 
             background: #FFFFFF; 
             color: #000000; 
@@ -36,16 +36,16 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
         }
         .back-btn:hover { 
-            background: #F1F5F9; 
-            color: #1E293B;
+            background: #F0FDF4; 
+            color: #065F46;
             transform: scale(1.03); 
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
         }
 
-        /* ✅ Logout：淺色底 + 深灰字，和整體協調，清晰可見 */
+        /* ✅ Logout：淺綠底 + 墨綠字，協調美觀，清晰可見 */
         .logout-btn { 
-            background: #E2E8F0; 
-            color: #334155; 
+            background: #CCFBF1; 
+            color: #0F766E; 
             border: none; 
             padding: 10px 20px; 
             border-radius: 12px; 
@@ -53,41 +53,41 @@
             font-weight: bold; 
             cursor: pointer; 
             transition: 0.2s; 
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+            box-shadow: 0 2px 8px rgba(15, 118, 110, 0.15);
         }
         .logout-btn:hover { 
-            background: #CBD5E1; 
+            background: #99F6E4; 
             transform: scale(1.03); 
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.18);
+            box-shadow: 0 3px 10px rgba(15, 118, 110, 0.2);
         }
 
-        /* ✅ 卡片色彩：藍灰色系層次，高級感，無紫色 */
-        .card-input { background: #ffffff; border-radius: 20px; box-shadow: 0 8px 24px rgba(51, 65, 85, 0.1); border: 2px solid #E2E8F0; }
-        .card-result { background: #ffffff; border-radius: 20px; box-shadow: 0 8px 24px rgba(30, 64, 175, 0.1); border: 2px solid #BFDBFE; }
+        /* ✅ 卡片色彩：墨綠色系層次，高級質感 */
+        .card-input { background: #ffffff; border-radius: 20px; box-shadow: 0 8px 24px rgba(15, 118, 110, 0.12); border: 2px solid #CCFBF1; }
+        .card-result { background: #ffffff; border-radius: 20px; box-shadow: 0 8px 24px rgba(5, 150, 105, 0.12); border: 2px solid #A7F3D0; }
         
-        /* ✅ 舊貸/新貸：保留紅綠對比（給客戶看的邏輯不變），清晰易懂 */
+        /* ✅ 舊貸/新貸：保留紅綠對比（客戶易理解） */
         .card-old { background: #FEF2F2; border-radius: 16px; border-left: 5px solid #DC2626; padding: 16px; }
         .card-new { background: #F0FDF4; border-radius: 16px; border-left: 5px solid #16A34A; padding: 16px; }
         .card-save { background: #FFFBEB; border-radius: 16px; padding: 16px; text-align: center; }
 
-        /* ✅ 主題色：藍灰家族，專業、穩重、完全沒有紫色系 */
-        .color-primary { color: #334155; }
-        .bg-primary { background: linear-gradient(135deg, #334155 0%, #475569 100%); }
-        .color-secondary { color: #1E40AF; }
-        .bg-secondary { background: linear-gradient(135deg, #1E40AF 0%, #3B82F6 100%); }
-        .color-accent { color: #0EA5E9; }
-        .bg-accent { background: linear-gradient(135deg, #0EA5E9 0%, #38BDF8 100%); }
+        /* ✅ 主題色：墨綠家族，專業、信用感強，完全無紫色 */
+        .color-primary { color: #0F766E; }
+        .bg-primary { background: linear-gradient(135deg, #0F766E 0%, #10B981 100%); }
+        .color-secondary { color: #059669; }
+        .bg-secondary { background: linear-gradient(135deg, #059669 0%, #34D399 100%); }
+        .color-accent { color: #14B8A6; }
+        .bg-accent { background: linear-gradient(135deg, #14B8A6 0%, #5EEAD4 100%); }
         .color-red { color: #DC2626; }
         .color-green { color: #16A34A; }
         .color-amber { color: #D97706; font-weight: bold; }
 
         .input-field, .select-field { border: 2px solid #E2E8F0; border-radius: 12px; padding: 13px 16px; font-size: 15px; width: 100%; transition: 0.2s; background: #FAFBFC; }
-        .input-field:focus, .select-field:focus { border-color: #334155; outline: none; box-shadow: 0 0 0 3px rgba(51, 65, 85, 0.1); background: #fff; }
+        .input-field:focus, .select-field:focus { border-color: #0F766E; outline: none; box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.1); background: #fff; }
         .label-text { font-weight: 600; color: #334155; margin-bottom: 8px; display: block; font-size: 14px; }
-        .section-box { background: #F8FAFC; border-radius: 14px; padding: 16px; border-left: 4px solid #334155; }
+        .section-box { background: #F0FDF4; border-radius: 14px; padding: 16px; border-left: 4px solid #0F766E; }
 
-        .btn-calculate { background: linear-gradient(135deg, #334155 0%, #1E40AF 100%); color: white; border-radius: 12px; padding: 14px; font-size: 16px; font-weight: bold; width: 100%; transition: 0.3s; box-shadow: 0 4px 12px rgba(51, 65, 85, 0.2); }
-        .btn-calculate:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(51, 65, 85, 0.28); }
+        .btn-calculate { background: linear-gradient(135deg, #0F766E 0%, #059669 100%); color: white; border-radius: 12px; padding: 14px; font-size: 16px; font-weight: bold; width: 100%; transition: 0.3s; box-shadow: 0 4px 12px rgba(15, 118, 110, 0.2); }
+        .btn-calculate:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(15, 118, 110, 0.28); }
 
         .result-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 14px; }
         .divider { border-bottom: 1px dashed #CBD5E1; margin: 8px 0; }
@@ -106,7 +106,7 @@
     </div>
 
     <div class="max-w-7xl mx-auto px-4 py-6">
-        <!-- 標題區 ✅ 深藍灰背景，黃色強調字，清晰醒目 -->
+        <!-- 標題區 ✅ 墨綠漸層背景，黃色強調字醒目 -->
         <div class="bg-primary text-white rounded-2xl p-6 mb-8 text-center shadow-lg">
             <h1 class="text-[30px] font-bold mb-2">🔄 Refinance Calculator <span class="text-yellow-300">(Savings Comparison)</span></h1>
             <p class="opacity-95 text-[16px]">Compare Old Loan vs New Loan • See Exact Savings Per Month & Total</p>
@@ -124,7 +124,7 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     
-                    <!-- 左邊：舊貸款資料 ✅ 紅色標題不變，方便客戶理解 -->
+                    <!-- 左邊：舊貸款資料 ✅ 紅色標題不變，客戶易懂 -->
                     <div class="section-box">
                         <h3 class="text-[18px] font-bold color-red mb-4">📌 CURRENT / OLD LOAN</h3>
                         <div class="mb-4">
@@ -141,7 +141,7 @@
                         </div>
                     </div>
 
-                    <!-- 右邊：新貸款資料 ✅ 綠色標題不變，方便客戶理解 -->
+                    <!-- 右邊：新貸款資料 ✅ 綠色標題不變，客戶易懂 -->
                     <div class="section-box">
                         <h3 class="text-[18px] font-bold color-green mb-4">✨ NEW LOAN (After Refinance)</h3>
                         <div class="mb-4">
@@ -357,6 +357,17 @@
         }
 
         saveLog("使用 Refinance Calculator - 貸款對比省錢版");
+
+        function updateDisplay() {
+            document.getElementById('loginDisplay').innerHTML = `Welcome: ${user}<br>LOGIN TIME: ${getMYTime()}`;
+        }
+        updateDisplay();
+        setInterval(updateDisplay, 1000);
+
+        function logout() {
+            saveLog("登出系統");
+            localStorage.clear();
+            location.href = "index.html";
         }
     </script>
 </body>
