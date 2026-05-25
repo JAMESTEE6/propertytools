@@ -137,7 +137,7 @@
             background-color: #111111;
         }
 
-        /* 🔥 右邊預覽區：僅移除最外框、保留所有內容線條 🔥 */
+        /* 🔥 右邊預覽區：僅移除外框、保留所有內容線條 🔥 */
         .form-preview {
             width: 210mm;
             min-height: 297mm;
@@ -244,7 +244,7 @@
             text-align: left;
         }
 
-        /* ✅ 列印設定：僅無外框、其餘線條全保留 */
+        /* ✅ 列印設定：嚴格執行「僅標題居中、其餘靠左」，保留所有內容線條 */
         @page {
             size: A4 portrait;
             margin: 0;
@@ -258,7 +258,7 @@
                 padding: 0 !important;
                 background: #fff !important;
                 font-size: 11pt !important;
-                /* ✅ 整體靠左 */
+                /* ✅ 全域預設靠左 */
                 text-align: left !important;
                 height: 100%;
                 overflow: hidden;
@@ -289,8 +289,23 @@
                 print-color-adjust: exact !important;
             }
             .form-preview .header {
-                /* ✅ 列印時僅標題居中 */
+                /* ✅【列印強制】只有公司名+表標題居中 */
                 text-align: center !important;
+            }
+            .form-preview .header * {
+                text-align: center !important;
+            }
+            .form-preview .sub-title,
+            .form-preview .row-item,
+            .form-preview .label-col,
+            .form-preview .value-col,
+            .form-preview .terms,
+            .form-preview .terms li,
+            .form-preview .sign-area,
+            .form-preview .sign-col,
+            .form-preview .sign-col * {
+                /* ✅【列印強制】其他所有內容全部靠左 */
+                text-align: left !important;
             }
             .form-preview .row-item {
                 /* ✅ 列印保留欄位底線 */
@@ -301,8 +316,6 @@
                 border-top: 1px solid #000 !important;
             }
             * {
-                /* ✅ 其餘全部靠左 */
-                text-align: left !important;
                 page-break-after: avoid !important;
                 page-break-before: avoid !important;
                 page-break-inside: avoid !important;
