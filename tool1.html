@@ -5,7 +5,7 @@
     <title>Property Booking Form Generator</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* ✅ Back to Menu：完全跟截圖一致 深灰底白字 */
+        /* ✅ Back to Menu */
         .back-btn {
             display: inline-flex;
             align-items: center;
@@ -30,7 +30,7 @@
             height: 14px;
         }
 
-        /* ✅ 全域基礎：字體、大小、框線標準化 */
+        /* ✅ 全域基礎設定 */
         * {
             box-sizing: border-box;
             font-family: Arial, Helvetica, sans-serif !important;
@@ -57,7 +57,7 @@
             letter-spacing: 0.3px;
         }
 
-        /* ✅ 雙欄佈局：左輸入 / 右預覽 */
+        /* ✅ 雙欄佈局 */
         .row {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -65,7 +65,7 @@
             align-items: start;
         }
 
-        /* ✅ 左邊輸入卡：淺灰背景 + 分隔線 */
+        /* ✅ 左邊輸入區 */
         .card {
             background: #f9fafb;
             border: 1px solid #e5e7eb;
@@ -82,8 +82,6 @@
         .section-title:first-of-type {
             margin-top: 0;
         }
-
-        /* ✅ 輸入欄位：標準外觀 */
         .form-group {
             margin-bottom: 12px;
         }
@@ -110,8 +108,6 @@
             grid-template-columns: 1fr 1fr;
             gap: 12px;
         }
-
-        /* ✅ 按鈕區 */
         .btn-group {
             display: flex;
             gap: 10px;
@@ -141,23 +137,21 @@
             background-color: #111111;
         }
 
-        /* 🔥 右邊預覽區：恢復上一次你滿意的版本 + 完整邊框 + 下移2cm 🔥 */
+        /* 🔥 右邊預覽區：徹底修正外框+字體位置 🔥 */
         .form-preview {
-            /* ✅ 固定A4尺寸：寬210mm、高297mm，符合國際標準 */
             width: 210mm;
             min-height: 297mm;
-            border: 1px solid #000000; /* ✅ 完整外框，強制顯示 */
-            /* ✅ 整體下移2cm：上30mm、左右20mm、下20mm，和上一次完全一樣 */
-            padding: 30mm 20mm 20mm 20mm;
+            border: 1px solid #000 !important; /* ✅ 強制完整外框：上下左右都有 */
+            padding: 30mm 18mm 20mm 18mm; /* ✅ 整體下移2cm + 左右對齊留白 */
             background: #ffffff;
-            color: #000;
             margin: 0 auto;
-            overflow: hidden; /* ✅ 強制內容不溢出 */
+            overflow: hidden;
+            position: relative;
         }
         .form-preview .header {
-            text-align: center;
+            text-align: center; /* ✅ 標題置中，不靠左 */
             font-weight: bold;
-            margin-bottom: 25px;
+            margin-bottom: 22px;
         }
         .form-preview .header div {
             font-size: 14px;
@@ -166,69 +160,80 @@
         .form-preview .sub-title {
             font-weight: bold;
             font-size: 12px;
-            margin: 16px 0 4px 0;
+            text-align: center; /* ✅ 小標題置中 */
+            margin: 14px 0 2px 0;
         }
         .form-preview .sub-title:first-of-type {
             margin-top: 0;
         }
         .form-preview .row-item {
             display: flex;
-            border-bottom: 1px solid #000; /* ✅ 每列底線完整 */
-            margin: 1px 0;
+            border-bottom: 1px solid #000 !important; /* ✅ 每列底線完整 */
+            margin: 0;
             min-height: 20px;
             align-items: center;
             font-size: 12px;
+            width: 100%;
+            position: relative;
         }
         .form-preview .label-col {
             width: 130px;
             font-size: 12px;
-            padding: 1px 0;
+            padding: 1px 4px;
             flex-shrink: 0;
+            text-align: left; /* ✅ 標籤文字正常左對齊，不跑位 */
         }
         .form-preview .value-col {
             flex: 1;
-            padding: 1px 0;
+            padding: 1px 4px;
             font-size: 12px;
             text-align: left !important;
+            min-height: 20px;
+            display: flex;
+            align-items: center;
+            border-left: none;
         }
 
-        /* ✅ T&C：上一次的格式，行距、換行、空間都不變 */
+        /* ✅ 條款區：格式正確、換行正常 */
         .form-preview .terms {
             font-size: 11px;
-            line-height: 1.6;
-            margin: 18px 0 40px 0;
+            line-height: 1.5;
+            margin: 16px 0 45px 0;
         }
         .form-preview .terms ol {
-            padding-left: 16px;
+            padding-left: 18px;
             margin: 0;
         }
         .form-preview .terms li {
-            margin-bottom: 3px;
+            margin-bottom: 2px;
             font-size: 11px;
             list-style: decimal;
             white-space: normal;
+            text-align: left;
         }
 
-        /* ✅ 簽名區：上一次的位置 + 足夠簽名空間 + 格式正確 */
+        /* ✅ 簽名區：位置正確、空間足夠 */
         .form-preview .sign-area {
             display: flex;
             justify-content: space-between;
-            margin-top: 20px;
+            margin-top: 10px;
+            width: 100%;
         }
         .form-preview .sign-col {
             width: 48%;
-            border-top: 1px solid #000; /* ✅ 上方分隔線 */
+            border-top: 1px solid #000 !important; /* ✅ 簽名區上框線 */
             padding-top: 8px;
             font-size: 12px;
         }
         .form-preview .sign-col .line {
-            margin: 8px 0; /* ✅ 足夠的簽名書寫空間 */
+            margin: 6px 0;
             height: auto;
             font-size: 12px;
             border: none;
+            padding-left: 4px;
         }
 
-        /* ✅ 列印設定：和上一次完全相同，邊框、位置、尺寸都不變 */
+        /* ✅ 列印設定：保證列印時外框完整、位置正確 */
         @page {
             size: A4 portrait;
             margin: 0;
@@ -258,11 +263,11 @@
                 max-width: 210mm !important;
             }
             .form-preview {
-                border: 1px solid #000 !important; /* ✅ 列印保留邊框 */
+                border: 1px solid #000 !important; /* ✅ 列印強制完整外框 */
                 width: 210mm !important;
                 min-height: 297mm !important;
                 background: transparent !important;
-                padding: 30mm 20mm 20mm 20mm !important; /* ✅ 下移2cm 不變 */
+                padding: 30mm 18mm 20mm 18mm !important; /* ✅ 下移2cm 保留 */
                 margin: 0 auto !important;
                 page-break-after: avoid;
                 page-break-before: avoid;
@@ -271,7 +276,10 @@
                 print-color-adjust: exact !important;
             }
             .form-preview .row-item {
-                border-bottom: 1px solid #000 !important; /* ✅ 列印保留每列底線 */
+                border-bottom: 1px solid #000 !important; /* ✅ 列印強制每列底線 */
+            }
+            .form-preview .sign-col {
+                border-top: 1px solid #000 !important;
             }
             * {
                 page-break-after: avoid !important;
@@ -293,7 +301,7 @@
         <h1>PROPERTY BOOKING FORM GENERATOR</h1>
 
         <div class="row">
-            <!-- ✅ 左邊：輸入區 不變 -->
+            <!-- ✅ 左邊：輸入區 -->
             <div class="card">
                 <div class="section-title">COMPANY DETAILS</div>
                 <div class="form-group">
@@ -367,7 +375,7 @@
                 </div>
             </div>
 
-            <!-- ✅ 右邊：預覽區 完全恢復上一次的樣子 -->
+            <!-- ✅ 右邊：預覽區 完全修正版 -->
             <div class="card">
                 <div class="form-preview" id="previewArea">
                     <div class="header">
@@ -433,7 +441,7 @@
                         <div class="value-col" id="preDate"></div>
                     </div>
 
-                    <!-- ✅ TERMS & CONDITIONS 保持不變 -->
+                    <!-- ✅ TERMS & CONDITIONS -->
                     <div class="terms">
                         <b>TERMS & CONDITIONS</b>
                         <ol>
@@ -447,7 +455,7 @@
                         </ol>
                     </div>
 
-                    <!-- ✅ SIGNATURE AREA 上一次的位置和空間 -->
+                    <!-- ✅ SIGNATURE AREA -->
                     <div class="sign-area">
                         <div class="sign-col">
                             <div>PURCHASER SIGNATURE</div>
@@ -468,7 +476,7 @@
     </div>
 
     <script>
-        // ✅ 千分位格式化 完全匹配幣值顯示
+        // ✅ 千分位格式化
         function formatNumber(num) {
             return new Intl.NumberFormat('en-MY', {
                 minimumFractionDigits: 2,
@@ -509,7 +517,7 @@
             updatePreview();
         }
 
-        // ✅ 後台登入 & 日誌 完全保留原有功能
+        // ✅ 後台登入 & 日誌
         if(localStorage.getItem("IS_LOGIN") !== "true") location.href = "index.html";
         const 試算表ID = "1tJsY1dX4P2Wsg6EFmHVkbtDUvPwE0EU8jafFHblFLmg";
         const 記錄工作表 = "記錄";
