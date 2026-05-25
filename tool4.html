@@ -42,7 +42,7 @@
             border-radius: 8px;
             font-size: 14px;
             font-weight: 500;
-            cursor: pointer;
+            cursor pointer;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
@@ -87,95 +87,95 @@
             z-index: 10;
         }
 
-        /* ========== 銀行卡片：完全匹配參考圖樣式 ========== */
+        /* ========== 銀行卡片：完全跟參考圖格子/佈局一樣 ========== */
         .bank-card {
             background-color: #ffffff;
             border-radius: 12px;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
             overflow: hidden;
             width: 100%;
             border: 1px solid #e5e7eb;
         }
 
-        /* 卡片頂部：套用你指定的銀行專屬顏色 + 左側圓圈 + 右側名稱 */
+        /* 卡片頂部：套用你的銀行專屬色 + 左側圓圈 + 右側名稱 */
         .bank-header {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 16px 20px;
-            color: #ffffff; /* 文字白色，對比鮮明 */
+            gap: 10px;
+            padding: 14px 18px;
+            color: #ffffff;
         }
-        /* 圓圈：白色底 + 銀行色字，醒目 */
+        /* 左側圓圈：淺藍底 + 深藍字，和參考圖一模一樣 */
         .bank-badge {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            background-color: #ffffff;
-            font-weight: 700;
-            font-size: 15px;
+            width: 34px;
+            height: 34px;
+            border-radius: 6px;
+            background-color: #e0edff;
+            color: #165DFF;
+            font-weight: 600;
+            font-size: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
         }
         .bank-info {
-            line-height: 1.3;
+            line-height: 1.2;
         }
         .bank-name {
             font-size: 16px;
             font-weight: 700;
         }
         .bank-subtitle {
-            font-size: 12px;
+            font-size: 11px;
             opacity: 0.9;
-            font-weight: 500;
+            font-weight: 400;
         }
 
-        /* ========== 內容區：顏色+排版完全對齊參考圖 ========== */
+        /* ========== 內容區：字體/顏色/分隔線 完全對齊參考圖 ========== */
         .policy-list {
-            padding: 16px 20px;
+            padding: 14px 18px;
             background-color: #ffffff;
         }
 
         .policy-item {
-            padding: 9px 0;
-            border-bottom: 1px solid #f3f4f6;
+            padding: 8px 0;
+            border-bottom: 1px solid #e5e7eb;
         }
-        /* 最後一項移除底線 */
+        /* 最後一項不要底線 */
         .policy-item:last-child {
             border-bottom: none;
         }
 
-        /* 標籤：深灰色、粗體 */
+        /* 標籤：深灰色、正常字重 */
         .policy-label {
             display: block;
             font-size: 13px;
             color: #4b5563;
-            font-weight: 600;
-            margin-bottom: 2px;
+            font-weight: 500;
             line-height: 1.4;
         }
 
-        /* 內容：鮮艷藍色、清晰醒目 */
+        /* 內容：深藍色、醒目，和參考圖一樣 */
         .policy-value {
             display: block;
             font-size: 13px;
             color: #165DFF;
-            font-weight: 600;
+            font-weight: 500;
             line-height: 1.4;
             word-wrap: break-word;
+            margin-top: 1px;
         }
 
         /* ========== 底部更新區塊 ========== */
         .last-updated {
-            padding: 8px 20px 16px;
+            padding: 6px 18px 14px;
             font-size: 12px;
             color: #6b7280;
-            font-weight: 500;
             line-height: 1.5;
         }
 
-        /* ========== ✅ 21家銀行專屬顏色 - 完全採用你提供的色值 ========== */
+        /* ========== ✅ 21家銀行專屬顏色 - 完全使用你提供的色值 ========== */
         .color-cimb       { background-color: #002b5c; }
         .color-public     { background-color: #004a99; }
         .color-rhb        { background-color: #e21b23; }
@@ -198,7 +198,7 @@
         .color-ocbc       { background-color: #ed1c24; }
         .color-bankislam  { background-color: #009640; }
 
-        /* ========== 自適應 ========== */
+        /* ========== 手機平板自動適應 ========== */
         @media (max-width: 992px) {
             .banks-container { grid-template-columns: repeat(2, 1fr); }
         }
