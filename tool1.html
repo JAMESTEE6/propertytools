@@ -142,7 +142,8 @@
 
         /* 🔥 右邊預覽區：1:1 還原截圖樣式 🔥 */
         .form-preview {
-            border: 1px solid #000000;
+            /* ✅ 預覽畫面保留外框，列印時移除 */
+            border: 1px solid #000;
             padding: 25px 20px;
             min-height: 850px;
             background: #ffffff;
@@ -188,11 +189,6 @@
             flex: 1;
             padding: 1px 4px;
             font-size: 12px;
-            /* ✅ 金額區改靠左對齊，跟其他欄位一致 */
-            text-align: left !important;
-        }
-        /* ✅ 移除原本靠右的設定 */
-        .form-preview .amount-row .value-col {
             text-align: left !important;
         }
         /* ✅ T&C 每條強制單行顯示，不換行 */
@@ -209,7 +205,7 @@
             margin-bottom: 4px;
             font-size: 11px;
             list-style: decimal;
-            white-space: nowrap; /* 關鍵：強制單行 */
+            white-space: nowrap;
         }
         /* ✅ 簽名區：移除所有底線，只留文字 */
         .form-preview .sign-area {
@@ -230,30 +226,36 @@
             border: none;
         }
 
-        /* ✅ 列印設定：只顯示表單，完美對齊 */
+        /* ✅ 列印設定：關鍵調整 → 置中 + 移除外框 */
         @media print {
             @page {
                 size: A4 portrait;
-                margin: 10mm;
+                margin: 10mm auto; /* ✅ 上下10mm、左右自動 = 整頁置中 */
             }
             html, body {
                 margin: 0 !important;
                 padding: 0 !important;
                 background: #fff !important;
                 font-size: 11pt !important;
+                text-align: center; /* ✅ 強制內文置中 */
             }
             .back-btn, h1, .card:first-child, .btn-group {
                 display: none !important;
             }
-            .card, .form-preview {
+            .card {
                 border: none !important;
                 background: transparent !important;
                 padding: 0 !important;
-                margin: 0 !important;
+                margin: 0 auto !important; /* ✅ 卡片本身置中 */
                 width: 100% !important;
+                max-width: 210mm !important; /* ✅ 限制A4寬度，避免跑版 */
             }
             .form-preview {
-                border: 1px solid #000 !important;
+                border: none !important; /* ✅ 移除黑色外框線 */
+                background: transparent !important;
+                padding: 0 !important;
+                margin: 0 auto !important; /* ✅ 表單內容置中 */
+                width: 100% !important;
             }
         }
     </style>
@@ -261,7 +263,7 @@
 <body>
     <div class="container">
         <a href="index.html" class="back-btn">
-            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 24 24">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path d="M19 12H5M12 19l-7-7 7-7"/>
             </svg>
             Back to Menu
