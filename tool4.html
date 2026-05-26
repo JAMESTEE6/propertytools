@@ -18,7 +18,7 @@
             line-height: 1.6;
         }
 
-        /* ========== 頂部螢光綠區塊 ========== */
+        /* ========== 頂部：螢光綠 跟你最初一樣 ========== */
         .top-section {
             background-color: #bfff00;
             padding: 30px 20px 40px;
@@ -32,6 +32,7 @@
             border-radius: 6px;
             font-size: 14px;
             font-weight: 600;
+            cursor: pointer;
             text-decoration: none;
             display: inline-block;
             margin-bottom: 35px;
@@ -51,7 +52,7 @@
             opacity: 0.85;
         }
 
-        /* ========== 排版：3列排列，固定結構不變形 ========== */
+        /* ========== 排版：3列排列 ========== */
         .banks-container {
             max-width: 1600px;
             margin: -20px auto 60px;
@@ -59,23 +60,25 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 28px;
-            align-items: stretch;
+            align-items: start;
         }
 
-        /* ========== 銀行卡片 ========== */
+        /* ========== 銀行卡片：全新美化版 ========== */
         .bank-card {
             background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
             overflow: hidden;
             width: 100%;
-            min-height: 360px;
+            border: 1px solid #eaeaea;
         }
 
+        /* 卡片頂部：你的銀行專屬色、滿版、白色字 */
         .bank-header {
-            padding: 16px 20px;
+            padding: 18px 20px;
             color: #ffffff;
             font-weight: bold;
+            text-align: center;
         }
         .bank-name {
             font-size: 20px;
@@ -84,9 +87,70 @@
         .bank-subtitle {
             font-size: 13px;
             opacity: 0.9;
+            font-weight: 400;
         }
 
-        /* ========== 21家銀行顏色（完全保留你原本設定） ========== */
+        /* ========== ✅ 核心排版：完全照你要的格式 ========== */
+        .policy-list {
+            padding: 0;
+        }
+
+        /* 每一行：深淺交替背景，更有層次 */
+        .policy-item {
+            padding: 14px 20px;
+            border-bottom: 1px solid #eeeeee;
+        }
+        /* 淺色背景行 */
+        .policy-item:nth-child(odd) {
+            background-color: #f9fafb;
+        }
+        /* 稍深色背景行，交替顯示 */
+        .policy-item:nth-child(even) {
+            background-color: #ffffff;
+        }
+
+        /* 第一行：標題，粗體深灰色 */
+        .policy-label {
+            display: block;
+            font-weight: 600;
+            font-size: 14px;
+            color: #333333;
+            line-height: 1.4;
+            margin-bottom: 2px;
+        }
+
+        /* ✅ 第二行：內容，開頭強制加「-」、金棕色、上下分開 */
+        .policy-value {
+            display: block;
+            font-size: 14px;
+            color: #926600;
+            font-weight: 500;
+            line-height: 1.5;
+            padding-left: 4px;
+        }
+        /* 強制在內容前面加上「-」，跟你要的格式一模一樣 */
+        .policy-value::before {
+            content: "-";
+            margin-right: 6px;
+            color: #926600;
+        }
+
+        /* 最後一行移除底線 */
+        .policy-item:last-child {
+            border-bottom: none;
+        }
+
+        /* ========== 底部更新時間 ========== */
+        .last-updated {
+            padding: 12px 20px;
+            font-size: 12px;
+            color: #777777;
+            text-align: right;
+            border-top: 1px solid #eeeeee;
+            background-color: #f8f9fa;
+        }
+
+        /* ========== ✅ 21家銀行專屬顏色 完全保留你的色值 ========== */
         .color-cimb       { background-color: #002b5c; }
         .color-public     { background-color: #004a99; }
         .color-rhb        { background-color: #e21b23; }
@@ -96,7 +160,7 @@
         .color-affin      { background-color: #004b93; }
         .color-islam      { background-color: #009640; }
         .color-rakyat     { background-color: #d31145; }
-        .color-maybank    { background-color: #ed1b24; }
+        .color-maybank    { background-color: #006747; }
         .color-muamalat   { background-color: #006747; }
         .color-mbsb       { background-color: #004795; }
         .color-bsn        { background-color: #003b7e; }
@@ -109,46 +173,12 @@
         .color-ocbc       { background-color: #ed1c24; }
         .color-bankislam  { background-color: #009640; }
 
-        /* ========== 內容欄位 ========== */
-        .policy-body {
-            padding: 22px 24px;
-        }
-
-        .policy-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 9px 0;
-            border-bottom: 1px solid #f0f2f5;
-            font-size: 15px;
-            white-space: nowrap;
-        }
-
-        .policy-label {
-            color: #222222;
-            font-weight: 500;
-        }
-
-        .policy-value {
-            color: #926600;
-            font-weight: 600;
-            text-align: right;
-        }
-
-        .update-text {
-            margin-top: 18px;
-            padding-top: 12px;
-            font-size: 12px;
-            color: #777777;
-            text-align: right;
-        }
-
         /* ========== 手機平板自動適應 ========== */
         @media (max-width: 1200px) {
             .banks-container { grid-template-columns: repeat(2, 1fr); }
         }
         @media (max-width: 768px) {
-            .banks-container { grid-template-columns: 1fr; }
+            .banks-container { grid-template-columns: 1fr; gap: 16px; padding: 0 12px; }
         }
     </style>
 </head>
