@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bank Policy Database</title>
     <style>
-        /* ========== 全局基礎設定 ========== */
+        /* ========== 🔥 回到你一開始的基礎設定 ========== */
         * {
             margin: 0;
             padding: 0;
@@ -14,168 +14,121 @@
         }
 
         body {
-            background-color: #f5f7fa;
+            background-color: #ffffff;
             line-height: 1.6;
         }
 
-        /* ========== 頂部區塊 - 保留Tool5風格 ========== */
+        /* ========== 🔥 頂部：一開始的螢光綠 #bfff00 ========== */
         .top-section {
-            background: linear-gradient(135deg, #0a2463 0%, #165DFF 100%);
-            padding: 40px 20px 50px;
-            position: relative;
-            overflow: hidden;
-        }
-        .top-section::after {
-            content: '';
-            position: absolute;
-            top: 0; right: 0;
-            width: 300px; height: 100%;
-            background: linear-gradient(90deg, transparent 0%, #bfff00 120%);
-            opacity: 0.15;
+            background-color: #bfff00;
+            padding: 30px 20px 40px;
         }
 
         .back-btn {
-            background-color: rgba(255,255,255,0.2);
+            background-color: #0a2463;
             color: #ffffff;
-            border: 1px solid rgba(255,255,255,0.3);
-            padding: 10px 20px;
-            border-radius: 8px;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
             font-size: 14px;
-            font-weight: 500;
-            cursor pointer;
+            font-weight: 600;
+            cursor: pointer;
             text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            margin-bottom: 30px;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-        }
-        .back-btn:hover {
-            background-color: rgba(255,255,255,0.3);
-            transform: translateX(-2px);
+            display: inline-block;
+            margin-bottom: 35px;
         }
 
         .page-title {
             text-align: center;
-            color: #ffffff;
-            position: relative;
-            z-index: 1;
+            color: #000000;
         }
         .page-title h1 {
-            font-size: 26px;
+            font-size: 22px;
             font-weight: 700;
-            margin-bottom: 6px;
-            letter-spacing: 0.5px;
+            margin-bottom: 4px;
         }
         .page-title p {
-            font-size: 15px;
+            font-size: 14px;
             opacity: 0.85;
-            font-weight: 300;
         }
 
-        /* ========== 排版：3列排列 ========== */
+        /* ========== 排版：3列排列，和最初一樣 ========== */
         .banks-container {
-            max-width: 1200px;
-            margin: -30px auto 60px;
+            max-width: 1600px;
+            margin: -20px auto 60px;
             padding: 0 20px;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
+            gap: 28px;
             align-items: start;
-            position: relative;
-            z-index: 10;
         }
 
-        /* ========== 銀行卡片：完全跟參考圖格子/佈局一樣 ========== */
+        /* ========== 🔥 銀行卡片：一開始的樣式 + 你要的顏色 ========== */
         .bank-card {
             background-color: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.12);
             overflow: hidden;
             width: 100%;
-            border: 1px solid #e5e7eb;
         }
 
-        /* 卡片頂部：套用你的銀行專屬色 + 左側圓圈 + 右側名稱 */
+        /* 🔥 頂部：滿版顏色，一開始的樣子，不是分開圓圈 */
         .bank-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 14px 18px;
+            padding: 16px 20px;
             color: #ffffff;
-        }
-        /* 左側圓圈：淺藍底 + 深藍字，和參考圖一模一樣 */
-        .bank-badge {
-            width: 34px;
-            height: 34px;
-            border-radius: 6px;
-            background-color: #e0edff;
-            color: #165DFF;
-            font-weight: 600;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-        .bank-info {
-            line-height: 1.2;
+            font-weight: bold;
+            text-align: center;
         }
         .bank-name {
-            font-size: 16px;
-            font-weight: 700;
+            font-size: 20px;
+            margin-bottom: 2px;
         }
         .bank-subtitle {
-            font-size: 11px;
+            font-size: 13px;
             opacity: 0.9;
-            font-weight: 400;
         }
 
-        /* ========== 內容區：字體/顏色/分隔線 完全對齊參考圖 ========== */
+        /* ========== 🔥 上下排列：你後來要的，但是字體和顏色回到最初 ========== */
         .policy-list {
-            padding: 14px 18px;
-            background-color: #ffffff;
+            padding: 20px;
         }
 
         .policy-item {
-            padding: 8px 0;
-            border-bottom: 1px solid #e5e7eb;
+            display: block;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
         }
-        /* 最後一項不要底線 */
+
+        .policy-label {
+            font-weight: 600;
+            font-size: 14px;
+            color: #333333;
+            margin-bottom: 4px;
+        }
+
+        /* 🔥 內容字：回到最初的金棕色 #8c6d1a */
+        .policy-value {
+            font-size: 14px;
+            color: #8c6d1a;
+            word-wrap: break-word;
+            white-space: normal;
+            line-height: 1.5;
+        }
+
         .policy-item:last-child {
             border-bottom: none;
         }
 
-        /* 標籤：深灰色、正常字重 */
-        .policy-label {
-            display: block;
-            font-size: 13px;
-            color: #4b5563;
-            font-weight: 500;
-            line-height: 1.4;
-        }
-
-        /* 內容：深藍色、醒目，和參考圖一樣 */
-        .policy-value {
-            display: block;
-            font-size: 13px;
-            color: #165DFF;
-            font-weight: 500;
-            line-height: 1.4;
-            word-wrap: break-word;
-            margin-top: 1px;
-        }
-
-        /* ========== 底部更新區塊 ========== */
+        /* ========== 底部更新時間：和一開始一樣靠右 ========== */
         .last-updated {
-            padding: 6px 18px 14px;
+            padding: 12px 20px;
             font-size: 12px;
-            color: #6b7280;
-            line-height: 1.5;
+            color: #777;
+            text-align: right;
+            border-top: 1px solid #eee;
         }
 
-        /* ========== ✅ 21家銀行專屬顏色 - 完全使用你提供的色值 ========== */
+        /* ========== ✅ 21家銀行專屬顏色：你後來給的，保留 ========== */
         .color-cimb       { background-color: #002b5c; }
         .color-public     { background-color: #004a99; }
         .color-rhb        { background-color: #e21b23; }
@@ -199,10 +152,10 @@
         .color-bankislam  { background-color: #009640; }
 
         /* ========== 手機平板自動適應 ========== */
-        @media (max-width: 992px) {
+        @media (max-width: 1200px) {
             .banks-container { grid-template-columns: repeat(2, 1fr); }
         }
-        @media (max-width: 576px) {
+        @media (max-width: 768px) {
             .banks-container { grid-template-columns: 1fr; }
         }
     </style>
