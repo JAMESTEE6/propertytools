@@ -5,37 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bank Policy Database</title>
     <style>
-        /* ========== 全局基礎設定 - 統一規則 ========== */
+        /* ========== 全局基礎設定 - 重新定義美觀標準 ========== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Arial, sans-serif;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
         }
 
         body {
-            background-color: #ffffff;
-            line-height: 1.5;
+            background-color: #f8f9fa; /* 整體背景淺灰，襯托卡片 */
+            line-height: 1.65;
         }
 
-        /* ========== 頂部：螢光綠 完全跟參考圖一樣 ========== */
+        /* ========== 頂部：螢光綠 完美呈現 ========== */
         .top-section {
             background-color: #bfff00;
-            padding: 24px 20px 36px;
+            padding: 28px 24px 40px;
         }
 
         .back-btn {
             background-color: #0a2463;
             color: #ffffff;
             border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
+            padding: 10px 18px;
+            border-radius: 8px;
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
             text-decoration: none;
-            display: inline-block;
-            margin-bottom: 28px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 32px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+            transition: transform 0.2s ease;
+        }
+        .back-btn:hover {
+            transform: translateX(-2px);
         }
 
         .page-title {
@@ -43,92 +50,93 @@
             color: #000000;
         }
         .page-title h1 {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 700;
-            margin-bottom: 4px;
-            letter-spacing: 0.3px;
+            margin-bottom: 6px;
+            letter-spacing: 0.4px;
         }
         .page-title p {
-            font-size: 13px;
+            font-size: 14px;
             opacity: 0.8;
             font-weight: 400;
         }
 
-        /* ========== 排版：3列排列，統一間距 ========== */
+        /* ========== 排版：3列排列，增加卡片間距 ========== */
         .banks-container {
             max-width: 1920px;
-            margin: -16px auto 50px;
-            padding: 0 20px;
+            margin: -20px auto 60px;
+            padding: 0 24px;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+            gap: 26px; /* 卡片與卡片之間的距離拉開 */
             align-items: start;
         }
 
-        /* ========== 銀行卡片：乾淨、有層次、不凌亂 ========== */
+        /* ========== 銀行卡片：精緻外觀 + 充足內邊距 ========== */
         .bank-card {
             background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-radius: 12px; /* 更大的圓角，更現代 */
+            box-shadow: 0 4px 16px rgba(0,0,0,0.07); /* 柔和陰影，浮起感 */
             overflow: hidden;
             width: 100%;
-            border: 1px solid #eaeaea;
+            border: 1px solid #eaecef;
         }
 
-        /* 卡片頂部：你的銀行專屬色、滿版、白色字、嚴格大小 */
+        /* 卡片頂部：銀行專屬色 + 充足上下內邊距 + 大圓角銜接 */
         .bank-header {
-            padding: 14px 20px;
+            padding: 18px 24px; /* 上下左右都留足空間 */
             color: #ffffff;
             text-align: center;
         }
         .bank-name {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 700;
-            margin-bottom: 2px;
-            letter-spacing: 0.5px;
+            margin-bottom: 3px;
+            letter-spacing: 0.6px;
         }
         .bank-subtitle {
-            font-size: 12px;
-            opacity: 0.9;
+            font-size: 13px;
+            opacity: 0.92;
             font-weight: 400;
+            letter-spacing: 0.3px;
         }
 
-        /* ========== ✅ 核心：排版100%跟參考圖，視覺超整齊 ========== */
+        /* ========== ✅ 核心：完美間距 + 精緻排版 ========== */
         .policy-list {
-            padding: 16px 20px;
-            background-color: #ffffff; /* 純白背景，去掉雜亂的深淺色 */
+            padding: 24px 28px; /* ⭐️ 重點：跟邊框拉開足夠距離，不再擠壓！ */
+            background-color: #ffffff;
         }
 
-        /* 每一個項目：固定高度、統一間距 */
+        /* 每一個項目：上下行距均勻、呼吸感足 */
         .policy-item {
-            margin-bottom: 8px;
+            margin-bottom: 12px; /* 項目與項目之間的距離 */
         }
-        /* 最後一項不留空間 */
         .policy-item:last-child {
             margin-bottom: 0;
         }
 
-        /* 第一行：標題 - 深灰色、粗體、大小統一 */
+        /* 第一行：標題 - 深灰、粗體、大小剛好 */
         .policy-label {
             display: block;
             font-weight: 600;
-            font-size: 14px;
-            color: #333333;
-            line-height: 1.4;
-            margin-bottom: 2px;
+            font-size: 14.5px;
+            color: #2d3748; /* 更有質感的深灰色 */
+            line-height: 1.5;
+            margin-bottom: 3px;
+            letter-spacing: 0.2px;
         }
 
-        /* ✅ 第二行：內容 - 金棕色、固定開頭「-」、位置統一、大小統一 */
+        /* ✅ 第二行：內容 - 金棕色、固定縮排、位置絕對整齊 */
         .policy-value {
             display: block;
-            font-size: 14px;
-            color: #926600; /* 和參考圖一模一樣的金棕色 */
+            font-size: 14.5px;
+            color: #926600; /* 完美還原的金棕色 */
             font-weight: 500;
-            line-height: 1.4;
-            padding-left: 12px; /* 強制縮排，所有「-」都在同一位置，超整齊！ */
+            line-height: 1.5;
+            padding-left: 14px; /* 縮排統一 */
             position: relative;
         }
-        /* 強制在內容前面加上「-」，位置絕對統一 */
+        /* 強制「-」位置統一，跟文字對齊完美 */
         .policy-value::before {
             content: "-";
             position: absolute;
@@ -137,13 +145,14 @@
             font-weight: 500;
         }
 
-        /* ========== 底部更新時間：位置、大小、顏色完全統一 ========== */
+        /* ========== 底部更新時間：位置、間距、顏色都優化 ========== */
         .last-updated {
-            padding: 8px 20px 16px;
-            font-size: 12px;
-            color: #666666;
+            padding: 12px 28px 20px; /* ⭐️ 底部也留足空間 */
+            font-size: 12.5px;
+            color: #718096; /* 柔和的灰色，不搶眼 */
             line-height: 1.4;
-            border-top: none; /* 去掉多餘的線，更乾淨 */
+            background-color: #fafbfc; /* 輕微底色區分層次 */
+            border-top: 1px solid #f0f2f5; /* 細線分隔，增加層次 */
         }
 
         /* ========== ✅ 21家銀行專屬顏色 完全保留你的色值 ========== */
@@ -171,11 +180,12 @@
 
         /* ========== 手機平板自動適應 ========== */
         @media (max-width: 1200px) {
-            .banks-container { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+            .banks-container { grid-template-columns: repeat(2, 1fr); gap: 20px; padding: 0 16px; }
+            .policy-list { padding: 20px 22px; }
         }
         @media (max-width: 768px) {
-            .banks-container { grid-template-columns: 1fr; gap: 12px; padding: 0 12px; }
-            .policy-list { padding: 12px 16px; }
+            .banks-container { grid-template-columns: 1fr; gap: 16px; padding: 0 12px; }
+            .policy-list { padding: 18px 20px; }
         }
     </style>
 </head>
