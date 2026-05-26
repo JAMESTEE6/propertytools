@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bank Policy Database</title>
     <style>
-        /* ========== 全局基礎設定 ========== */
+        /* ========== 全局基礎設定 - 統一規則 ========== */
         * {
             margin: 0;
             padding: 0;
@@ -15,13 +15,13 @@
 
         body {
             background-color: #ffffff;
-            line-height: 1.6;
+            line-height: 1.5;
         }
 
-        /* ========== 頂部：螢光綠 跟你最初一樣 ========== */
+        /* ========== 頂部：螢光綠 完全跟參考圖一樣 ========== */
         .top-section {
             background-color: #bfff00;
-            padding: 30px 20px 40px;
+            padding: 24px 20px 36px;
         }
 
         .back-btn {
@@ -35,7 +35,7 @@
             cursor: pointer;
             text-decoration: none;
             display: inline-block;
-            margin-bottom: 35px;
+            margin-bottom: 28px;
         }
 
         .page-title {
@@ -43,73 +43,72 @@
             color: #000000;
         }
         .page-title h1 {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 700;
             margin-bottom: 4px;
+            letter-spacing: 0.3px;
         }
         .page-title p {
-            font-size: 14px;
-            opacity: 0.85;
+            font-size: 13px;
+            opacity: 0.8;
+            font-weight: 400;
         }
 
-        /* ========== 排版：3列排列 ========== */
+        /* ========== 排版：3列排列，統一間距 ========== */
         .banks-container {
-            max-width: 1600px;
-            margin: -20px auto 60px;
+            max-width: 1920px;
+            margin: -16px auto 50px;
             padding: 0 20px;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 28px;
+            gap: 20px;
             align-items: start;
         }
 
-        /* ========== 銀行卡片：全新美化版 ========== */
+        /* ========== 銀行卡片：乾淨、有層次、不凌亂 ========== */
         .bank-card {
             background-color: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
             overflow: hidden;
             width: 100%;
             border: 1px solid #eaeaea;
         }
 
-        /* 卡片頂部：你的銀行專屬色、滿版、白色字 */
+        /* 卡片頂部：你的銀行專屬色、滿版、白色字、嚴格大小 */
         .bank-header {
-            padding: 18px 20px;
+            padding: 14px 20px;
             color: #ffffff;
-            font-weight: bold;
             text-align: center;
         }
         .bank-name {
-            font-size: 20px;
+            font-size: 18px;
+            font-weight: 700;
             margin-bottom: 2px;
+            letter-spacing: 0.5px;
         }
         .bank-subtitle {
-            font-size: 13px;
+            font-size: 12px;
             opacity: 0.9;
             font-weight: 400;
         }
 
-        /* ========== ✅ 核心排版：完全照你要的格式 ========== */
+        /* ========== ✅ 核心：排版100%跟參考圖，視覺超整齊 ========== */
         .policy-list {
-            padding: 0;
+            padding: 16px 20px;
+            background-color: #ffffff; /* 純白背景，去掉雜亂的深淺色 */
         }
 
-        /* 每一行：深淺交替背景，更有層次 */
+        /* 每一個項目：固定高度、統一間距 */
         .policy-item {
-            padding: 14px 20px;
-            border-bottom: 1px solid #eeeeee;
+            margin-bottom: 8px;
         }
-        /* 淺色背景行 */
-        .policy-item:nth-child(odd) {
-            background-color: #f9fafb;
-        }
-        /* 稍深色背景行，交替顯示 */
-        .policy-item:nth-child(even) {
-            background-color: #ffffff;
+        /* 最後一項不留空間 */
+        .policy-item:last-child {
+            margin-bottom: 0;
         }
 
-        /* 第一行：標題，粗體深灰色 */
+        /* 第一行：標題 - 深灰色、粗體、大小統一 */
         .policy-label {
             display: block;
             font-weight: 600;
@@ -119,35 +118,32 @@
             margin-bottom: 2px;
         }
 
-        /* ✅ 第二行：內容，開頭強制加「-」、金棕色、上下分開 */
+        /* ✅ 第二行：內容 - 金棕色、固定開頭「-」、位置統一、大小統一 */
         .policy-value {
             display: block;
             font-size: 14px;
-            color: #926600;
+            color: #926600; /* 和參考圖一模一樣的金棕色 */
             font-weight: 500;
-            line-height: 1.5;
-            padding-left: 4px;
+            line-height: 1.4;
+            padding-left: 12px; /* 強制縮排，所有「-」都在同一位置，超整齊！ */
+            position: relative;
         }
-        /* 強制在內容前面加上「-」，跟你要的格式一模一樣 */
+        /* 強制在內容前面加上「-」，位置絕對統一 */
         .policy-value::before {
             content: "-";
-            margin-right: 6px;
+            position: absolute;
+            left: 0;
             color: #926600;
+            font-weight: 500;
         }
 
-        /* 最後一行移除底線 */
-        .policy-item:last-child {
-            border-bottom: none;
-        }
-
-        /* ========== 底部更新時間 ========== */
+        /* ========== 底部更新時間：位置、大小、顏色完全統一 ========== */
         .last-updated {
-            padding: 12px 20px;
+            padding: 8px 20px 16px;
             font-size: 12px;
-            color: #777777;
-            text-align: right;
-            border-top: 1px solid #eeeeee;
-            background-color: #f8f9fa;
+            color: #666666;
+            line-height: 1.4;
+            border-top: none; /* 去掉多餘的線，更乾淨 */
         }
 
         /* ========== ✅ 21家銀行專屬顏色 完全保留你的色值 ========== */
@@ -175,30 +171,16 @@
 
         /* ========== 手機平板自動適應 ========== */
         @media (max-width: 1200px) {
-            .banks-container { grid-template-columns: repeat(2, 1fr); }
+            .banks-container { grid-template-columns: repeat(2, 1fr); gap: 16px; }
         }
         @media (max-width: 768px) {
-            .banks-container { grid-template-columns: 1fr; gap: 16px; padding: 0 12px; }
+            .banks-container { grid-template-columns: 1fr; gap: 12px; padding: 0 12px; }
+            .policy-list { padding: 12px 16px; }
         }
     </style>
 </head>
 <body>
 
-     <!-- 頂部區域 -->
-    <div class="top-section">
-        <a href="#" class="back-btn">← Back to Menu</a>
-        <div class="page-title">
-            <h1>BANK POLICY DATABASE</h1>
-            <p>Latest Financing Guidelines & Requirements</p>
-        </div>
-    </div>
-
-    <!-- 銀行內容區 後面你自己加就可以 -->
-    <div class="banks-container">
-
-    </div>
-
-</body>
     <!-- 頂部 -->
     <div class="top-section">
         <a href="index.html" class="back-btn">
