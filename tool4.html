@@ -136,29 +136,38 @@
             fetch(SHEET_URL_READ)
                 .then(res => res.text())
                 .then(csvText => {
-                    const rows = csvText.split("\n").map(r => r.split(","));
-                    
-                    // ✅ 完全按照你試算表的欄位順序，一個位置都不差！
-                    // 索引 0=A,1=B,2=C,3=D,4=E,5=F,6=G,7=H,8=I,9=J,10=K,11=L
-                    allData = rows.slice(1).map((row, idx) => {
-                        // 跳過空列或標題列
-                        if(!row[0] || row[0].trim() === "BANK NAME") return null;
-                        
-                        return {
-                            "BANK NAME": row[0]?.trim().replace(/"/g, "") || "-",
-                            "PTPTN LATE PAYMENT": row[1]?.trim().replace(/"/g, "") || "-",
-                            "CLEAN CCRIS": row[2]?.trim().replace(/"/g, "") || "-",
-                            "FIRST HOME 100% LOAN PACKAGE": row[3]?.trim().replace(/"/g, "") || "-",
-                            "CTOS ISSUE": row[4]?.trim().replace(/"/g, "") || "-",
-                            "REFERRAL FEES": row[5]?.trim().replace(/"/g, "") || "-",
-                            "SECOND HOME 100% LOAN PACKAGE": row[6]?.trim().replace(/"/g, "") || "-",
-                            "LA FINANCE": row[7]?.trim().replace(/"/g, "") || "-",
-                            "ZERO MOVING COST": row[8]?.trim().replace(/"/g, "") || "-",
-                            "RENOVATION LOAN": row[9]?.trim().replace(/"/g, "") || "-",
-                            "MINIMUM INCOME": row[10]?.trim().replace(/"/g, "") || "-",
-                            "UPDATED": row[11]?.trim().replace(/"/g, "") || "-"
+                    // ✅ 徹底解決逗號問題：用正則表達式完整解析每個欄位
+                    const lines = csvText.split("\n");
+                    allData = [];
+
+                    // 從第2列開始讀取(跳過標題)
+                    for (let i = 1; i < lines.length; i++) {
+                        const line = lines[i].trim();
+                        if (!line || line.includes("BANK NAME")) continue;
+
+                        // 把被引號包起來的內容整段抓出來，當成一個值
+                        const values = line.match(/"([^"]*)"/g) || [];
+                        // 清除前後引號
+                        const cleanValues = values.map(v => v.replace(/^"|"$/g, "").trim());
+
+                        // ✅ 強制固定12個位置，絕對對應你試算表的A~L欄
+                        const row = {
+                            "BANK NAME": cleanValues[0] || "-",
+                            "PTPTN LATE PAYMENT": cleanValues[1] || "-",
+                            "CLEAN CCRIS": cleanValues[2] || "-",
+                            "FIRST HOME 100% LOAN PACKAGE": cleanValues[3] || "-",
+                            "CTOS ISSUE": cleanValues[4] || "-",
+                            "REFERRAL FEES": cleanValues[5] || "-",
+                            "SECOND HOME 100% LOAN PACKAGE": cleanValues[6] || "-",
+                            "LA FINANCE": cleanValues[7] || "-",
+                            "ZERO MOVING COST": cleanValues[8] || "-",
+                            "RENOVATION LOAN": cleanValues[9] || "-",
+                            "MINIMUM INCOME": cleanValues[10] || "-",
+                            "UPDATED": cleanValues[11] || "-"
                         };
-                    }).filter(Boolean); // 過濾空值
+
+                        if (row["BANK NAME"] !== "-") allData.push(row);
+                    }
 
                     renderList(allData);
                     document.getElementById("loading").style.display = "none";
