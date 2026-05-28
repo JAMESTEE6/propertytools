@@ -146,9 +146,10 @@
     </div>
 
     <script>
-        // ===================== ✅ 已全部幫你設定完成 =====================
+        // ===================== ✅ 已修正：正確對應到你的工作表1分頁 ID =====================
         const SHEET_ID = "1tJsY1dX4P2Wsg6EFmHVkbtDUvPwE0EU8jafFHblFLmg"; 
-        const SHEET_URL_READ = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=工作表1`;
+        // ✅ 加入 gid=1854445089 才能正確讀到你有資料的那個工作表1
+        const SHEET_URL_READ = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=工作表1&gid=1854445089`;
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyrIToX_qcx-uoT83qvCVxH5ImEpVY1uJ09kZMaVdHwyHslDe1pIN1Nkk6NDR9rJ48m/exec";
 
         const bankColorMap = {
@@ -195,6 +196,9 @@
 
                     renderList();
                     document.getElementById("loading").style.display = "none";
+                })
+                .catch(err => {
+                    document.getElementById("loading").innerHTML = "❌ 讀取失敗：" + err;
                 });
         }
 
@@ -211,6 +215,7 @@
                     <strong>${item.Bank} | ${item["Banker Name"]}</strong> (${item.Position})
                     <br>📞 ${item.Phone} | ✉️ ${item.Email || "-"}
                     <br>📍 ${item.Area || "-"} | 💎 ${item["Product Specialty"] || "-"}
+                    <br><small>🕒 Updated: ${item.Updated || "-"}</small>
                 `;
                 div.onclick = () => editItem(idx);
                 list.appendChild(div);
@@ -242,7 +247,7 @@
                 Email: document.getElementById("email").value,
                 Area: document.getElementById("area").value,
                 "Product Specialty": document.getElementById("product_specialty").value,
-                Updated: new Date().toISOString().slice(0,10)
+                Updated: new Date().toLocaleDateString('en-GB') // 格式：28/05/2026
             };
 
             if(!data.Bank || !data["Banker Name"] || !data.Position || !data.Phone) {
@@ -250,18 +255,15 @@
                 return;
             }
 
-            // 更新本地
-            if(editIndex >=0) allData[editIndex] = {...allData[editIndex], ...data};
-            else allData.push(data);
-
             // ✅ 發送到 工作表1
             fetch(APPS_SCRIPT_URL, {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(data)
-            }).then(() => {
+            }).then(res => res.text()).then(result => {
                 showSuccess();
-                renderList();
+                // 儲存成功後自動重新讀取最新資料
+                loadData();
                 resetForm();
             }).catch(err => showError("Save failed: " + err));
         };
