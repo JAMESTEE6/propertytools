@@ -1,1 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banker Info Update Tool</title>
+    <style>
+        * {margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif;}
+        body {background-color: #f8f9fa; line-height: 1.65;}
 
+        /* ✅ 和你原本完全一樣的頂部風格 */
+        .top-section {background-color: #bfff00; padding: 28px 24px 40px; margin-bottom: 30px;}
+        .back-btn {background-color: #0a2463; color: #fff; border: none; padding: 10px 18px; border-radius: 8px; font-size: 14px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 32px; box-shadow: 0 2px 6px rgba(0,0,0,0.12);}
+        .page-title {text-align: center; color: #000;}
+        .page-title h1 {font-size: 22px; font-weight: 700; margin-bottom: 6px;}
+        .page-title p {font-size: 14px; opacity: 0.8;}
+
+        .container {max-width: 1000px; margin: 0 auto; padding: 0 24px;}
+
+        /* ✅ 卡片：圓角、陰影、充足內邊距，和美觀版一致 */
+        .card {background: #fff; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.07); border: 1px solid #eaecef; padding: 30px; margin-bottom: 30px;}
+        .card-title {font-size: 18px; font-weight: 700; color: #2d3748; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #eee;}
+
+        /* ✅ 表單排版：整齊、間距充足 */
+        .form-grid {display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 20px;}
+        .form-group {display: flex; flex-direction: column;}
+        label {font-weight: 600; font-size: 14px; color: #2d3748; margin-bottom: 6px;}
+        input, textarea, select {padding: 12px 14px; border: 1px solid #cbd5e0; border-radius: 8px; font-size: 14px; color: #2d3748; background-color: #fafbfc;}
+        input:focus, textarea:focus, select:focus {outline: none; border-color: #0a2463; box-shadow: 0 0 0 3px rgba(10, 36, 99, 0.1);}
+
+        .btn {padding: 12px 24px; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s;}
+        .btn-primary {background-color: #0a2463; color: #fff;}
+        .btn-primary:hover {background-color: #081d4f; transform: translateY(-1px);}
+        .btn-success {background-color: #2f855a; color: #fff; margin-left: 10px;}
+
+        .alert {padding: 15px 20px; border-radius: 8px; margin-bottom: 20px; display: none;}
+        .alert-success {background-color: #f0fff4; border: 1px solid #9ae6b4; color: #22543d;}
+        .alert-error {background-color: #fff5f5; border: 1px solid #feb2b2; color: #742a2a;}
+
+        /* ✅ 列表：銀行專屬左邊框、整齊易讀 */
+        .banker-list {margin-top: 20px;}
+        .banker-item {padding: 16px; background-color: #f7fafc; border-radius: 8px; margin-bottom: 12px; border-left: 4px solid; cursor: pointer; transition: all 0.2s;}
+        .banker-item:hover {background-color: #edf2f7;}
+
+        /* ✅ 21家銀行顏色 完全保留你的色值 */
+        .color-cimb       {border-color: #002b5c;}
+        .color-public     {border-color: #004a99;}
+        .color-rhb        {border-color: #e21b23;}
+        .color-hlb        {border-color: #007a3d;}
+        .color-alliance   {border-color: #0073ce;}
+        .color-ambank     {border-color: #004a99;}
+        .color-affin      {border-color: #004b93;}
+        .color-islam      {border-color: #009640;}
+        .color-rakyat     {border-color: #d31145;}
+        .color-maybank    {border-color: #006747;}
+        .color-muamalat   {border-color: #006747;}
+        .color-mbsb       {border-color: #004795;}
+        .color-bsn        {border-color: #003b7e;}
+        .color-agro       {border-color: #002f6c;}
+        .color-hsbc       {border-color: #db0011;}
+        .color-boc        {border-color: #a30013;}
+        .color-scb        {border-color: #00338d;}
+        .color-alrajhi    {border-color: #006039;}
+        .color-uob        {border-color: #003d88;}
+        .color-ocbc       {border-color: #ed1c24;}
+    </style>
+</head>
+<body>
+    <div class="top-section">
+        <a href="index.html" class="back-btn">← Back to Main Menu</a>
+        <div class="page-title">
+            <h1>Banker Info Update Tool</h1>
+            <p>Manage Banker Data | Saved in Sheet1 | Independent Tool</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div id="alertSuccess" class="alert alert-success">✅ Saved & Synced to Sheet1!</div>
+        <div id="alertError" class="alert alert-error">❌ <span id="errorMsg"></span></div>
+
+        <!-- ✅ 表單：完全按照你試算表的欄位順序 -->
+        <div class="card">
+            <h3 class="card-title">📝 Add / Edit Banker</h3>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Bank *</label>
+                    <select id="bank" required>
+                        <option value="">-- Select Bank --</option>
+                        <option value="CIMB">CIMB</option>
+                        <option value="Public Bank">Public Bank</option>
+                        <option value="RHB">RHB</option>
+                        <option value="Hong Leong Bank">Hong Leong Bank</option>
+                        <option value="Alliance Bank">Alliance Bank</option>
+                        <option value="AmBank">AmBank</option>
+                        <option value="Affin Bank">Affin Bank</option>
+                        <option value="Bank Islam">Bank Islam</option>
+                        <option value="Bank Rakyat">Bank Rakyat</option>
+                        <option value="Maybank">Maybank</option>
+                        <option value="Bank Muamalat">Bank Muamalat</option>
+                        <option value="MBSB Bank">MBSB Bank</option>
+                        <option value="BSN">BSN</option>
+                        <option value="Agro Bank">Agro Bank</option>
+                        <option value="HSBC">HSBC</option>
+                        <option value="Bank of China">Bank of China</option>
+                        <option value="Standard Chartered">Standard Chartered</option>
+                        <option value="Al Rajhi Bank">Al Rajhi Bank</option>
+                        <option value="UOB">UOB</option>
+                        <option value="OCBC">OCBC</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Banker Name *</label>
+                    <input type="text" id="banker_name" placeholder="e.g. Mr. Lim" required>
+                </div>
+                <div class="form-group">
+                    <label>Position *</label>
+                    <input type="text" id="position" placeholder="e.g. Senior Manager / Loan Officer" required>
+                </div>
+                <div class="form-group">
+                    <label>Phone *</label>
+                    <input type="tel" id="phone" placeholder="e.g. 012-3456789" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="email" placeholder="e.g. lim@bank.com">
+                </div>
+                <div class="form-group">
+                    <label>Area / Coverage</label>
+                    <input type="text" id="area" placeholder="e.g. KL / Selangor / Whole Malaysia">
+                </div>
+                <div class="form-group" style="grid-column: 1 / -1;">
+                    <label>Product Specialty</label>
+                    <textarea id="product_specialty" rows="3" placeholder="e.g. Housing Loan / Business Loan / Auto Finance / Government Sector"></textarea>
+                </div>
+            </div>
+            <button id="btnSave" class="btn btn-primary">💾 Save / Update</button>
+            <button id="btnNew" class="btn btn-success" style="display:none;">➕ New Entry</button>
+        </div>
+
+        <!-- ✅ 列表：清晰顯示所有欄位 -->
+        <div class="card">
+            <h3 class="card-title">📋 Current List (From Sheet1)</h3>
+            <div id="loading" class="text-center py-10 text-gray-500">Loading latest data...</div>
+            <div id="bankerList" class="banker-list"></div>
+        </div>
+    </div>
+
+    <script>
+        // ===================== ✅ 已幫你填好的設定 =====================
+        const SHEET_ID = "1tJsY1dX4P2Wsg6EFmHVkbtDUvPwE0EU8jafFHblFLmg"; 
+        const SHEET_URL_READ = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=工作表1`;
+        // ⚠️ 下一步部署 Apps Script 後，把網址貼在下面這行
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX/exec";
+
+        const bankColorMap = {
+            "CIMB": "color-cimb",
+            "Public Bank": "color-public",
+            "RHB": "color-rhb",
+            "Hong Leong Bank": "color-hlb",
+            "Alliance Bank": "color-alliance",
+            "AmBank": "color-ambank",
+            "Affin Bank": "color-affin",
+            "Bank Islam": "color-islam",
+            "Bank Rakyat": "color-rakyat",
+            "Maybank": "color-maybank",
+            "Bank Muamalat": "color-muamalat",
+            "MBSB Bank": "color-mbsb",
+            "BSN": "color-bsn",
+            "Agro Bank": "color-agro",
+            "HSBC": "color-hsbc",
+            "Bank of China": "color-boc",
+            "Standard Chartered": "color-scb",
+            "Al Rajhi Bank": "color-alrajhi",
+            "UOB": "color-uob",
+            "OCBC": "color-ocbc"
+        };
+
+        let allData = [];
+        let editIndex = -1;
+
+        // ===================== 功能區 =====================
+        window.onload = loadData;
+
+        // 讀取 工作表1 資料
+        function loadData() {
+            fetch(SHEET_URL_READ)
+                .then(res => res.text())
+                .then(csvText => {
+                    const rows = csvText.split("\n").map(r => r.split(","));
+                    const headers = rows[0].map(h => h.trim().replace(/"/g, ""));
+                    allData = rows.slice(1).map((row, idx) => {
+                        const obj = {id:idx};
+                        headers.forEach((h,i) => obj[h] = row[i]?.trim().replace(/"/g, "") || "");
+                        return obj;
+                    }).filter(d => d.Bank);
+
+                    renderList();
+                    document.getElementById("loading").style.display = "none";
+                });
+        }
+
+        // 渲染列表：完整顯示所有你要的欄位
+        function renderList() {
+            const list = document.getElementById("bankerList");
+            list.innerHTML = "";
+
+            allData.forEach((item, idx) => {
+                const color = bankColorMap[item.Bank] || "color-cimb";
+                const div = document.createElement("div");
+                div.className = `banker-item ${color}`;
+                div.innerHTML = `
+                    <strong>${item.Bank} | ${item["Banker Name"]}</strong> (${item.Position})
+                    <br>📞 ${item.Phone} | ✉️ ${item.Email || "-"}
+                    <br>📍 ${item.Area || "-"} | 💎 ${item["Product Specialty"] || "-"}
+                `;
+                div.onclick = () => editItem(idx);
+                list.appendChild(div);
+            });
+        }
+
+        // 編輯：點擊自動填入表單
+        function editItem(idx) {
+            editIndex = idx;
+            const d = allData[idx];
+            document.getElementById("bank").value = d.Bank;
+            document.getElementById("banker_name").value = d["Banker Name"];
+            document.getElementById("position").value = d.Position;
+            document.getElementById("phone").value = d.Phone;
+            document.getElementById("email").value = d.Email;
+            document.getElementById("area").value = d.Area;
+            document.getElementById("product_specialty").value = d["Product Specialty"];
+            document.getElementById("btnNew").style.display = "inline-block";
+            window.scrollTo({top:0, behavior:'smooth'});
+        }
+
+        // 儲存：寫入 工作表1
+        document.getElementById("btnSave").onclick = function() {
+            const data = {
+                Bank: document.getElementById("bank").value,
+                "Banker Name": document.getElementById("banker_name").value,
+                Position: document.getElementById("position").value,
+                Phone: document.getElementById("phone").value,
+                Email: document.getElementById("email").value,
+                Area: document.getElementById("area").value,
+                "Product Specialty": document.getElementById("product_specialty").value,
+                Updated: new Date().toISOString().slice(0,10)
+            };
+
+            if(!data.Bank || !data["Banker Name"] || !data.Position || !data.Phone) {
+                showError("Fill all * required fields");
+                return;
+            }
+
+            // 更新本地
+            if(editIndex >=0) allData[editIndex] = {...allData[editIndex], ...data};
+            else allData.push(data);
+
+            // ✅ 發送到 工作表1
+            fetch(APPS_SCRIPT_URL, {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(data)
+            }).then(() => {
+                showSuccess();
+                renderList();
+                resetForm();
+            }).catch(err => showError("Save failed: " + err));
+        };
+
+        document.getElementById("btnNew").onclick = resetForm;
+
+        function resetForm() {
+            editIndex = -1;
+            document.getElementById("bank").value = "";
+            document.getElementById("banker_name").value = "";
+            document.getElementById("position").value = "";
+            document.getElementById("phone").value = "";
+            document.getElementById("email").value = "";
+            document.getElementById("area").value = "";
+            document.getElementById("product_specialty").value = "";
+            document.getElementById("btnNew").style.display = "none";
+        }
+
+        function showSuccess() {
+            const el = document.getElementById("alertSuccess");
+            el.style.display = "block";
+            setTimeout(() => el.style.display = "none", 3000);
+        }
+        function showError(msg) {
+            const el = document.getElementById("alertError");
+            document.getElementById("errorMsg").textContent = msg;
+            el.style.display = "block";
+            setTimeout(() => el.style.display = "none", 4000);
+        }
+    </script>
+</body>
+</html>
