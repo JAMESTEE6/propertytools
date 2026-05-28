@@ -8,7 +8,6 @@
         * {margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif;}
         body {background-color: #f8f9fa; line-height: 1.65;}
 
-        /* ✅ 頂部風格 和之前一致 */
         .top-section {background-color: #bfff00; padding: 28px 24px 40px; margin-bottom: 30px;}
         .back-btn {background-color: #0a2463; color: #fff; border: none; padding: 10px 18px; border-radius: 8px; font-size: 14px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 32px; box-shadow: 0 2px 6px rgba(0,0,0,0.12);}
         .page-title {text-align: center; color: #000;}
@@ -17,12 +16,10 @@
 
         .container {max-width: 1000px; margin: 0 auto; padding: 0 24px;}
 
-        /* ✅ 卡片 一致樣式 */
         .card {background: #fff; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.07); border: 1px solid #eaecef; padding: 30px; margin-bottom: 30px;}
         .card-header {display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #eee;}
         .card-title {font-size: 18px; font-weight: 700; color: #2d3748; margin: 0;}
 
-        /* ✅ 篩選下拉 一致樣式 */
         #bankFilter {padding: 6px 10px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 14px; color: #2d3748; background-color: #fafbfc;}
         #bankFilter:focus {outline: none; border-color: #0a2463; box-shadow: 0 0 0 2px rgba(10, 36, 99, 0.1);}
 
@@ -30,12 +27,10 @@
         .alert-success {background-color: #f0fff4; border: 1px solid #9ae6b4; color: #22543d;}
         .alert-error {background-color: #fff5f5; border: 1px solid #feb2b2; color: #742a2a;}
 
-        /* ✅ 列表 一致樣式 + 銀行顏色 */
         .policy-list {margin-top: 20px;}
         .policy-item {padding: 18px; background-color: #f7fafc; border-radius: 8px; margin-bottom: 12px; border-left: 4px solid; transition: all 0.2s;}
         .policy-item:hover {background-color: #edf2f7;}
 
-        /* ✅ 21家銀行顏色 完全沿用 */
         .color-cimb       {border-color: #002b5c;}
         .color-public     {border-color: #004a99;}
         .color-rhb        {border-color: #e21b23;}
@@ -57,7 +52,6 @@
         .color-uob        {border-color: #003d88;}
         .color-ocbc       {border-color: #ed1c24;}
 
-        /* ✅ 政策內容排版：上下分行、整齊對齊 */
         .policy-row {margin: 4px 0; font-size: 14px; display:flex;}
         .policy-label {font-weight: 600; color: #333; min-width: 240px;}
         .policy-value {color: #926600;}
@@ -75,7 +69,6 @@
     <div class="container">
         <div id="alertError" class="alert alert-error">❌ <span id="errorMsg"></span></div>
 
-        <!-- ✅ 政策列表 + 銀行篩選 -->
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">📋 Policy List (From Sheet1)</h3>
@@ -109,7 +102,6 @@
     </div>
 
     <script>
-        // ===================== ✅ 已全部設定完成，直接可用 =====================
         const SHEET_ID = "1tJsY1dX4P2Wsg6EFmHVkbtDUvPwE0EU8jafFHblFLmg"; 
         const SHEET_URL_READ = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=工作表1&gid=1342176650`;
 
@@ -138,36 +130,35 @@
 
         let allData = [];
 
-        // ===================== 功能區：讀取 + 篩選 + 渲染 =====================
         window.onload = loadData;
 
-        // 讀取政策試算表
         function loadData() {
             fetch(SHEET_URL_READ)
                 .then(res => res.text())
                 .then(csvText => {
                     const rows = csvText.split("\n").map(r => r.split(","));
-                    // ✅ 強制對應欄位順序，不管名稱有沒有空白，直接抓位置
-                    const headers = [
-                        "BANK NAME",
-                        "PTPTN LATE PAYMENT",
-                        "CLEAN CCRIS",
-                        "FIRST HOME 100% LOAN PACKAGE",
-                        "CTOS ISSUE",
-                        "REFERRAL FEES",
-                        "SECOND HOME 100% LOAN PACKAGE",
-                        "LA FINANCE",
-                        "ZERO MOVING COST",
-                        "RENOVATION LOAN",
-                        "MINIMUM INCOME",
-                        "UPDATED"
-                    ];
                     
+                    // ✅ 完全按照你試算表的欄位順序，一個位置都不差！
+                    // 索引 0=A,1=B,2=C,3=D,4=E,5=F,6=G,7=H,8=I,9=J,10=K,11=L
                     allData = rows.slice(1).map((row, idx) => {
-                        const obj = {id:idx};
-                        headers.forEach((h,i) => obj[h] = row[i]?.trim().replace(/"/g, "") || "-");
-                        return obj;
-                    }).filter(d => d["BANK NAME"] && d["BANK NAME"] !== "BANK NAME");
+                        // 跳過空列或標題列
+                        if(!row[0] || row[0].trim() === "BANK NAME") return null;
+                        
+                        return {
+                            "BANK NAME": row[0]?.trim().replace(/"/g, "") || "-",
+                            "PTPTN LATE PAYMENT": row[1]?.trim().replace(/"/g, "") || "-",
+                            "CLEAN CCRIS": row[2]?.trim().replace(/"/g, "") || "-",
+                            "FIRST HOME 100% LOAN PACKAGE": row[3]?.trim().replace(/"/g, "") || "-",
+                            "CTOS ISSUE": row[4]?.trim().replace(/"/g, "") || "-",
+                            "REFERRAL FEES": row[5]?.trim().replace(/"/g, "") || "-",
+                            "SECOND HOME 100% LOAN PACKAGE": row[6]?.trim().replace(/"/g, "") || "-",
+                            "LA FINANCE": row[7]?.trim().replace(/"/g, "") || "-",
+                            "ZERO MOVING COST": row[8]?.trim().replace(/"/g, "") || "-",
+                            "RENOVATION LOAN": row[9]?.trim().replace(/"/g, "") || "-",
+                            "MINIMUM INCOME": row[10]?.trim().replace(/"/g, "") || "-",
+                            "UPDATED": row[11]?.trim().replace(/"/g, "") || "-"
+                        };
+                    }).filter(Boolean); // 過濾空值
 
                     renderList(allData);
                     document.getElementById("loading").style.display = "none";
@@ -177,13 +168,11 @@
                 });
         }
 
-        // 篩選功能
         function filterPolicies() {
             const selectedBank = document.getElementById("bankFilter").value;
             renderList(selectedBank ? allData.filter(item => item["BANK NAME"] === selectedBank) : allData);
         }
 
-        // ✅ 渲染列表：完全對應你試算表的順序和內容
         function renderList(data) {
             const list = document.getElementById("policyList");
             list.innerHTML = "";
@@ -200,7 +189,7 @@
                 div.innerHTML = `
                     <div style="font-size:16px; font-weight:700; margin-bottom:10px; display:flex; justify-content:space-between;">
                         <span>${item["BANK NAME"]}</span>
-                        <span style="font-size:12px; color:#666; font-weight:400;">UPDATED: ${item.UPDATED || "-"}</span>
+                        <span style="font-size:12px; color:#666; font-weight:400;">UPDATED: ${item.UPDATED}</span>
                     </div>
                     <div class="policy-row"><span class="policy-label">PTPTN LATE PAYMENT</span><span class="policy-value">- ${item["PTPTN LATE PAYMENT"]}</span></div>
                     <div class="policy-row"><span class="policy-label">CLEAN CCRIS</span><span class="policy-value">- ${item["CLEAN CCRIS"]}</span></div>
