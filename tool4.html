@@ -58,8 +58,8 @@
         .color-ocbc       {border-color: #ed1c24;}
 
         /* ✅ 政策內容排版：上下分行、整齊對齊 */
-        .policy-row {margin: 4px 0; font-size: 14px;}
-        .policy-label {font-weight: 600; color: #333; display: inline-block; min-width: 220px;}
+        .policy-row {margin: 4px 0; font-size: 14px; display:flex;}
+        .policy-label {font-weight: 600; color: #333; min-width: 240px;}
         .policy-value {color: #926600;}
     </style>
 </head>
@@ -147,12 +147,27 @@
                 .then(res => res.text())
                 .then(csvText => {
                     const rows = csvText.split("\n").map(r => r.split(","));
-                    const headers = rows[0].map(h => h.trim().replace(/"/g, ""));
+                    // ✅ 強制對應欄位順序，不管名稱有沒有空白，直接抓位置
+                    const headers = [
+                        "BANK NAME",
+                        "PTPTN LATE PAYMENT",
+                        "CLEAN CCRIS",
+                        "FIRST HOME 100% LOAN PACKAGE",
+                        "CTOS ISSUE",
+                        "REFERRAL FEES",
+                        "SECOND HOME 100% LOAN PACKAGE",
+                        "LA FINANCE",
+                        "ZERO MOVING COST",
+                        "RENOVATION LOAN",
+                        "MINIMUM INCOME",
+                        "UPDATED"
+                    ];
+                    
                     allData = rows.slice(1).map((row, idx) => {
                         const obj = {id:idx};
                         headers.forEach((h,i) => obj[h] = row[i]?.trim().replace(/"/g, "") || "-");
                         return obj;
-                    }).filter(d => d["BANK NAME"]);
+                    }).filter(d => d["BANK NAME"] && d["BANK NAME"] !== "BANK NAME");
 
                     renderList(allData);
                     document.getElementById("loading").style.display = "none";
@@ -168,7 +183,7 @@
             renderList(selectedBank ? allData.filter(item => item["BANK NAME"] === selectedBank) : allData);
         }
 
-        // ✅ 渲染列表：完全對應你指定的欄位順序和名稱
+        // ✅ 渲染列表：完全對應你試算表的順序和內容
         function renderList(data) {
             const list = document.getElementById("policyList");
             list.innerHTML = "";
@@ -183,8 +198,9 @@
                 const div = document.createElement("div");
                 div.className = `policy-item ${color}`;
                 div.innerHTML = `
-                    <div style="font-size:16px; font-weight:700; margin-bottom:10px;">${item["BANK NAME"]} 
-                        <span style="float:right; font-size:12px; color:#666; font-weight:400;">UPDATED: ${item.UPDATED || "-"}</span>
+                    <div style="font-size:16px; font-weight:700; margin-bottom:10px; display:flex; justify-content:space-between;">
+                        <span>${item["BANK NAME"]}</span>
+                        <span style="font-size:12px; color:#666; font-weight:400;">UPDATED: ${item.UPDATED || "-"}</span>
                     </div>
                     <div class="policy-row"><span class="policy-label">PTPTN LATE PAYMENT</span><span class="policy-value">- ${item["PTPTN LATE PAYMENT"]}</span></div>
                     <div class="policy-row"><span class="policy-label">CLEAN CCRIS</span><span class="policy-value">- ${item["CLEAN CCRIS"]}</span></div>
