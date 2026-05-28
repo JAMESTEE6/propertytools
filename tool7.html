@@ -19,7 +19,12 @@
 
         /* ✅ 卡片：圓角、陰影、充足內邊距，和美觀版一致 */
         .card {background: #fff; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.07); border: 1px solid #eaecef; padding: 30px; margin-bottom: 30px;}
-        .card-title {font-size: 18px; font-weight: 700; color: #2d3748; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #eee;}
+        .card-header {display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #eee;}
+        .card-title {font-size: 18px; font-weight: 700; color: #2d3748; margin: 0;}
+
+        /* ✅ 篩選下拉選單樣式 */
+        #bankFilter {padding: 6px 10px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 14px; color: #2d3748; background-color: #fafbfc;}
+        #bankFilter:focus {outline: none; border-color: #0a2463; box-shadow: 0 0 0 2px rgba(10, 36, 99, 0.1);}
 
         .alert {padding: 15px 20px; border-radius: 8px; margin-bottom: 20px; display: none;}
         .alert-success {background-color: #f0fff4; border: 1px solid #9ae6b4; color: #22543d;}
@@ -27,7 +32,7 @@
 
         /* ✅ 列表：銀行專屬左邊框、整齊易讀 */
         .banker-list {margin-top: 20px;}
-        .banker-item {padding: 16px; background-color: #f7fafc; border-radius: 8px; margin-bottom: 12px; border-left: 4px solid; cursor: pointer; transition: all 0.2s;}
+        .banker-item {padding: 16px; background-color: #f7fafc; border-radius: 8px; margin-bottom: 12px; border-left: 4px solid; transition: all 0.2s;}
         .banker-item:hover {background-color: #edf2f7;}
 
         /* ✅ 21家銀行顏色 完全保留你的色值 */
@@ -66,11 +71,35 @@
         <div id="alertSuccess" class="alert alert-success">✅ Saved & Synced to Sheet1!</div>
         <div id="alertError" class="alert alert-error">❌ <span id="errorMsg"></span></div>
 
-        <!-- ✅ 已刪除整個 Add / Edit Banker 表單區塊 -->
-
-        <!-- ✅ 列表：保留，完整顯示所有欄位 -->
+        <!-- ✅ 列表：加入篩選功能 -->
         <div class="card">
-            <h3 class="card-title">📋 Current List (From Sheet1)</h3>
+            <div class="card-header">
+                <h3 class="card-title">📋 Current List (From Sheet1)</h3>
+                <!-- ✅ 銀行篩選下拉選單 -->
+                <select id="bankFilter" onchange="filterBankers()">
+                    <option value="">All Banks</option>
+                    <option value="CIMB">CIMB</option>
+                    <option value="Public Bank">Public Bank</option>
+                    <option value="RHB">RHB</option>
+                    <option value="Hong Leong Bank">Hong Leong Bank</option>
+                    <option value="Alliance Bank">Alliance Bank</option>
+                    <option value="AmBank">AmBank</option>
+                    <option value="Affin Bank">Affin Bank</option>
+                    <option value="Bank Islam">Bank Islam</option>
+                    <option value="Bank Rakyat">Bank Rakyat</option>
+                    <option value="Maybank">Maybank</option>
+                    <option value="Bank Muamalat">Bank Muamalat</option>
+                    <option value="MBSB Bank">MBSB Bank</option>
+                    <option value="BSN">BSN</option>
+                    <option value="Agro Bank">Agro Bank</option>
+                    <option value="HSBC">HSBC</option>
+                    <option value="Bank of China">Bank of China</option>
+                    <option value="Standard Chartered">Standard Chartered</option>
+                    <option value="Al Rajhi Bank">Al Rajhi Bank</option>
+                    <option value="UOB">UOB</option>
+                    <option value="OCBC">OCBC</option>
+                </select>
+            </div>
             <div id="loading" class="text-center py-10 text-gray-500">Loading latest data...</div>
             <div id="bankerList" class="banker-list"></div>
         </div>
@@ -108,7 +137,7 @@
         let allData = [];
         let editIndex = -1;
 
-        // ===================== 功能區：讀取、渲染全部保留 =====================
+        // ===================== 功能區：讀取、渲染、篩選 =====================
         window.onload = loadData;
 
         // 讀取 工作表1 資料
@@ -124,7 +153,7 @@
                         return obj;
                     }).filter(d => d.Bank);
 
-                    renderList();
+                    renderList(allData); // 預設顯示全部
                     document.getElementById("loading").style.display = "none";
                 })
                 .catch(err => {
@@ -132,12 +161,28 @@
                 });
         }
 
-        // 渲染列表：完整顯示所有你要的欄位
-        function renderList() {
+        // ✅ 篩選功能：依選擇的銀行過濾
+        function filterBankers() {
+            const selectedBank = document.getElementById("bankFilter").value;
+            if (!selectedBank) {
+                renderList(allData); // 顯示全部
+            } else {
+                const filtered = allData.filter(item => item.Bank === selectedBank);
+                renderList(filtered); // 只顯示選定銀行
+            }
+        }
+
+        // 渲染列表
+        function renderList(data) {
             const list = document.getElementById("bankerList");
             list.innerHTML = "";
 
-            allData.forEach((item, idx) => {
+            if (data.length === 0) {
+                list.innerHTML = "<p style='text-align:center; color:#888; padding:20px;'>No records found</p>";
+                return;
+            }
+
+            data.forEach((item, idx) => {
                 const color = bankColorMap[item.Bank] || "color-cimb";
                 const div = document.createElement("div");
                 div.className = `banker-item ${color}`;
@@ -147,8 +192,6 @@
                     <br>📍 ${item.Area || "-"} | 💎 ${item["Product Specialty"] || "-"}
                     <br><small>🕒 Updated: ${item.Updated || "-"}</small>
                 `;
-                // 編輯功能保留，但表單已刪除，點擊只做查看
-                div.onclick = () => {};
                 list.appendChild(div);
             });
         }
