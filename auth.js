@@ -1,44 +1,107 @@
-// 共用功能檔案
-function getMYTime() {
-    const d = new Date();
-    d.setHours(d.getHours() + 8);
-    const y = d.getFullYear();
-    const m = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
-    const h = String(d.getHours()).padStart(2, '0');
-    const min = String(d.getMinutes()).padStart(2, '0');
-    const sec = String(d.getSeconds()).padStart(2, '0');
-    return `${y}-${m}-${day} ${h}:${min}:${sec}`;
-}
+// auth.js - 帳號驗證 & 審核系統
+const ADMIN = {
+    account: "admin",       // 你的管理員帳號
+    password: "admin123456"// 你的管理員密碼，可自行修改
+};
 
-// 檢查是否已登入
-function checkLogin() {
-    if(localStorage.getItem("isLogin") !== "true") {
-        window.location.href = "login.html";
-        return;
+// --- 註冊功能 ---
+function register(newAcc, newPwd, confirmPwd) {
+    // 基本驗證
+    if (!newAcc || !newPwd || !confirmPwd) {
+        return { success: false, msg: "❌ 請填寫所有欄位" };
     }
-    showUserInfo();
-    localStorage.setItem("lastLogin", getMYTime());
+    if (newPwd !== confirmPwd) {
+        return { success: false, msg: "❌ 密碼不一致" };
+    }
+    if (newAcc === ADMIN.account) {
+        return { success: false, msg: "❌ 此帳號為管理員專用" };
+    }
+
+    // 檢查帳號是否已存在（待審核 + 已通過）
+    const pending = JSON.parse(localStorage.getItem("pendingUsers") || "[]");
+    const approved = JSON.parse(localStorage.getItem("approvedUsers") || "[]");
+    const allUsers = [...pending, ...approved];
+
+    if (allUsers.find(u => u.account === newAcc)) {
+        return { success: false, msg: "❌ 帳號已存在" };
+    }
+
+    // 加入待審核名單
+    pending.push({
+        account: newAcc,
+        password: newPwd,
+        status: "pending",
+        regTime: new Date().toLocaleString()
+    });
+    localStorage.setItem("pendingUsers", JSON.stringify(pending));
+    return { success: true, msg: "✅ 註冊成功！請等待管理員審核" };
 }
 
-// 顯示登入資訊
-function showUserInfo() {
-    const user = localStorage.getItem("loginUser") || "Guest";
-    const lastTime = localStorage.getItem("lastLogin") || "-";
-    const infoBox = document.getElementById("userInfo");
-    if(infoBox) infoBox.innerHTML = `Welcome: ${user} &nbsp; | &nbsp; LAST LOGIN: ${lastTime}`;
+// --- 登入功能 ---
+function login(acc, pwd) {
+    // 管理員登入
+    if (acc === ADMIN.account && pwd === ADMIN.password) {
+        localStorage.setItem("currentUser", ADMIN.account);
+        return { success: true, isAdmin: true, msg: "登入成功" };
+    }
+
+    // 一般使用者登入 → 先找已通過的帳號
+    const approved = JSON.parse(localStorage.getItem("approvedUsers") || "[]");
+    const user = approved.find(u => u.account === acc && u.password === pwd);
+    if (user) {
+        localStorage.setItem("currentUser", user.account);
+        return { success: true, isAdmin: false, msg: "登入成功" };
+    }
+
+    // 沒找到 → 檢查是否在待審核名單
+    const pending = JSON.parse(localStorage.getItem("pendingUsers") || "[]");
+    const pendingUser = pending.find(u => u.account === acc && u.password === pwd);
+    if (pendingUser) {
+        return { success: false, msg: "⏳ 帳號已註冊，等待管理員審核中" };
+    }
+
+    // 都沒有 → 帳密錯誤
+    return { success: false, msg: "❌ 帳號或密碼錯誤" };
 }
 
-// 登出功能
+// --- 管理員：審核通過 ---
+function approveUser(index) {
+    let pending = JSON.parse(localStorage.getItem("pendingUsers") || "[]");
+    let approved = JSON.parse(localStorage.getItem("approvedUsers") || "[]");
+    const user = pending.splice(index, 1)[0];
+    user.status = "approved";
+    user.approveTime = new Date().toLocaleString();
+    approved.push(user);
+    localStorage.setItem("pendingUsers", JSON.stringify(pending));
+    localStorage.setItem("approvedUsers", JSON.stringify(approved));
+}
+
+// --- 管理員：拒絕帳號 ---
+function rejectUser(index) {
+    let pending = JSON.parse(localStorage.getItem("pendingUsers") || "[]");
+    pending.splice(index, 1);
+    localStorage.setItem("pendingUsers", JSON.stringify(pending));
+}
+
+// --- 檢查是否已登入 ---
+function checkLogin() {
+    const user = localStorage.getItem("currentUser");
+    if (!user) {
+        window.location.href = "login.html";
+    }
+}
+
+// --- 檢查是否為管理員 ---
+function checkAdmin() {
+    const user = localStorage.getItem("currentUser");
+    if (!user || user !== ADMIN.account) {
+        alert("❌ 沒有權限！");
+        window.location.href = "index.html";
+    }
+}
+
+// --- 登出 ---
 function logout() {
-    localStorage.clear();
+    localStorage.removeItem("currentUser");
     window.location.href = "login.html";
 }
-
-// 單獨更新銀行時間
-function updateBankTime(bankCode) {
-    const el = document.querySelector(`.update-text[data-bank="${bankCode}"]`);
-    if(el) el.textContent = `Last Updated: ${getMYTime()} by Admin`;
-}
-
-window.onload = checkLogin;
