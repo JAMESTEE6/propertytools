@@ -2,147 +2,75 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Admin - Usage Logs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Account Approval</title>
+    <script src="auth.js"></script>
+    <link rel="stylesheet" href="style.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-        body {
-            background-color: #f8fafc;
-            padding: 30px;
-        }
-        .admin-header {
-            background: #1e40af;
-            color: white;
-            padding: 18px 25px;
-            border-radius: 8px;
-            margin-bottom: 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .admin-header h1 {
-            font-size: 22px;
-        }
-        .back-btn {
-            background: white;
-            color: #1e40af;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: none;
-        }
-        .log-container {
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-            padding: 25px;
-        }
-        .log-container h2 {
-            color: #1e293b;
-            margin-bottom: 20px;
-            font-size: 20px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
-        }
-        .log-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        .log-table th {
-            background: #f1f5f9;
-            text-align: left;
-            padding: 12px;
-            color: #334155;
-            font-weight: bold;
-        }
-        .log-table td {
-            padding: 12px;
-            border-bottom: 1px solid #f1f5f9;
-            color: #334155;
-        }
-        .log-table tr:hover {
-            background: #f8fafc;
-        }
-        .empty {
-            text-align: center;
-            padding: 40px;
-            color: #94a3b8;
-            font-size: 16px;
-        }
-        .clear-btn {
-            background: #dc2626;
-            color: white;
-            border: none;
-            padding: 9px 18px;
-            border-radius: 5px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 20px;
-        }
+        .container { max-width: 800px; margin: 30px auto; padding: 20px; }
+        .card { background: #fff; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 8px #00000010; }
+        .item { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #eee; }
+        .btn-green { background: #00B42A; color: #fff; border: none; padding: 4px 12px; border-radius: 4px; margin: 0 4px; cursor: pointer; }
+        .btn-red { background: #F53F3F; color: #fff; border: none; padding: 4px 12px; border-radius: 4px; margin: 0 4px; cursor: pointer; }
+        .logout { text-align: right; margin-bottom: 10px; }
+        .logout a { color: #F53F3F; text-decoration: none; }
     </style>
 </head>
-<body>
-    <div class="admin-header">
-        <h1>📋 系統使用記錄查詢</h1>
-        <a href="index.html" class="back-btn">← 返回首頁</a>
-    </div>
+<body onload="loadList()">
+    <div class="container">
+        <div class="logout"><a href="javascript:logout()">🚪 Logout</a></div>
 
-    <div class="log-container">
-        <h2>所有登入 & 工具使用記錄</h2>
-        <table class="log-table">
-            <thead>
-                <tr>
-                    <th>時間</th>
-                    <th>用戶帳號</th>
-                    <th>操作內容</th>
-                </tr>
-            </thead>
-            <tbody id="logBody">
-                <tr>
-                    <td colspan="3" class="empty">暫無任何記錄</td>
-                </tr>
-            </tbody>
-        </table>
-        <button class="clear-btn" onclick="clearLogs()">清空所有記錄</button>
+        <div class="card">
+            <h3>⏳ Pending Approval</h3>
+            <div id="pendingList"></div>
+        </div>
+
+        <div class="card">
+            <h3>✅ Approved Accounts</h3>
+            <div id="approvedList"></div>
+        </div>
     </div>
 
     <script>
-        // 讀取並顯示記錄
-        function loadLogs() {
-            const logs = JSON.parse(localStorage.getItem("toolUsageLogs")) || [];
-            const tbody = document.getElementById("logBody");
-            
-            if(logs.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="3" class="empty">暫無任何記錄</td></tr>`;
-                return;
-            }
+        // 進入前先檢查是否為管理員
+        checkAdmin();
 
-            // 最新記錄顯示在最上面
-            tbody.innerHTML = logs.map(item => `
-                <tr>
-                    <td>${item.time}</td>
-                    <td><strong>${item.user}</strong></td>
-                    <td>${item.tool}</td>
-                </tr>
-            `).join("");
+        function loadList() {
+            const pending = JSON.parse(localStorage.getItem("pendingUsers") || "[]");
+            const approved = JSON.parse(localStorage.getItem("approvedUsers") || "[]");
+
+            // 渲染待審核
+            pendingList.innerHTML = pending.length === 0 ? "<p style='color:#888;'>No pending account</p>" : "";
+            pending.forEach((u,i) => {
+                const el = document.createElement("div");
+                el.className = "item";
+                el.innerHTML = `
+                    <div>
+                        <div>${u.account}</div>
+                        <div style="font-size:12px; color:#888;">Reg: ${u.regTime}</div>
+                    </div>
+                    <div>
+                        <button class="btn-green" onclick="approveUser(${i});loadList()">Approve</button>
+                        <button class="btn-red" onclick="rejectUser(${i});loadList()">Reject</button>
+                    </div>
+                `;
+                pendingList.appendChild(el);
+            });
+
+            // 渲染已通過
+            approvedList.innerHTML = approved.length === 0 ? "<p style='color:#888;'>No approved account</p>" : "";
+            approved.forEach(u => {
+                const el = document.createElement("div");
+                el.className = "item";
+                el.innerHTML = `
+                    <div>
+                        <div>${u.account}</div>
+                        <div style="font-size:12px; color:#888;">Approved: ${u.approveTime}</div>
+                    </div>
+                `;
+                approvedList.appendChild(el);
+            });
         }
-
-        // 清空記錄
-        function clearLogs() {
-            if(confirm("確定要清空所有記錄嗎？此動作無法還原！")) {
-                localStorage.removeItem("toolUsageLogs");
-                loadLogs();
-            }
-        }
-
-        // 頁面載入時自動讀取
-        window.onload = loadLogs;
     </script>
 </body>
 </html>
