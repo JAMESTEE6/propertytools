@@ -2,43 +2,130 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
-    <script src="auth.js"></script>
-    <link rel="stylesheet" href="style.css">
+    <title>Register New Account</title>
     <style>
-        body { background: #f5f5f5; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-        .box { background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px #0000001a; width: 320px; }
-        h2 { text-align: center; margin-bottom: 20px; }
-        input { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 6px; }
-        button { width: 100%; padding: 10px; background: #00B42A; color: #fff; border: none; border-radius: 6px; cursor: pointer; margin-top: 10px; }
-        .link { text-align: center; margin-top: 15px; font-size: 14px; }
-        .link a { color: #165DFF; text-decoration: none; }
-        #msg { text-align: center; margin-top: 10px; font-size: 14px; }
+        * {margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif;}
+        body {background-color: #f5f7fa; display: flex; align-items: center; justify-content: center; min-height: 100vh;}
+        .register-card {
+            background: #ffffff;
+            width: 480px;
+            padding: 40px 35px;
+            border-radius: 12px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+        .register-card h2 {
+            font-size: 20px;
+            color: #222;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .register-card input {
+            width: 100%;
+            padding: 13px 16px;
+            margin: 8px 0;
+            border: 1px solid #dcdfe6;
+            border-radius: 6px;
+            font-size: 15px;
+            color: #333;
+        }
+        .register-card input::placeholder {color: #999;}
+        .register-card button {
+            width: 100%;
+            padding: 13px;
+            margin-top: 12px;
+            background-color: #00c48c;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .register-card button:hover {background-color: #00ad7c;}
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #2563eb;
+            text-decoration: none;
+        }
+        .back-link:hover {text-decoration: underline;}
+        .msg {
+            margin-top: 12px;
+            font-size: 14px;
+            min-height: 20px;
+        }
     </style>
-</head>
-<body>
-    <div class="box">
-        <h2>✍️ Register New Account</h2>
-        <input id="newAcc" type="text" placeholder="New Account">
-        <input id="newPwd" type="password" placeholder="New Password">
-        <input id="confirmPwd" type="password" placeholder="Confirm Password">
-        <button onclick="doRegister()">Submit</button>
-        <div id="msg"></div>
-        <div class="link">
-            <a href="login.html">← Back to Login</a>
-        </div>
-    </div>
-
     <script>
-        function doRegister() {
-            const res = register(newAcc.value.trim(), newPwd.value.trim(), confirmPwd.value.trim());
-            msg.textContent = res.msg;
-            msg.style.color = res.success ? "green" : "red";
-            if (res.success) {
-                setTimeout(() => window.location.href = "login.html", 2000);
+        const REG_ENDPOINT = "https://script.google.com/macros/s/AKfycbw5QH0f6FzHnXqYgE7rBkMZ4eD9R0sTfG3hY2xZ/exec";
+
+        function getMYTime() {
+            const d = new Date();
+            return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;
+        }
+
+        async function submitRegister() {
+            const acc = document.getElementById("acc").value.trim();
+            const pwd = document.getElementById("pwd").value.trim();
+            const pwd2 = document.getElementById("pwd2").value.trim();
+            const name = document.getElementById("name").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const msg = document.querySelector(".msg");
+
+            // ✅ 驗證必填欄位
+            if(!acc || !pwd || !pwd2 || !name) {
+                msg.textContent = "❌ 帳號、密碼、確認密碼、姓名 皆為必填";
+                msg.style.color = "#dc2626";
+                return;
+            }
+            if(pwd !== pwd2) {
+                msg.textContent = "❌ 兩次輸入的密碼不一致";
+                msg.style.color = "#dc2626";
+                return;
+            }
+
+            try {
+                await fetch(REG_ENDPOINT, {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({
+                        action: "register",
+                        time: getMYTime(),
+                        account: acc,
+                        password: pwd,
+                        name: name,
+                        email: email,
+                        status: "pending" // ✅ 註冊自動設為待審核
+                    }),
+                    redirect: "follow"
+                });
+
+                msg.textContent = "✅ 註冊成功！請等待管理員審核後再登入";
+                msg.style.color = "#10b981";
+                // 3秒後自動返回登入頁
+                setTimeout(() => window.location.href = "index.html", 3000);
+            } catch(e) {
+                msg.textContent = "❌ 註冊失敗，請稍後再試或聯繫管理員";
+                msg.style.color = "#dc2626";
             }
         }
     </script>
+</head>
+<body>
+    <div class="register-card">
+        <h2>✍️ Register New Account</h2>
+        <input id="acc" type="text" placeholder="Account *">
+        <input id="pwd" type="password" placeholder="Password *">
+        <input id="pwd2" type="password" placeholder="Confirm Password *">
+        <input id="name" type="text" placeholder="Full Name *">
+        <input id="email" type="email" placeholder="Email Address">
+        <button onclick="submitRegister()">Submit Register</button>
+        <div class="msg"></div>
+        <a href="index.html" class="back-link">← Back to Login</a>
+    </div>
 </body>
 </html>
