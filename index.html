@@ -2,73 +2,214 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Register New Account</title>
+    <title>Property Tools - 實用工具集合</title>
+    <link rel="stylesheet" href="style.css">
     <style>
-        body { margin: 0; font-family: Arial, sans-serif; background-color: #f8fafc; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-        .box { background: #fff; padding: 35px; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); width: 320px; }
-        h3 { text-align: center; margin-bottom: 20px; color: #333; }
-        input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 6px; font-size: 15px; box-sizing: border-box; }
-        button { width: 100%; padding: 12px; margin-top: 10px; background: #10b981; color: white; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; }
-        button:hover { background: #059669; }
-        .link { text-align: center; margin-top: 15px; font-size: 14px; }
-        .link a { color: #2563eb; text-decoration: none; }
-        .msg { text-align: center; margin-top: 10px; font-size: 14px; }
+        body { margin: 0; font-family: Arial, sans-serif; background-color: #f8fafc; }
+        .login-box { 
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+            background: #ffffff; padding: 35px; border-radius: 10px; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2); z-index: 99999; 
+            width: 320px; text-align: center; 
+        }
+        .login-box h3 { margin: 0 0 20px; color: #333; font-size: 18px; }
+        .login-box input { 
+            width: 100%; padding: 12px; margin: 8px 0; 
+            border: 1px solid #ddd; border-radius: 6px; 
+            font-size: 15px; box-sizing: border-box; 
+        }
+        .login-box button { 
+            width: 100%; padding: 12px; margin-top: 10px; 
+            background: #2563eb; color: white; border: none; 
+            border-radius: 6px; font-size: 16px; cursor: pointer; 
+        }
+        .login-box button:hover { background: #1d4ed8; }
+        .register-link { 
+            display: inline-block; margin-top: 15px; 
+            font-size: 14px; color: #2563eb; text-decoration: none; 
+        }
+        .register-link:hover { text-decoration: underline; }
+        .mask { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.5); z-index: 99998; 
+        }
+        /* ✅ 類名統一為 header-bar，樣式正常顯示 */
+        .header-bar { 
+            background: #bfff00; padding: 15px 25px; 
+            display: flex; justify-content: space-between; 
+            align-items: center; flex-wrap: wrap; gap: 12px; 
+        }
+        .user-info { 
+            font-size: 16px; font-weight: 600; color: #000; 
+            line-height: 1.8; font-family: Arial, sans-serif; 
+        }
+        .logout-btn { 
+            background: #dc2626; color: #fff; border: none; 
+            padding: 8px 16px; border-radius: 5px; 
+            font-size: 15px; font-weight: bold; cursor: pointer; 
+        }
+        .logout-btn:hover { background: #b91c1c; }
+        .content { 
+            display: none; padding: 40px 25px; max-width: 1200px; 
+            margin: 0 auto; text-align: center; 
+        }
+        .content h1 { font-size: 36px; color: #1e293b; margin-bottom: 10px; }
+        .content p { font-size: 18px; color: #64748b; margin-bottom: 40px; }
+        .tool-list { 
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+            gap: 25px; margin-top: 35px; 
+        }
+        .tool-card { 
+            background: #fff; padding: 30px 25px; border-radius: 12px; 
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08); text-decoration: none; 
+            color: #333; transition: 0.2s; text-align: left; 
+        }
+        .tool-card:hover { 
+            transform: translateY(-4px); box-shadow: 0 6px 18px rgba(0,0,0,0.12); 
+        }
+        .tool-card h3 { color: #2563eb; margin-top: 0; font-size: 20px; }
+        .tool-card p { color: #64748b; font-size: 15px; margin-bottom: 0; }
     </style>
-    <script>
-        const 試算表ID = "1tJsY1dX4P2Wsg6EFmHVkbtDUvPwE0EU8jafFHblFLmg";
-        const REG_ENDPOINT = "https://script.google.com/macros/s/AKfycbw5QH0f6FzHnXqYgE7rBkMZ4eD9R0sTfG3hY2xZ/exec";
 
+    <script>
+        // ========== 設定區 ==========
+        const 試算表ID = "1tJsY1dX4P2Wsg6EFmHVkbtDUvPwE0EU8jafFHblFLmg";
+        const 帳密工作表 = "工作表1";
+        const 記錄工作表 = "記錄";
+        const LOG_ENDPOINT = "https://script.google.com/macros/s/AKfycbw5QH0f6FzHnXqYgE7rBkMZ4eD9R0sTfG3hY2xZ/exec";
+        let 帳密名單 = [];
+
+        // ✅ 馬來西亞時間 GMT+8
         function getMYTime() {
             const d = new Date();
             return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;
         }
 
-        async function doRegister() {
-            const acc = document.getElementById("acc").value.trim();
-            const pwd = document.getElementById("pwd").value.trim();
-            const name = document.getElementById("name").value.trim();
-            const email = document.getElementById("email").value.trim();
-            const msg = document.getElementById("msg");
-
-            if(!acc || !pwd || !name) return msg.textContent = "❌ 帳號、密碼、姓名不可空白";
-            if(pwd !== document.getElementById("pwd2").value.trim()) return msg.textContent = "❌ 密碼不一致";
-
+        // ✅ 寫入記錄
+        async function saveLog(user, action) {
             try {
-                await fetch(REG_ENDPOINT, {
+                await fetch(LOG_ENDPOINT, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        action: "register",
-                        time: getMYTime(),
-                        account: acc,
-                        password: pwd,
-                        name: name,
-                        email: email,
-                        status: "pending"
-                    }),
+                    body: JSON.stringify({ time: getMYTime(), user: user, action: action }),
                     redirect: "follow"
                 });
-                msg.textContent = "✅ 註冊成功！請等待管理員審核";
-                msg.style.color = "green";
-                setTimeout(() => window.location.href = "index.html", 2000);
-            } catch (e) {
-                msg.textContent = "❌ 註冊失敗，請稍後再試";
-                msg.style.color = "red";
+            } catch (e) {}
+        }
+
+        // ✅ 保留你原本的驗證，增加狀態判斷
+        window.onload = function() {
+            if(localStorage.getItem("IS_LOGIN") === "true"){
+                showPage();
+                setInterval(updateDisplay, 1000);
+                return;
+            }
+
+            fetch(`https://docs.google.com/spreadsheets/d/${試算表ID}/export?format=csv&sheet=${encodeURIComponent(帳密工作表)}`)
+            .then(res => res.text())
+            .then(csv => {
+                const rows = csv.split("\n").filter(r => r.trim());
+                帳密名單 = rows.slice(1).map(r => {
+                    const cols = r.split(",");
+                    // 對應欄位：A=時間 B=帳號 C=密碼 D=姓名 E=狀態 F=信箱
+                    return { 
+                        acc: cols[1]?.trim(), 
+                        pwd: cols[2]?.trim(), 
+                        name: cols[3]?.trim() || "",
+                        status: cols[4]?.trim() || "approved" 
+                    };
+                }).filter(x => x.acc);
+            })
+            .catch(() => alert("❌ 無法連線帳號系統"));
+        };
+
+        function updateDisplay() {
+            const user = localStorage.getItem("loginAccount") || "";
+            const last = localStorage.getItem("LAST_LOGIN") || "First Time Login";
+            document.getElementById("loginDisplay").innerHTML = `Welcome: ${user}<br>LOGIN TIME: ${getMYTime()}<br>LAST LOGIN TIME: ${last}`;
+        }
+
+        function doLogin() {
+            const acc = document.getElementById("acc").value.trim();
+            const pwd = document.getElementById("pwd").value.trim();
+            const valid = 帳密名單.find(x => x.acc === acc && x.pwd === pwd);
+
+            if(valid){
+                // ✅ 加入狀態判斷
+                if(valid.status === "pending") {
+                    alert("⏳ 帳號已註冊，等待管理員審核中");
+                    return;
+                }
+                if(valid.status === "rejected") {
+                    alert("❌ 帳號已被拒絕，請聯繫管理員");
+                    return;
+                }
+
+                const old = localStorage.getItem("CURRENT_LOGIN");
+                if(old) localStorage.setItem("LAST_LOGIN", old);
+                const now = getMYTime();
+                localStorage.setItem("IS_LOGIN", "true");
+                localStorage.setItem("loginAccount", acc);
+                localStorage.setItem("CURRENT_LOGIN", now);
+
+                saveLog(acc, "登入系統");
+                showPage();
+                setInterval(updateDisplay, 1000);
+            } else {
+                alert("❌ 帳號或密碼錯誤");
             }
         }
+
+        function showPage() {
+            document.querySelector(".mask").style.display = "none";
+            document.querySelector(".login-box").style.display = "none";
+            document.querySelector(".content").style.display = "block";
+        }
+
+        function logout() {
+            const user = localStorage.getItem("loginAccount");
+            if(user) saveLog(user, "登出系統");
+            localStorage.clear();
+            location.reload();
+        }
+
+        function openTool(name) {
+            const user = localStorage.getItem("loginAccount");
+            if(user) saveLog(user, `使用 ${name}`);
+        }
+
+        function enterKey(e) { if(e.key === "Enter") doLogin(); }
     </script>
 </head>
 <body>
-    <div class="box">
-        <h3>✍️ Register New Account</h3>
-        <input id="acc" type="text" placeholder="Account *">
-        <input id="pwd" type="password" placeholder="Password *">
-        <input id="pwd2" type="password" placeholder="Confirm Password *">
-        <input id="name" type="text" placeholder="Full Name *">
-        <input id="email" type="email" placeholder="Email Address">
-        <button onclick="doRegister()">Submit Register</button>
-        <div id="msg" class="msg"></div>
-        <div class="link"><a href="index.html">← Back to Login</a></div>
+    <div class="mask"></div>
+    <div class="login-box">
+        <h3>🔒 Please Login</h3>
+        <input type="text" id="acc" placeholder="Enter Account" onkeydown="enterKey(event)">
+        <input type="password" id="pwd" placeholder="Enter Password" onkeydown="enterKey(event)">
+        <button onclick="doLogin()">Login</button>
+        <br><br>
+        <!-- ✅ 已修改：連到內建註冊頁，取代原本的 Google Form -->
+        <a href="register.html" class="register-link">👉 Register New Account</a>
+    </div>
+
+    <div class="header-bar">
+        <div id="loginDisplay" class="user-info"></div>
+        <button onclick="logout()" class="logout-btn">Logout</button>
+    </div>
+
+    <div class="content">
+        <h1>🏠 Property Tools Dashboard</h1>
+        <p>Collection of useful tools, click to use 👇</p>
+        <div class="tool-list">
+            <a href="tool1.html" class="tool-card" onclick="openTool('Booking Form Generator')"><h3>Booking Form Generator</h3><p>Generate & print form</p></a>
+            <a href="tool2.html" class="tool-card" onclick="openTool('Mortgage Amortization Calculator')"><h3>Mortgage Amortization Calculator</h3><p>View installment breakdown</p></a>
+            <a href="tool3.html" class="tool-card" onclick="openTool('Eligibility Check Pro')"><h3>Eligibility Check Pro</h3><p>Check maximum loan amount</p></a>
+            <a href="tool4.html" class="tool-card" onclick="openTool('Bank Policy Database')"><h3>Bank Policy Database</h3><p>Latest bank lending guidelines</p></a>
+            <a href="tool5.html" class="tool-card" onclick="openTool('Property Cost Estimator')"><h3>Legal Fees Calculator</h3><p>Legal Fee + Stamp Duty + Disbursement</p></a>
+            <a href="tool6.html" class="tool-card" onclick="openTool('Refinance Calculator')"><h3>Refinance Calculator</h3><p>Calculate Saved Interest & Amount</p></a>
+            <a href="tool7.html" class="tool-card" onclick="openTool('Banker Info Database')"><h3>Banker Info Database</h3><p>Contact NO</p></a>
+        </div>
     </div>
 </body>
 </html>
