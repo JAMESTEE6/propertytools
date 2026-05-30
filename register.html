@@ -61,7 +61,7 @@
         }
     </style>
     <script>
-        const REG_ENDPOINT = "https://script.google.com/macros/s/AKfycbyrNpc319JdgcvJVR-9z006G3tZdGtehyTjqKo3h8kGyaqxl2iBXoNMB7xuYhRcod8r/exec";
+        const REG_ENDPOINT = "https://script.google.com/macros/s/AKfycbwiNW2V17e2uIg8zorfn03cuY2EbFTN3YlcDK4TVfl6naATxsfCXQlle1b6QmfVa1Uw/exec"; // ✅ 換成你新的網址
 
         function getMYTime() {
             const d = new Date();
@@ -76,7 +76,6 @@
             const email = document.getElementById("email").value.trim();
             const msg = document.querySelector(".msg");
 
-            // ✅ 驗證必填欄位
             if(!acc || !pwd || !pwd2 || !name) {
                 msg.textContent = "❌ 帳號、密碼、確認密碼、姓名 皆為必填";
                 msg.style.color = "#dc2626";
@@ -89,7 +88,7 @@
             }
 
             try {
-                await fetch(REG_ENDPOINT, {
+                const res = await fetch(REG_ENDPOINT, {
                     method: "POST",
                     headers: {"Content-Type": "application/json"},
                     body: JSON.stringify({
@@ -99,15 +98,20 @@
                         password: pwd,
                         name: name,
                         email: email,
-                        status: "pending" // ✅ 註冊自動設為待審核
+                        status: "pending"
                     }),
                     redirect: "follow"
                 });
+                const result = await res.json();
 
-                msg.textContent = "✅ 註冊成功！請等待管理員審核後再登入";
-                msg.style.color = "#10b981";
-                // 3秒後自動返回登入頁
-                setTimeout(() => window.location.href = "index.html", 3000);
+                if(result.res === "success") {
+                    msg.textContent = "✅ 註冊成功！請等待管理員審核後再登入";
+                    msg.style.color = "#10b981";
+                    setTimeout(() => window.location.href = "index.html", 3000);
+                } else {
+                    msg.textContent = "❌ " + (result.msg || "註冊失敗，請稍後再試");
+                    msg.style.color = "#dc2626";
+                }
             } catch(e) {
                 msg.textContent = "❌ 註冊失敗，請稍後再試或聯繫管理員";
                 msg.style.color = "#dc2626";
