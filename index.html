@@ -33,7 +33,6 @@
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background: rgba(0,0,0,0.5); z-index: 99998; 
         }
-        /* ✅ 類名統一為 header-bar，樣式正常顯示 */
         .header-bar { 
             background: #bfff00; padding: 15px 25px; 
             display: flex; justify-content: space-between; 
@@ -72,20 +71,16 @@
     </style>
 
     <script>
-        // ========== 設定區 ==========
         const 試算表ID = "1tJsY1dX4P2Wsg6EFmHVkbtDUvPwE0EU8jafFHblFLmg";
         const 帳密工作表 = "工作表1";
-        const 記錄工作表 = "記錄";
-        const LOG_ENDPOINT = "https://script.google.com/macros/s/AKfycbyrNpc319JdgcvJVR-9z006G3tZdGtehyTjqKo3h8kGyaqxl2iBXoNMB7xuYhRcod8r/exec";
+        const LOG_ENDPOINT = "https://script.google.com/macros/s/AKfycbwiNW2V17e2uIg8zorfn03cuY2EbFTN3YlcDK4TVfl6naATxsfCXQlle1b6QmfVa1Uw/exec"; // ✅ 換成你新的網址
         let 帳密名單 = [];
 
-        // ✅ 馬來西亞時間 GMT+8
         function getMYTime() {
             const d = new Date();
             return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;
         }
 
-        // ✅ 寫入記錄
         async function saveLog(user, action) {
             try {
                 await fetch(LOG_ENDPOINT, {
@@ -97,7 +92,6 @@
             } catch (e) {}
         }
 
-        // ✅ 保留你原本的驗證，增加狀態判斷
         window.onload = function() {
             if(localStorage.getItem("IS_LOGIN") === "true"){
                 showPage();
@@ -111,11 +105,9 @@
                 const rows = csv.split("\n").filter(r => r.trim());
                 帳密名單 = rows.slice(1).map(r => {
                     const cols = r.split(",");
-                    // 對應欄位：A=時間 B=帳號 C=密碼 D=姓名 E=狀態 F=信箱
                     return { 
                         acc: cols[1]?.trim(), 
                         pwd: cols[2]?.trim(), 
-                        name: cols[3]?.trim() || "",
                         status: cols[4]?.trim() || "approved" 
                     };
                 }).filter(x => x.acc);
@@ -135,7 +127,6 @@
             const valid = 帳密名單.find(x => x.acc === acc && x.pwd === pwd);
 
             if(valid){
-                // ✅ 加入狀態判斷
                 if(valid.status === "pending") {
                     alert("⏳ 帳號已註冊，等待管理員審核中");
                     return;
@@ -189,7 +180,6 @@
         <input type="password" id="pwd" placeholder="Enter Password" onkeydown="enterKey(event)">
         <button onclick="doLogin()">Login</button>
         <br><br>
-        <!-- ✅ 已修改：連到內建註冊頁，取代原本的 Google Form -->
         <a href="register.html" class="register-link">👉 Register New Account</a>
     </div>
 
