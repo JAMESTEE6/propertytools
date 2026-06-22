@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>💸 Personal Loan - Query & Submission</title>
+    <title>📋 Case Submission & Management</title>
     <style>
         * {margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif;}
         body {background-color: #f8fafc; padding: 40px 25px;}
@@ -33,17 +33,16 @@
         }
         .section-box h3 {color: #2563eb; margin-top: 0; margin-bottom: 15px; font-size:20px;}
 
-        select, textarea, input, button {
+        select, textarea, button {
             width: 100%; padding: 12px 14px; margin: 8px 0; border: 1px solid #ddd;
             border-radius: 6px; font-size: 15px; box-sizing: border-box;
         }
         textarea {min-height: 120px; resize: vertical;}
-        input {background: #fafafa;}
         button { background: #2563eb; color: #fff; border: none; cursor: pointer; font-weight:500; }
         button:hover { background: #1d4ed8; }
         .msg { font-size: 14px; margin: 8px 0; min-height: 22px; }
 
-        .filter-bar { background: #f1f5f9; padding: 12px; border-radius: 8px; margin: 15px 0; }
+        .filter-bar { background: #f1f5f9; padding: 12px; border-radius: 8px; margin: 15px 0; display:grid; grid-template-columns:1fr 1fr; gap:12px; }
         table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; }
         th, td { padding: 11px 12px; text-align: left; border-bottom: 1px solid #eee; }
         th { background: #f8fafc; color:#333; }
@@ -54,11 +53,34 @@
         .back-link {text-align:center; margin-top:20px;}
         .back-link a {color:#2563eb; text-decoration:none; font-size:15px;}
         .back-link a:hover {text-decoration:underline;}
-        .row-group {display: grid; grid-template-columns: 1fr 1fr; gap: 12px;}
+
+        /* ✅ 對應銀行提示框 */
+        .bank-tip {
+            background: #ecfdf5; color: #065f46;
+            padding: 12px 15px; border-radius: 6px;
+            margin: 10px 0; font-size: 14px;
+            display: none;
+        }
+        .bank-tip strong {color: #047857;}
     </style>
     <script>
         const 試算表ID = "1tJsY1dX4P2Wsg6EFmHVkbtDUvPwE0EU8jafFHblFLmg";
         const LOG_ENDPOINT = "https://script.google.com/macros/s/AKfycbyrNpc319JdgcvJVR-9z006G3tZdGtehyTjqKo3h8kGyaqxl2iBXoNMB7xuYhRcod8r/exec";
+
+        // ✅ ==============================================
+        // ✅ 👉 這裡是唯一需要修改的地方！所有問題+銀行都在這設定
+        // ✅ ==============================================
+        const CASE_CONFIG = {
+            "Clean CCRIS": ["Maybank", "CIMB", "Public Bank", "Hong Leong Bank"],
+            "Settle Outstanding": ["RHB", "AmBank", "Bank Rakyat"],
+            "Appeal Rejection": ["Maybank", "CIMB", "RHB", "BSN"],
+            "Update Record": ["Public Bank", "Hong Leong Bank", "AmBank"],
+            "Blacklist Removal": ["CIMB", "Maybank", "Bank Islam"],
+            "Loan Restructure": ["RHB", "Hong Leong Bank", "Public Bank"],
+            "Credit Report Dispute": ["Alliance Bank", "Affin Bank", "BSN"],
+            "Late Payment Appeal": ["Maybank", "CIMB", "RHB"]
+            // 👉 以後要加新問題，直接在這行下面新增就好，格式："問題名稱": ["銀行1","銀行2"]
+        };
 
         // ✅ 時間格式（馬來西亞）
         function getMYTime() {
@@ -66,7 +88,7 @@
             return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;
         }
 
-        // ✅ 頁面載入檢查 + 顯示資訊
+        // ✅ 頁面載入
         window.onload = function() {
             if(!localStorage.getItem("IS_LOGIN")) {
                 alert("⚠️ 請先登入！");
@@ -77,8 +99,11 @@
             const user = localStorage.getItem("loginAccount") || "";
             const last = localStorage.getItem("LAST_LOGIN") || "First Time Login";
             document.getElementById("loginDisplay").innerHTML = `Welcome: ${user}<br>LOGIN TIME: ${getMYTime()}<br>LAST LOGIN TIME: ${last}`;
+
+            // ✅ 動態載入所有問題類型到下拉選單
+            loadCaseTypeOptions();
             // 自動載入記錄
-            loadLoanData();
+            loadCaseData();
         };
 
         // ✅ 登出
@@ -95,18 +120,58 @@
             location.href = "index.html";
         }
 
-        // ✅ 提交個人貸款查詢 + 自動分類銀行
-        async function submitLoanQuery() {
+        // ✅ 動態載入問題類型選項
+        function loadCaseTypeOptions() {
+            const caseSelect = document.getElementById("caseType");
+            // 遍歷設定清單，把所有問題名稱加入選項
+            Object.keys(CASE_CONFIG).forEach(caseName => {
+                const opt = document.createElement("option");
+                opt.value = caseName;
+                opt.textContent = caseName;
+                caseSelect.appendChild(opt);
+            });
+        }
+
+        // ✅ 選擇問題後 → 自動顯示對應銀行 + 過濾選項
+        function onCaseTypeChange() {
+            const caseType = document.getElementById("caseType").value;
+            const bankSelect = document.getElementById("bankSelect");
+            const tipBox = document.getElementById("bankTip");
+
+            // 清空銀行選項
+            bankSelect.innerHTML = "<option value=''>-- Please Select Bank --</option>";
+
+            if(!caseType) {
+                tipBox.style.display = "none";
+                return;
+            }
+
+            // 從設定清單取得對應的銀行列表
+            const allowedBanks = CASE_CONFIG[caseType] || [];
+
+            // 顯示提示
+            tipBox.style.display = "block";
+            tipBox.innerHTML = `✅ For <strong>${caseType}</strong>, eligible banks: <strong>${allowedBanks.join(" / ")}</strong>`;
+
+            // 只加入允許的銀行到下拉選單
+            allowedBanks.forEach(bank => {
+                const opt = document.createElement("option");
+                opt.value = bank;
+                opt.textContent = bank;
+                bankSelect.appendChild(opt);
+            });
+        }
+
+        // ✅ 提交案件
+        async function submitCase() {
             const user = localStorage.getItem("loginAccount");
+            const caseType = document.getElementById("caseType").value;
             const bank = document.getElementById("bankSelect").value;
-            const loanAmount = document.getElementById("loanAmount").value.trim();
-            const tenure = document.getElementById("tenure").value.trim();
-            const purpose = document.getElementById("purpose").value.trim();
             const details = document.getElementById("details").value.trim();
             const msg = document.getElementById("submitMsg");
 
-            if(!bank || !loanAmount || !tenure) {
-                msg.textContent = "❌ 請填寫 銀行、貸款金額、貸款期數（必填）";
+            if(!caseType || !bank || !details) {
+                msg.textContent = "❌ 請選擇 案件類型、銀行，並填寫詳細內容";
                 msg.style.color = "#dc2626";
                 return;
             }
@@ -116,14 +181,11 @@
                     method: "POST",
                     headers: {"Content-Type": "application/json"},
                     body: JSON.stringify({
-                        action: "submit_personal_loan", // 專用動作，後端會自動建立新分頁
+                        action: "submit_general_case", // 通用提交動作
                         time: getMYTime(),
                         user: user,
+                        caseType: caseType,
                         bank: bank,
-                        category: "Personal Loan",
-                        amount: loanAmount,
-                        tenure: tenure,
-                        purpose: purpose,
                         details: details
                     }),
                     redirect: "follow"
@@ -131,15 +193,11 @@
                 const result = await res.json();
 
                 if(result.res === "success") {
-                    msg.textContent = "✅ 個人貸款查詢已提交！已分類到：" + bank;
+                    msg.textContent = `✅ 提交成功！「${caseType}」已指定至 ${bank}`;
                     msg.style.color = "#10b981";
-                    // 清空表單
-                    document.getElementById("loanAmount").value = "";
-                    document.getElementById("tenure").value = "";
-                    document.getElementById("purpose").value = "";
                     document.getElementById("details").value = "";
                     // 重新載入記錄
-                    loadLoanData(document.getElementById("filterBank").value);
+                    loadCaseData(document.getElementById("filterBank").value, document.getElementById("filterCase").value);
                 } else {
                     msg.textContent = "❌ " + (result.msg || "提交失敗");
                     msg.style.color = "#dc2626";
@@ -150,14 +208,13 @@
             }
         }
 
-        // ✅ 載入 + 按銀行篩選 個人貸款記錄
-        async function loadLoanData(filterBank = "all") {
+        // ✅ 載入 + 雙重篩選：銀行 + 案件類型
+        async function loadCaseData(filterBank = "all", filterCase = "all") {
             const user = localStorage.getItem("loginAccount");
             const isAdmin = user === "admin";
 
             try {
-                // 後端會自動建立「個人貸款記錄」分頁
-                const res = await fetch(`https://docs.google.com/spreadsheets/d/${試算表ID}/export?format=csv&sheet=個人貸款記錄`);
+                const res = await fetch(`https://docs.google.com/spreadsheets/d/${試算表ID}/export?format=csv&sheet=案件總記錄`);
                 const csv = await res.text();
                 const rows = csv.split("\n").filter(r => r.trim());
                 const data = rows.slice(1).map(r => {
@@ -165,39 +222,38 @@
                     return {
                         time: cols[0] || "",
                         user: cols[1] || "",
-                        bank: cols[2] || "",
-                        amount: cols[3] || "",
-                        tenure: cols[4] || "",
-                        purpose: cols[5] || "",
-                        details: cols[6] || "",
-                        status: cols[7] || "未處理"
+                        caseType: cols[2] || "",
+                        bank: cols[3] || "",
+                        details: cols[4] || "",
+                        status: cols[5] || "未處理"
                     };
                 });
 
                 let list = data;
                 if(filterBank !== "all") list = list.filter(d => d.bank === filterBank);
+                if(filterCase !== "all") list = list.filter(d => d.caseType === filterCase);
                 if(!isAdmin) list = list.filter(d => d.user === user);
 
-                renderLoanTable(list);
+                renderCaseTable(list);
             } catch(e) {
-                document.getElementById("loanTableBody").innerHTML = "<tr><td colspan='5'>尚無記錄或讀取失敗</td></tr>";
+                document.getElementById("caseTableBody").innerHTML = "<tr><td colspan='5'>尚無記錄</td></tr>";
             }
         }
 
-        function renderLoanTable(list) {
-            const tbody = document.getElementById("loanTableBody");
+        function renderCaseTable(list) {
+            const tbody = document.getElementById("caseTableBody");
             tbody.innerHTML = "";
             if(list.length === 0) {
-                tbody.innerHTML = "<tr><td colspan='5' style='text-align:center; color:#888;'>沒有個人貸款記錄</td></tr>";
+                tbody.innerHTML = "<tr><td colspan='5' style='text-align:center; color:#888;'>沒有符合的案件記錄</td></tr>";
                 return;
             }
             list.forEach(item => {
                 const tr = document.createElement("tr");
                 tr.innerHTML = `
                     <td>${item.time}</td>
+                    <td>${item.caseType}</td>
                     <td>${item.bank}</td>
-                    <td>RM ${item.amount}<br>${item.tenure} 個月</td>
-                    <td style="max-width:200px; overflow:hidden; text-overflow:ellipsis;">${item.purpose || '-'}</td>
+                    <td style="max-width:220px; overflow:hidden; text-overflow:ellipsis;">${item.details}</td>
                     <td><span class="status ${item.status === '已回覆' ? 'done' : 'pending'}">${item.status}</span></td>
                 `;
                 tbody.appendChild(tr);
@@ -213,72 +269,69 @@
     </div>
 
     <div class="container">
-        <h1>💸 Personal Loan Application & Inquiry</h1>
-        <p class="desc">Select bank, fill in loan details, submit and filter records</p>
+        <h1>📋 Case Submission & Management</h1>
+        <p class="desc">Select case type → auto show eligible banks → submit</p>
 
-        <!-- ✅ 個人貸款 提交區塊 -->
+        <!-- ✅ 提交區塊 -->
         <div class="section-box">
-            <h3>Submit New Personal Loan Inquiry</h3>
+            <h3>Submit New Case</h3>
 
-            <label>Select Bank *</label>
-            <select id="bankSelect">
-                <option value="">-- Please Select Bank --</option>
-                <option value="Maybank">Maybank</option>
-                <option value="CIMB">CIMB</option>
-                <option value="Public Bank">Public Bank</option>
-                <option value="RHB">RHB</option>
-                <option value="Hong Leong Bank">Hong Leong Bank</option>
-                <option value="AmBank">AmBank</option>
-                <option value="Bank Rakyat">Bank Rakyat</option>
-                <option value="BSN">BSN</option>
-                <option value="Others">Others</option>
+            <label>Case Type *</label>
+            <select id="caseType" onchange="onCaseTypeChange()">
+                <option value="">-- Please Select Case Type --</option>
+                <!-- 選項由 JS 動態產生，不用手動加 -->
             </select>
 
-            <div class="row-group">
-                <div>
-                    <label>Loan Amount (RM) *</label>
-                    <input id="loanAmount" type="number" placeholder="e.g. 50000">
-                </div>
-                <div>
-                    <label>Loan Tenure (Month) *</label>
-                    <input id="tenure" type="number" placeholder="e.g. 60">
-                </div>
-            </div>
+            <!-- ✅ 自動顯示對應的銀行提示 -->
+            <div id="bankTip" class="bank-tip"></div>
 
-            <label>Loan Purpose</label>
-            <input id="purpose" type="text" placeholder="e.g. Renovation, Education, Medical">
+            <label>Submit To Bank *</label>
+            <select id="bankSelect">
+                <option value="">-- First Select Case Type --</option>
+            </select>
 
-            <label>Additional Details / Inquiry</label>
-            <textarea id="details" placeholder="Any special requirement, existing commitment, or question..."></textarea>
+            <label>Case Details / Requirement *</label>
+            <textarea id="details" placeholder="Describe your situation, amount, or request..."></textarea>
 
-            <button onclick="submitLoanQuery()">Submit Inquiry</button>
+            <button onclick="submitCase()">Submit Case</button>
             <div id="submitMsg" class="msg"></div>
         </div>
 
-        <!-- ✅ 篩選 + 記錄區塊 -->
+        <!-- ✅ 篩選區：雙重篩選 -->
         <div class="section-box">
-            <h3>📋 Personal Loan Records</h3>
+            <h3>📋 All Case Records</h3>
             <div class="filter-bar">
-                <label>Filter by Bank: </label>
-                <select id="filterBank" onchange="loadLoanData(this.value)">
-                    <option value="all">All Banks</option>
-                    <option value="Maybank">Maybank</option>
-                    <option value="CIMB">CIMB</option>
-                    <option value="Public Bank">Public Bank</option>
-                    <option value="RHB">RHB</option>
-                    <option value="Hong Leong Bank">Hong Leong Bank</option>
-                    <option value="AmBank">AmBank</option>
-                    <option value="Bank Rakyat">Bank Rakyat</option>
-                    <option value="BSN">BSN</option>
-                    <option value="Others">Others</option>
-                </select>
+                <div>
+                    <label>Filter by Bank: </label>
+                    <select id="filterBank" onchange="loadCaseData(this.value, document.getElementById('filterCase').value)">
+                        <option value="all">All Banks</option>
+                        <option value="Maybank">Maybank</option>
+                        <option value="CIMB">CIMB</option>
+                        <option value="Public Bank">Public Bank</option>
+                        <option value="RHB">RHB</option>
+                        <option value="Hong Leong Bank">Hong Leong Bank</option>
+                        <option value="AmBank">AmBank</option>
+                        <option value="Bank Rakyat">Bank Rakyat</option>
+                        <option value="BSN">BSN</option>
+                        <option value="Bank Islam">Bank Islam</option>
+                        <option value="Alliance Bank">Alliance Bank</option>
+                        <option value="Affin Bank">Affin Bank</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Filter by Case: </label>
+                    <select id="filterCase" onchange="loadCaseData(document.getElementById('filterBank').value, this.value)">
+                        <option value="all">All Cases</option>
+                        <!-- 選項由 JS 動態產生 -->
+                    </select>
+                </div>
             </div>
 
             <table>
                 <thead>
-                    <tr><th>Time</th><th>Bank</th><th>Amount / Tenure</th><th>Purpose</th><th>Status</th></tr>
+                    <tr><th>Time</th><th>Case Type</th><th>Bank</th><th>Details</th><th>Status</th></tr>
                 </thead>
-                <tbody id="loanTableBody"></tbody>
+                <tbody id="caseTableBody"></tbody>
             </table>
         </div>
 
