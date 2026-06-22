@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>📩 Submit Query - Property Tools</title>
+    <style>
+        * {margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif;}
+        body {background-color: #f8fafc; padding: 40px 25px;}
+        .header-bar { 
+            background: #bfff00; padding: 15px 25px; 
+            display: flex; justify-content: space-between; 
+            align-items: center; flex-wrap: wrap; gap: 12px;
+            position: fixed; top:0; left:0; width:100%; z-index:99;
+        }
+        .user-info { 
+            font-size: 16px; font-weight: 600; color: #000; 
+            line-height: 1.8; font-family: Arial, sans-serif; 
+        }
+        .logout-btn { 
+            background: #dc2626; color: #fff; border: none; 
+            padding: 8px 16px; border-radius: 5px; 
+            font-size: 15px; font-weight: bold; cursor: pointer; 
+        }
+        .logout-btn:hover { background: #b91c1c; }
+
+        .container {max-width: 800px; margin: 80px auto 0;}
+        h1 {font-size: 32px; color: #1e293b; margin-bottom: 10px; text-align:center;}
+        .desc {font-size: 17px; color: #64748b; margin-bottom: 30px; text-align:center;}
+
+        .section-box {
+            background: #fff; border-radius: 12px; padding: 25px; margin: 20px 0;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+        .section-box h3 {color: #2563eb; margin-top: 0; margin-bottom: 15px; font-size:20px;}
+
+        select, textarea, button {
+            width: 100%; padding: 12px 14px; margin: 8px 0; border: 1px solid #ddd;
+            border-radius: 6px; font-size: 15px; box-sizing: border-box;
+        }
+        textarea {min-height: 140px; resize: vertical;}
+        button { background: #2563eb; color: #fff; border: none; cursor: pointer; font-weight:500; }
+        button:hover { background: #1d4ed8; }
+        .msg { font-size: 14px; margin: 8px 0; min-height: 22px; }
+
+        .filter-bar { background: #f1f5f9; padding: 12px; border-radius: 8px; margin: 15px 0; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; }
+        th, td { padding: 11px 12px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #f8fafc; color:#333; }
+        .status { padding: 3px 7px; border-radius: 4px; font-size: 12px; font-weight:500; }
+        .pending { background: #fef3c7; color: #d97706; }
+        .done { background: #d1fae5; color: #065f46; }
+
+        .back-link {text-align:center; margin-top:20px;}
+        .back-link a {color:#2563eb; text-decoration:none; font-size:15px;}
+        .back-link a:hover {text-decoration:underline;}
+    </style>
+    <script>
+        const 試算表ID = "1tJsY1dX4P2Wsg6EFmHVkbtDUvPwE0EU8jafFHblFLmg";
+        const LOG_ENDPOINT = "https://script.google.com/macros/s/AKfycbyrNpc319JdgcvJVR-9z006G3tZdGtehyTjqKo3h8kGyaqxl2iBXoNMB7xuYhRcod8r/exec";
+
+        // ✅ 時間格式（馬來西亞）
+        function getMYTime() {
+            const d = new Date();
+            return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;
+        }
+
+        // ✅ 頁面載入檢查 + 顯示資訊
+        window.onload = function() {
+            if(!localStorage.getItem("IS_LOGIN")) {
+                alert("⚠️ 請先登入！");
+                window.location.href = "index.html";
+                return;
+            }
+            // 顯示登入資訊
+            const user = localStorage.getItem("loginAccount") || "";
+            const last = localStorage.getItem("LAST_LOGIN") || "First Time Login";
+            document.getElementById("loginDisplay").innerHTML = `Welcome: ${user}<br>LOGIN TIME: ${getMYTime()}<br>LAST LOGIN TIME: ${last}`;
+            // 自動載入記錄
+            loadQueryData();
+        };
+
+        // ✅ 登出
+        function logout() {
+            if(localStorage.getItem("loginAccount")) {
+                fetch(LOG_ENDPOINT, {
+                    method: "POST",
+                    headers: {"Content-Type":"application/json"},
+                    body: JSON.stringify({time:getMYTime(), user:localStorage.getItem("loginAccount"), action:"登出系統"}),
+                    redirect:"follow"
+                });
+            }
+            localStorage.clear();
+            location.href = "index.html";
+        }
+
+        // ✅ 提交問題 + 自動綁定銀行
+        async function submitQuery() {
+            const user = localStorage.getItem("loginAccount");
+            const bank = document.getElementById("bankSelect").value;
+            const question = document.getElementById("questionInput").value.trim();
+            const msg = document.getElementById("submitMsg");
+
+            if(!bank || !question) {
+                msg.textContent = "❌ 請選擇銀行並填寫問題內容";
+                msg.style.color = "#dc2626";
+                return;
+            }
+
+            try {
+                const res = await fetch(LOG_ENDPOINT, {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({
+                        action: "submit_query",
+                        time: getMYTime(),
+                        user: user,
+                        bank: bank,
+                        question: question
+                    }),
+                    redirect: "follow"
+                });
+                const result = await res.json();
+
+                if(result.res === "success") {
+                    msg.textContent = "✅ 提交成功！已分類到：" + bank;
+                    msg.style.color = "#10b981";
+                    document.getElementById("questionInput").value = "";
+                    loadQueryData(document.getElementById("filterBank").value);
+                } else {
+                    msg.textContent = "❌ " + (result.msg || "提交失敗");
+                    msg.style.color = "#dc2626";
+                }
+            } catch(e) {
+                msg.textContent = "❌ 網路錯誤，請稍後再試";
+                msg.style.color = "#dc2626";
+            }
+        }
+
+        // ✅ 載入 + 篩選記錄
+        async function loadQueryData(filterBank = "all") {
+            const user = localStorage.getItem("loginAccount");
+            const isAdmin = user === "admin";
+
+            try {
+                const res = await fetch(`https://docs.google.com/spreadsheets/d/${試算表ID}/export?format=csv&sheet=問題記錄`);
+                const csv = await res.text();
+                const rows = csv.split("\n").filter(r => r.trim());
+                const data = rows.slice(1).map(r => {
+                    const cols = r.split(",");
+                    return {
+                        time: cols[0] || "",
+                        user: cols[1] || "",
+                        question: cols[2] || "",
+                        bank: cols[3] || "",
+                        status: cols[4] || "未處理"
+                    };
+                });
+
+                let list = data;
+                if(filterBank !== "all") list = list.filter(d => d.bank === filterBank);
+                if(!isAdmin) list = list.filter(d => d.user === user);
+
+                renderQueryTable(list);
+            } catch(e) {
+                document.getElementById("queryTableBody").innerHTML = "<tr><td colspan='4'>讀取失敗</td></tr>";
+            }
+        }
+
+        function renderQueryTable(list) {
+            const tbody = document.getElementById("queryTableBody");
+            tbody.innerHTML = "";
+            if(list.length === 0) {
+                tbody.innerHTML = "<tr><td colspan='4' style='text-align:center; color:#888;'>沒有記錄</td></tr>";
+                return;
+            }
+            list.forEach(item => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td>${item.time}</td>
+                    <td>${item.bank}</td>
+                    <td style="max-width:220px; overflow:hidden; text-overflow:ellipsis;">${item.question}</td>
+                    <td><span class="status ${item.status === '已回覆' ? 'done' : 'pending'}">${item.status}</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+    </script>
+</head>
+<body>
+    <!-- ✅ 頂部欄：跟你原本的頁面完全一樣 -->
+    <div class="header-bar">
+        <div id="loginDisplay" class="user-info"></div>
+        <button onclick="logout()" class="logout-btn">Logout</button>
+    </div>
+
+    <div class="container">
+        <h1>📩 Submit Your Query</h1>
+        <p class="desc">Select bank category, submit your question, and filter records below</p>
+
+        <!-- ✅ 提交區塊 -->
+        <div class="section-box">
+            <h3>Submit New Query</h3>
+            <select id="bankSelect">
+                <option value="">-- Please Select Bank --</option>
+                <option value="Maybank">Maybank</option>
+                <option value="CIMB">CIMB</option>
+                <option value="Public Bank">Public Bank</option>
+                <option value="RHB">RHB</option>
+                <option value="Hong Leong Bank">Hong Leong Bank</option>
+                <option value="AmBank">AmBank</option>
+                <option value="Others">Others</option>
+            </select>
+            <textarea id="questionInput" placeholder="Type your question or detail here..."></textarea>
+            <button onclick="submitQuery()">Submit Query</button>
+            <div id="submitMsg" class="msg"></div>
+        </div>
+
+        <!-- ✅ 篩選 + 記錄區塊 -->
+        <div class="section-box">
+            <h3>📋 View Submitted Records</h3>
+            <div class="filter-bar">
+                <label>Filter by Bank: </label>
+                <select id="filterBank" onchange="loadQueryData(this.value)">
+                    <option value="all">All Banks</option>
+                    <option value="Maybank">Maybank</option>
+                    <option value="CIMB">CIMB</option>
+                    <option value="Public Bank">Public Bank</option>
+                    <option value="RHB">RHB</option>
+                    <option value="Hong Leong Bank">Hong Leong Bank</option>
+                    <option value="AmBank">AmBank</option>
+                    <option value="Others">Others</option>
+                </select>
+            </div>
+
+            <table>
+                <thead>
+                    <tr><th>Time</th><th>Bank</th><th>Question</th><th>Status</th></tr>
+                </thead>
+                <tbody id="queryTableBody"></tbody>
+            </table>
+        </div>
+
+        <div class="back-link">
+            <a href="index.html">← Back to Dashboard</a>
+        </div>
+    </div>
+</body>
+</html>
