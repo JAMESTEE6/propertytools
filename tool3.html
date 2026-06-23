@@ -317,51 +317,61 @@
             return 'RM ' + Math.max(num, 0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
 
-        function calculate() {
-            const m1 = parseFloat(document.getElementById('m1').value) || 0;
-            const m2 = parseFloat(document.getElementById('m2').value) || 0;
-            const m3 = parseFloat(document.getElementById('m3').value) || 0;
-            const m4 = parseFloat(document.getElementById('m4').value) || 0;
-            const m5 = parseFloat(document.getElementById('m5').value) || 0;
-            const m6 = parseFloat(document.getElementById('m6').value) || 0;
-            const basic = parseFloat(document.getElementById('basic').value) || 0;
-            const otPercent = parseFloat(document.getElementById('otPercent').value) || 0;
-            const dsr = parseFloat(document.getElementById('dsr').value) || 0;
-            const ndi = parseFloat(document.getElementById('ndi').value) || 0;
-            const commitment = parseFloat(document.getElementById('commitment').value) || 0;
-            const rate = parseFloat(document.getElementById('rate').value) || 0;
-            const tenure = parseFloat(document.getElementById('tenure').value) || 0;
-            const age = document.getElementById('age').value || '-';
+      function calculate() {
+    // Get all input values
+    const m1 = parseFloat(document.getElementById('m1').value) || 0;
+    const m2 = parseFloat(document.getElementById('m2').value) || 0;
+    const m3 = parseFloat(document.getElementById('m3').value) || 0;
+    const m4 = parseFloat(document.getElementById('m4').value) || 0;
+    const m5 = parseFloat(document.getElementById('m5').value) || 0;
+    const m6 = parseFloat(document.getElementById('m6').value) || 0;
+    const basic = parseFloat(document.getElementById('basic').value) || 0;
+    const otPercent = parseFloat(document.getElementById('otPercent').value) || 0;
+    const dsr = parseFloat(document.getElementById('dsr').value) || 0;
+    const ndi = parseFloat(document.getElementById('ndi').value) || 0;
+    const commitment = parseFloat(document.getElementById('commitment').value) || 0;
+    const rate = parseFloat(document.getElementById('rate').value) || 0;
+    const tenure = parseFloat(document.getElementById('tenure').value) || 0;
+    const age = document.getElementById('age').value || '-';
 
-            const avgNet = (m1 + m2 + m3 + m4 + m5 + m6) / 6;
-            const otAmount = Math.max(0, avgNet - basic);
-            const recognisedOt = otAmount * (otPercent / 100);
-            const totalIncome = basic + recognisedOt;
-            const maxCommitment = avgNet * (dsr / 100);
-            const availableInstalment = maxCommitment - commitment - ndi;
-            const usedDSR = totalIncome > 0 ? ((maxCommitment / totalIncome) * 100) : 0;
-            const monthlyRate = rate / 100 / 12;
-            const months = tenure * 12;
-            let loanAmount = 0;
-            if (availableInstalment > 0 && monthlyRate > 0) {
-                loanAmount = availableInstalment * (Math.pow(1 + monthlyRate, months) - 1) / (monthlyRate * Math.pow(1 + monthlyRate, months));
-            }
+    // --- Calculations ---
+    const totalNetIncome = m1 + m2 + m3 + m4 + m5 + m6;
+    const avgNet = totalNetIncome / 6;
+    const variableIncome = Math.max(0, avgNet - basic);
+    const recognisedVariable = variableIncome * (otPercent / 100);
+    const totalRecognisedIncome = basic + recognisedVariable;
 
-            document.getElementById('loanAmount').innerText = formatRM(loanAmount);
-            document.getElementById('avgNet').innerText = formatRM(avgNet);
-            document.getElementById('totalInc').innerText = formatRM(totalIncome);
-            document.getElementById('comResult').innerText = formatRM(commitment);
-            document.getElementById('maxCom').innerText = formatRM(maxCommitment);
-            document.getElementById('dsrResult').innerText = usedDSR.toFixed(2) + '%';
-            document.getElementById('ndiResult').innerText = formatRM(ndi);
-            document.getElementById('instResult').innerText = formatRM(Math.max(availableInstalment, 0));
-            document.getElementById('rateResult').innerText = rate.toFixed(2) + '%';
-            document.getElementById('tenureResult').innerText = tenure + ' Years';
-            document.getElementById('ageResult').innerText = age;
-            document.getElementById('brkBasic').innerText = formatRM(basic);
-            document.getElementById('brkOt').innerText = formatRM(recognisedOt);
-            document.getElementById('brkAvg').innerText = formatRM(avgNet);
-        }
+    const maxCommitment = avgNet * (dsr / 100);
+    const availableInstalment = Math.max(0, maxCommitment - commitment - ndi);
+    const usedDSR = totalRecognisedIncome > 0 
+        ? ((maxCommitment / totalRecognisedIncome) * 100) 
+        : 0;
+
+    // Loan amount calculation
+    const monthlyRate = rate / 100 / 12;
+    const months = tenure * 12;
+    let loanAmount = 0;
+    if (availableInstalment > 0 && monthlyRate > 0 && months > 0) {
+        loanAmount = availableInstalment * (Math.pow(1 + monthlyRate, months) - 1) 
+                   / (monthlyRate * Math.pow(1 + monthlyRate, months));
+    }
+
+    // --- Output results ---
+    document.getElementById('loanAmount').innerText = formatRM(loanAmount);
+    document.getElementById('totalNet').innerText = formatRM(totalNetIncome);
+    document.getElementById('avgNet').innerText = formatRM(avgNet);
+    document.getElementById('varInc').innerText = formatRM(recognisedVariable);
+    document.getElementById('salaryInc').innerText = formatRM(basic);
+    document.getElementById('totalInc').innerText = formatRM(totalRecognisedIncome);
+    document.getElementById('comResult').innerText = formatRM(commitment);
+    document.getElementById('maxCom').innerText = formatRM(maxCommitment);
+    document.getElementById('dsrResult').innerText = usedDSR.toFixed(2) + '%';
+    document.getElementById('ndiResult').innerText = formatRM(ndi);
+    document.getElementById('instResult').innerText = formatRM(availableInstalment);
+    document.getElementById('rateResult').innerText = rate.toFixed(2) + '%';
+    document.getElementById('tenureResult').innerText = tenure + ' years';
+    document.getElementById('ageResult').innerText = age + ' years old';
+}
 
         function resetAll() {
             document.getElementById('age').value = '';
