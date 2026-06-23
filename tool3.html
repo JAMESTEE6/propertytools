@@ -192,7 +192,7 @@
     </style>
 </head>
 <body>
-    <div class="container">
+<div class="container">
         <a href="index.html" class="back-btn">
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path d="M19 12H5M12 19l-7-7 7-7"/>
@@ -310,99 +310,96 @@
             </div>
         </div>
     </div>
-function formatRM(num) {
-    return 'RM ' + Math.max(num, 0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
 
-function calculate() {
-    // Get all input values
-    const m1 = parseFloat(document.getElementById('m1').value) || 0;
-    const m2 = parseFloat(document.getElementById('m2').value) || 0;
-    const m3 = parseFloat(document.getElementById('m3').value) || 0;
-    const m4 = parseFloat(document.getElementById('m4').value) || 0;
-    const m5 = parseFloat(document.getElementById('m5').value) || 0;
-    const m6 = parseFloat(document.getElementById('m6').value) || 0;
-    const basic = parseFloat(document.getElementById('basic').value) || 0;
-    const otPercent = parseFloat(document.getElementById('otPercent').value) || 0;
-    const dsr = parseFloat(document.getElementById('dsr').value) || 0;
-    const ndi = parseFloat(document.getElementById('ndi').value) || 0;
-    const commitment = parseFloat(document.getElementById('commitment').value) || 0;
-    const rate = parseFloat(document.getElementById('rate').value) || 0;
-    const tenure = parseFloat(document.getElementById('tenure').value) || 0;
-    const age = document.getElementById('age').value || '-';
+    <script>
+        function formatRM(num) {
+            return 'RM ' + Math.max(num, 0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
 
-    // --- Calculations ---
-    const totalNetIncome = m1 + m2 + m3 + m4 + m5 + m6;
-    const avgNet = totalNetIncome / 6;
-    const variableIncome = Math.max(0, avgNet - basic);
-    const recognisedVariable = variableIncome * (otPercent / 100);
-    const totalRecognisedIncome = basic + recognisedVariable;
+        function calculate() {
+            const m1 = parseFloat(document.getElementById('m1').value) || 0;
+            const m2 = parseFloat(document.getElementById('m2').value) || 0;
+            const m3 = parseFloat(document.getElementById('m3').value) || 0;
+            const m4 = parseFloat(document.getElementById('m4').value) || 0;
+            const m5 = parseFloat(document.getElementById('m5').value) || 0;
+            const m6 = parseFloat(document.getElementById('m6').value) || 0;
+            const basic = parseFloat(document.getElementById('basic').value) || 0;
+            const otPercent = parseFloat(document.getElementById('otPercent').value) || 0;
+            const dsr = parseFloat(document.getElementById('dsr').value) || 0;
+            const ndi = parseFloat(document.getElementById('ndi').value) || 0;
+            const commitment = parseFloat(document.getElementById('commitment').value) || 0;
+            const rate = parseFloat(document.getElementById('rate').value) || 0;
+            const tenure = parseFloat(document.getElementById('tenure').value) || 0;
+            const age = document.getElementById('age').value || '-';
 
-    const maxCommitment = avgNet * (dsr / 100);
-    const availableInstalment = Math.max(0, maxCommitment - commitment - ndi);
-    // ✅ 你指定的 DSR Used 公式
-    const usedDSR = totalRecognisedIncome > 0 
-        ? ((maxCommitment / totalRecognisedIncome) * 100) 
-        : 0;
+            const totalNetIncome = m1 + m2 + m3 + m4 + m5 + m6;
+            const avgNet = totalNetIncome / 6;
+            const variableIncome = Math.max(0, avgNet - basic);
+            const recognisedVariable = variableIncome * (otPercent / 100);
+            const totalRecognisedIncome = basic + recognisedVariable;
 
-    // Loan amount calculation
-    const monthlyRate = rate / 100 / 12;
-    const months = tenure * 12;
-    let loanAmount = 0;
-    if (availableInstalment > 0 && monthlyRate > 0 && months > 0) {
-        loanAmount = availableInstalment * (Math.pow(1 + monthlyRate, months) - 1) 
-                   / (monthlyRate * Math.pow(1 + monthlyRate, months));
-    }
+            const maxCommitment = avgNet * (dsr / 100);
+            const availableInstalment = Math.max(0, maxCommitment - commitment - ndi);
+            // ✅ DSR Used formula exactly as you requested
+            const usedDSR = totalRecognisedIncome > 0 
+                ? ((maxCommitment / totalRecognisedIncome) * 100) 
+                : 0;
 
-    // --- Output results (ID 完全對應你的 HTML) ---
-    document.getElementById('loanAmount').innerText = formatRM(loanAmount);
-    document.getElementById('avgNet').innerText = formatRM(avgNet);
-    document.getElementById('totalInc').innerText = formatRM(totalRecognisedIncome);
-    document.getElementById('comResult').innerText = formatRM(commitment);
-    document.getElementById('maxCom').innerText = formatRM(maxCommitment);
-    document.getElementById('dsrResult').innerText = usedDSR.toFixed(2) + '%';
-    document.getElementById('ndiResult').innerText = formatRM(ndi);
-    document.getElementById('instResult').innerText = formatRM(availableInstalment);
-    document.getElementById('rateResult').innerText = rate.toFixed(2) + '%';
-    document.getElementById('tenureResult').innerText = tenure + ' Years';
-    document.getElementById('ageResult').innerText = age === '-' ? '-' : age + ' Years Old';
+            const monthlyRate = rate / 100 / 12;
+            const months = tenure * 12;
+            let loanAmount = 0;
+            if (availableInstalment > 0 && monthlyRate > 0 && months > 0) {
+                loanAmount = availableInstalment * (Math.pow(1 + monthlyRate, months) - 1) 
+                           / (monthlyRate * Math.pow(1 + monthlyRate, months));
+            }
 
-    // --- Breakdown 區塊輸出 ---
-    document.getElementById('brkBasic').innerText = formatRM(basic);
-    document.getElementById('brkOt').innerText = formatRM(recognisedVariable);
-    document.getElementById('brkAvg').innerText = formatRM(avgNet);
-}
+            document.getElementById('loanAmount').innerText = formatRM(loanAmount);
+            document.getElementById('avgNet').innerText = formatRM(avgNet);
+            document.getElementById('totalInc').innerText = formatRM(totalRecognisedIncome);
+            document.getElementById('comResult').innerText = formatRM(commitment);
+            document.getElementById('maxCom').innerText = formatRM(maxCommitment);
+            document.getElementById('dsrResult').innerText = usedDSR.toFixed(2) + '%';
+            document.getElementById('ndiResult').innerText = formatRM(ndi);
+            document.getElementById('instResult').innerText = formatRM(availableInstalment);
+            document.getElementById('rateResult').innerText = rate.toFixed(2) + '%';
+            document.getElementById('tenureResult').innerText = tenure + ' Years';
+            document.getElementById('ageResult').innerText = age === '-' ? '-' : age + ' Years Old';
 
-function resetAll() {
-    document.getElementById('age').value = '';
-    document.getElementById('dsr').value = '70';
-    document.getElementById('ndi').value = '1098';
-    document.getElementById('commitment').value = '0';
-    document.getElementById('rate').value = '4.00';
-    document.getElementById('tenure').value = '35';
-    document.getElementById('incomeType').value = 'salary';
-    document.getElementById('m1').value = '';
-    document.getElementById('m2').value = '';
-    document.getElementById('m3').value = '';
-    document.getElementById('m4').value = '';
-    document.getElementById('m5').value = '';
-    document.getElementById('m6').value = '';
-    document.getElementById('basic').value = '';
-    document.getElementById('otPercent').value = '70';
+            document.getElementById('brkBasic').innerText = formatRM(basic);
+            document.getElementById('brkOt').innerText = formatRM(recognisedVariable);
+            document.getElementById('brkAvg').innerText = formatRM(avgNet);
+        }
 
-    // ✅ 重置所有結果顯示，ID 完全對齊
-    document.getElementById('loanAmount').innerText = 'RM 0.00';
-    document.getElementById('avgNet').innerText = 'RM 0.00';
-    document.getElementById('totalInc').innerText = 'RM 0.00';
-    document.getElementById('comResult').innerText = 'RM 0.00';
-    document.getElementById('maxCom').innerText = 'RM 0.00';
-    document.getElementById('dsrResult').innerText = '0.00%';
-    document.getElementById('ndiResult').innerText = 'RM 0.00';
-    document.getElementById('instResult').innerText = 'RM 0.00';
-    document.getElementById('rateResult').innerText = '0.00%';
-    document.getElementById('tenureResult').innerText = '0 Years';
-    document.getElementById('ageResult').innerText = '-';
-    document.getElementById('brkBasic').innerText = 'RM 0.00';
-    document.getElementById('brkOt').innerText = 'RM 0.00';
-    document.getElementById('brkAvg').innerText = 'RM 0.00';
-}
+        function resetAll() {
+            document.getElementById('age').value = '';
+            document.getElementById('dsr').value = '70';
+            document.getElementById('ndi').value = '1098';
+            document.getElementById('commitment').value = '0';
+            document.getElementById('rate').value = '4.00';
+            document.getElementById('tenure').value = '35';
+            document.getElementById('incomeType').value = 'salary';
+            document.getElementById('m1').value = '';
+            document.getElementById('m2').value = '';
+            document.getElementById('m3').value = '';
+            document.getElementById('m4').value = '';
+            document.getElementById('m5').value = '';
+            document.getElementById('m6').value = '';
+            document.getElementById('basic').value = '';
+            document.getElementById('otPercent').value = '70';
+
+            document.getElementById('loanAmount').innerText = 'RM 0.00';
+            document.getElementById('avgNet').innerText = 'RM 0.00';
+            document.getElementById('totalInc').innerText = 'RM 0.00';
+            document.getElementById('comResult').innerText = 'RM 0.00';
+            document.getElementById('maxCom').innerText = 'RM 0.00';
+            document.getElementById('dsrResult').innerText = '0.00%';
+            document.getElementById('ndiResult').innerText = 'RM 0.00';
+            document.getElementById('instResult').innerText = 'RM 0.00';
+            document.getElementById('rateResult').innerText = '0.00%';
+            document.getElementById('tenureResult').innerText = '0 Years';
+            document.getElementById('ageResult').innerText = '-';
+            document.getElementById('brkBasic').innerText = 'RM 0.00';
+            document.getElementById('brkOt').innerText = 'RM 0.00';
+            document.getElementById('brkAvg').innerText = 'RM 0.00';
+        }
+    </script>
