@@ -310,14 +310,11 @@
             </div>
         </div>
     </div>
+function formatRM(num) {
+    return 'RM ' + Math.max(num, 0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
 
-    <!-- ✅ 完整正確的 JavaScript 無任何語法錯誤，所有功能100%保留 -->
-    <script>
-        function formatRM(num) {
-            return 'RM ' + Math.max(num, 0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        }
-
-      function calculate() {
+function calculate() {
     // Get all input values
     const m1 = parseFloat(document.getElementById('m1').value) || 0;
     const m2 = parseFloat(document.getElementById('m2').value) || 0;
@@ -343,6 +340,7 @@
 
     const maxCommitment = avgNet * (dsr / 100);
     const availableInstalment = Math.max(0, maxCommitment - commitment - ndi);
+    // ✅ 你指定的 DSR Used 公式
     const usedDSR = totalRecognisedIncome > 0 
         ? ((maxCommitment / totalRecognisedIncome) * 100) 
         : 0;
@@ -356,12 +354,9 @@
                    / (monthlyRate * Math.pow(1 + monthlyRate, months));
     }
 
-    // --- Output results ---
+    // --- Output results (ID 完全對應你的 HTML) ---
     document.getElementById('loanAmount').innerText = formatRM(loanAmount);
-    document.getElementById('totalNet').innerText = formatRM(totalNetIncome);
     document.getElementById('avgNet').innerText = formatRM(avgNet);
-    document.getElementById('varInc').innerText = formatRM(recognisedVariable);
-    document.getElementById('salaryInc').innerText = formatRM(basic);
     document.getElementById('totalInc').innerText = formatRM(totalRecognisedIncome);
     document.getElementById('comResult').innerText = formatRM(commitment);
     document.getElementById('maxCom').innerText = formatRM(maxCommitment);
@@ -369,43 +364,45 @@
     document.getElementById('ndiResult').innerText = formatRM(ndi);
     document.getElementById('instResult').innerText = formatRM(availableInstalment);
     document.getElementById('rateResult').innerText = rate.toFixed(2) + '%';
-    document.getElementById('tenureResult').innerText = tenure + ' years';
-    document.getElementById('ageResult').innerText = age + ' years old';
+    document.getElementById('tenureResult').innerText = tenure + ' Years';
+    document.getElementById('ageResult').innerText = age === '-' ? '-' : age + ' Years Old';
+
+    // --- Breakdown 區塊輸出 ---
+    document.getElementById('brkBasic').innerText = formatRM(basic);
+    document.getElementById('brkOt').innerText = formatRM(recognisedVariable);
+    document.getElementById('brkAvg').innerText = formatRM(avgNet);
 }
 
-        function resetAll() {
-            document.getElementById('age').value = '';
-            document.getElementById('dsr').value = '70';
-            document.getElementById('ndi').value = '1098';
-            document.getElementById('commitment').value = '0';
-            document.getElementById('rate').value = '4.00';
-            document.getElementById('tenure').value = '35';
-            document.getElementById('incomeType').value = 'salary';
-            document.getElementById('m1').value = '';
-            document.getElementById('m2').value = '';
-            document.getElementById('m3').value = '';
-            document.getElementById('m4').value = '';
-            document.getElementById('m5').value = '';
-            document.getElementById('m6').value = '';
-            document.getElementById('basic').value = '';
-            document.getElementById('otPercent').value = '70';
+function resetAll() {
+    document.getElementById('age').value = '';
+    document.getElementById('dsr').value = '70';
+    document.getElementById('ndi').value = '1098';
+    document.getElementById('commitment').value = '0';
+    document.getElementById('rate').value = '4.00';
+    document.getElementById('tenure').value = '35';
+    document.getElementById('incomeType').value = 'salary';
+    document.getElementById('m1').value = '';
+    document.getElementById('m2').value = '';
+    document.getElementById('m3').value = '';
+    document.getElementById('m4').value = '';
+    document.getElementById('m5').value = '';
+    document.getElementById('m6').value = '';
+    document.getElementById('basic').value = '';
+    document.getElementById('otPercent').value = '70';
 
-            // ✅ 重置右邊所有顯示結果
-            document.getElementById('loanAmount').innerText = 'RM 0.00';
-            document.getElementById('avgNet').innerText = 'RM 0.00';
-            document.getElementById('totalInc').innerText = 'RM 0.00';
-            document.getElementById('comResult').innerText = 'RM 0.00';
-            document.getElementById('maxCom').innerText = 'RM 0.00';
-            document.getElementById('dsrResult').innerText = '0.00%';
-            document.getElementById('ndiResult').innerText = 'RM 0.00';
-            document.getElementById('instResult').innerText = 'RM 0.00';
-            document.getElementById('rateResult').innerText = '0.00%';
-            document.getElementById('tenureResult').innerText = '0 Years';
-            document.getElementById('ageResult').innerText = '-';
-            document.getElementById('brkBasic').innerText = 'RM 0.00';
-            document.getElementById('brkOt').innerText = 'RM 0.00';
-            document.getElementById('brkAvg').innerText = 'RM 0.00';
-        }
-    </script>
-</body>
-</html>
+    // ✅ 重置所有結果顯示，ID 完全對齊
+    document.getElementById('loanAmount').innerText = 'RM 0.00';
+    document.getElementById('avgNet').innerText = 'RM 0.00';
+    document.getElementById('totalInc').innerText = 'RM 0.00';
+    document.getElementById('comResult').innerText = 'RM 0.00';
+    document.getElementById('maxCom').innerText = 'RM 0.00';
+    document.getElementById('dsrResult').innerText = '0.00%';
+    document.getElementById('ndiResult').innerText = 'RM 0.00';
+    document.getElementById('instResult').innerText = 'RM 0.00';
+    document.getElementById('rateResult').innerText = '0.00%';
+    document.getElementById('tenureResult').innerText = '0 Years';
+    document.getElementById('ageResult').innerText = '-';
+    document.getElementById('brkBasic').innerText = 'RM 0.00';
+    document.getElementById('brkOt').innerText = 'RM 0.00';
+    document.getElementById('brkAvg').innerText = 'RM 0.00';
+}
